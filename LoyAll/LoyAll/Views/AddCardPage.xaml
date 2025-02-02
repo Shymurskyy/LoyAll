@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="LoyAll.Views.AddCardPage"
+             Title="New Page">
+
+    <VerticalStackLayout Spacing="20">
+
+        <!-- Pole do wpisania nazwy karty -->
+        <Entry x:Name="StoreNameEntry"
+               Placeholder="Nazwa sklepu (np. Lidl, Kaufland)"
+               FontSize="18"
+               TextColor="Black"
+               BackgroundColor="LightGray"
+              />
+
+        <!-- Przycisk wyboru zdjęcia -->
+        <Button Text="Wybierz zdjęcie"
+                FontSize="18"
+                Clicked="OnPickImageClicked"
+                BackgroundColor="Blue"
+                TextColor="White"/>
+
+        <!-- Podgląd wybranego zdjęcia -->
+        <Image x:Name="CardImage"
+               HeightRequest="200"
+               Aspect="AspectFit"
+               IsVisible="False"/>
+
+        <!-- Przycisk zapisu karty -->
+        <Button Text="Zapisz kartę"
+                FontSize="18"
+                Clicked="OnSaveCardClicked"
+                BackgroundColor="Green"
+                TextColor="White"/>
+
+    </VerticalStackLayout>
+
+</ContentPage>

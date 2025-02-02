@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="LoyAll.CardDetailPage"
+             Title="Szczegóły karty">
+    <StackLayout Padding="20">
+        <Image x:Name="CardImage" 
+               HeightRequest="400" 
+               WidthRequest="400" 
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand"/>
+        <Label x:Name="StoreNameLabel"
+               FontSize="24"
+               HorizontalOptions="Center"
+               TextColor="Black"/>
+    </StackLayout>
+</ContentPage>

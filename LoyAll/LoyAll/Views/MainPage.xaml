@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="LoyAll.MainPage"
+             Title="Twoje karty"
+             BackgroundColor="White"
+             Padding="20">
+
+    <!-- Przycisk "+" w górnym pasku -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+" Clicked="OnAddCardClicked"/>
+    </ContentPage.ToolbarItems>
+
+    <!-- Dodanie ScrollView, aby umożliwić przewijanie -->
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+
+            <!-- Kolekcja zapisanych kart -->
+            <CollectionView x:Name="CardsCollectionView"
+                            ItemsSource="{Binding Cards}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                            <Grid>
+
+                                <!-- Obsługa kliknięcia -->
+                                <Frame BackgroundColor="Transparent">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnCardTapped"/>
+                                    </Frame.GestureRecognizers>
+
+                                    <Grid>
+                                        <Image Source="{Binding ImagePath}" HeightRequest="80" Aspect="AspectFill"/>
+                                        <Label Text="{Binding StoreName}" 
+                                               FontSize="18"
+                                               TextColor="Black"
+                                               VerticalOptions="End"
+                                               BackgroundColor="White"
+                                               Padding="5"
+                                               Opacity="0.8"/>
+                                    </Grid>
+
+                                </Frame>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>
