@@ -8,7 +8,7 @@ namespace LoyAll
         {
             InitializeComponent();
             StoreNameLabel.Text = card.StoreName;
-            CardImage.Source = ImageSource.FromFile(card.ImagePath);
+            CardImage.Source = ImageSource.FromFile(card.CardValue);
         }
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              x:Class="LoyAll.Views.AddCardPage"
              Title="New Page">
 
@@ -26,6 +27,32 @@
                HeightRequest="200"
                Aspect="AspectFit"
                IsVisible="False"/>
+
+        <!-- Pole do wyświetlenia zeskanowanego kodu -->
+        <Entry x:Name="BarcodeEntry"
+               Placeholder="Zeskanowany kod"
+               FontSize="18"
+               TextColor="Black"
+               BackgroundColor="LightGray"
+               IsReadOnly="True"/>
+
+        <!-- Przycisk do uruchomienia skanera kodów -->
+        <Button Text="Skanuj kod QR/kreskowy"
+                FontSize="18"
+                Clicked="OnScanBarcodeClicked"
+                BackgroundColor="Orange"
+                TextColor="White"/>
+
+        <!-- Skaner kodów QR/kreskowych -->
+        <zxing:CameraBarcodeReaderView
+            x:Name="barcodeReader"
+            BarcodesDetected="OnBarcodesDetected"
+            IsDetecting="True"
+            IsVisible="False"
+            HeightRequest="300"
+            WidthRequest="300"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"/>
 
         <!-- Przycisk zapisu karty -->
         <Button Text="Zapisz kartę"
