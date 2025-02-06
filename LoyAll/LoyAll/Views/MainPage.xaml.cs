@@ -38,7 +38,7 @@ namespace LoyAll
         {
             if (sender is Frame frame && frame.BindingContext is Card selectedCard)
             {
-                await Navigation.PushAsync(new CardDetailPage(selectedCard));
+                await Navigation.PushAsync(new CardDetailPage(card: selectedCard));
             }
         }
     }

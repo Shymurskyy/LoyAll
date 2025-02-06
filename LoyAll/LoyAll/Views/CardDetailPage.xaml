@@ -13,5 +13,10 @@
                FontSize="24"
                HorizontalOptions="Center"
                TextColor="Black"/>
+        <Image x:Name="QrCodeImage" 
+               HeightRequest="200"
+               WidthRequest="200"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand"/>
     </StackLayout>
 </ContentPage>
