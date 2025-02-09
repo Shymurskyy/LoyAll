@@ -41,5 +41,18 @@ namespace LoyAll
                 await Navigation.PushAsync(new CardDetailPage(card: selectedCard));
             }
         }
+        private async void OnDeleteCardClicked(object sender, EventArgs e)
+        {
+            if (sender is Button button && button.BindingContext is Card cardToRemove)
+            {
+                bool confirm = await DisplayAlert("Usuń kartę", $"Czy na pewno chcesz usunąć kartę {cardToRemove.StoreName}?", "Tak", "Nie");
+                if (confirm)
+                {
+                    Cards.Remove(cardToRemove);
+                    CardStorageService.DeleteCard(cardToRemove);
+                }
+            }
+        }
+
     }
 }
