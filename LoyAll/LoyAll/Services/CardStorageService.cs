@@ -28,5 +28,18 @@ namespace LoyAll.Services
             }
             return new List<Card>();
         }
+        public static void DeleteCard(Card card)
+        {
+            List<Card> cards = GetCards();
+            var cardToRemove = cards.FirstOrDefault(c => c.StoreName == card.StoreName && c.CardValue == card.CardValue);
+
+            if (cardToRemove != null)
+            {
+                cards.Remove(cardToRemove);
+                string json = JsonConvert.SerializeObject(cards);
+                File.WriteAllText(filePath, json);
+            }
+        }
+
     }
 }

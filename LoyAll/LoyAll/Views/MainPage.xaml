@@ -17,14 +17,14 @@
 
             <!-- Kolekcja zapisanych kart -->
             <CollectionView x:Name="CardsCollectionView"
-                            ItemsSource="{Binding Cards}"
-                            SelectionMode="None">
+                ItemsSource="{Binding Cards}"
+                SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
                             <Grid>
 
-                                <!-- Obsługa kliknięcia -->
+                                <!-- Obrazek karty i nazwa sklepu -->
                                 <Frame BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="OnCardTapped"/>
@@ -33,15 +33,30 @@
                                     <Grid>
                                         <Image Source="{Binding ImagePath}" HeightRequest="80" Aspect="AspectFill"/>
                                         <Label Text="{Binding StoreName}" 
-                                               FontSize="18"
-                                               TextColor="Black"
-                                               VerticalOptions="End"
-                                               BackgroundColor="White"
-                                               Padding="5"
-                                               Opacity="0.8"/>
+                                   FontSize="18"
+                                   TextColor="Black"
+                                   VerticalOptions="End"
+                                   BackgroundColor="White"
+                                   Padding="5"
+                                   Opacity="0.8"/>
                                     </Grid>
-
                                 </Frame>
+
+                                <!-- Przycisk "X" do usunięcia -->
+                                <Button Text="X"
+                            FontSize="16"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            CornerRadius="10"
+                            Padding="5"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            Clicked="OnDeleteCardClicked">
+                                    <Button.BindingContext>
+                                        <Binding Path="." />
+                                    </Button.BindingContext>
+                                </Button>
+
                             </Grid>
                         </Frame>
                     </DataTemplate>
