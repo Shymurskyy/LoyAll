@@ -27,11 +27,10 @@ namespace LoyAll.Views
                 CardImage.Source = ImageSource.FromStream(() => stream);
                 selectedImagePath = result.FullPath;
 
-                // Dekoduj kod QR/kreskowy z wybranego obrazu
                 string barcodeValue = await DecodeBarcodeFromImage(stream);
                 if (!string.IsNullOrEmpty(barcodeValue))
                 {
-                    BarcodeEntry.Text = barcodeValue; // Wyœwietl wartoœæ kodu w polu Entry
+                    BarcodeEntry.Text = barcodeValue; 
                 }
                 else
                 {
@@ -44,16 +43,27 @@ namespace LoyAll.Views
         {
             try
             {
-                // Utwórz dekoder
-                var barcodeReader = new BarcodeReader();
+                var barcodeReader = new BarcodeReader()
+                {
+                    Options = new ZXing.Common.DecodingOptions()
+                    {
+                        TryHarder = true,
+                        PossibleFormats = new List<ZXing.BarcodeFormat>()
+                        {
+                        ZXing.BarcodeFormat.QR_CODE,
+                        ZXing.BarcodeFormat.CODE_128,
+                        ZXing.BarcodeFormat.CODE_39,
+                        ZXing.BarcodeFormat.EAN_13,
+                        ZXing.BarcodeFormat.UPC_A
+                        }
+                    }
+                };
 
-                // Przekonwertuj strumieñ na SKBitmap
                 using (var memoryStream = new MemoryStream())
                 {
                     await imageStream.CopyToAsync(memoryStream);
                     memoryStream.Position = 0;
 
-                    // Wczytaj obraz jako SKBitmap
                     using (var skBitmap = SKBitmap.Decode(memoryStream))
                     {
                         if (skBitmap == null)
@@ -62,9 +72,8 @@ namespace LoyAll.Views
                             return null;
                         }
 
-                        // Dekoduj obraz
                         var barcodeResult = barcodeReader.Decode(skBitmap);
-                        return barcodeResult?.Text; // Zwróæ wartoœæ kodu
+                        return barcodeResult?.Text; 
                     }
                 }
             }
@@ -100,7 +109,6 @@ namespace LoyAll.Views
             if (firstBarcode != null)
             {
                 string barcodeValue = firstBarcode.Value;
-                // Przypisz wartoœæ kodu do pola Entry
                 BarcodeEntry.Text = barcodeValue;
             }
         }
