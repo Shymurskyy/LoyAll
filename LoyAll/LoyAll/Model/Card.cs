@@ -9,6 +9,6 @@ namespace LoyAll.Model
     public class Card
     {
         public string StoreName { get; set; }
-        public string ImagePath { get; set; }
+        public string CardValue { get; set; }
     }
 }

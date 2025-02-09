@@ -1,5 +1,9 @@
 using LoyAll.Model;
 using LoyAll.Services;
+using ZXing;
+using ZXing.Net.Maui;
+using ZXing.SkiaSharp;
+using SkiaSharp;
 
 namespace LoyAll.Views
 {
@@ -22,6 +26,61 @@ namespace LoyAll.Views
                 Stream stream = await result.OpenReadAsync();
                 CardImage.Source = ImageSource.FromStream(() => stream);
                 selectedImagePath = result.FullPath;
+
+                string barcodeValue = await DecodeBarcodeFromImage(stream);
+                if (!string.IsNullOrEmpty(barcodeValue))
+                {
+                    BarcodeEntry.Text = barcodeValue; 
+                }
+                else
+                {
+                    await DisplayAlert("B³¹d", "Nie znaleziono kodu QR/kreskowego na obrazie.", "OK");
+                }
+            }
+        }
+
+        private async Task<string> DecodeBarcodeFromImage(Stream imageStream)
+        {
+            try
+            {
+                var barcodeReader = new BarcodeReader()
+                {
+                    Options = new ZXing.Common.DecodingOptions()
+                    {
+                        TryHarder = true,
+                        PossibleFormats = new List<ZXing.BarcodeFormat>()
+                        {
+                        ZXing.BarcodeFormat.QR_CODE,
+                        ZXing.BarcodeFormat.CODE_128,
+                        ZXing.BarcodeFormat.CODE_39,
+                        ZXing.BarcodeFormat.EAN_13,
+                        ZXing.BarcodeFormat.UPC_A
+                        }
+                    }
+                };
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imageStream.CopyToAsync(memoryStream);
+                    memoryStream.Position = 0;
+
+                    using (var skBitmap = SKBitmap.Decode(memoryStream))
+                    {
+                        if (skBitmap == null)
+                        {
+                            await DisplayAlert("B³¹d", "Nie uda³o siê wczytaæ obrazu.", "OK");
+                            return null;
+                        }
+
+                        var barcodeResult = barcodeReader.Decode(skBitmap);
+                        return barcodeResult?.Text; 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu: {ex.Message}", "OK");
+                return null;
             }
         }
 
@@ -32,17 +91,32 @@ namespace LoyAll.Views
                 await DisplayAlert("B³¹d", "Podaj nazwê i wybierz obrazek!", "OK");
                 return;
             }
-            
+
             Card card = new Card
             {
                 StoreName = StoreNameEntry.Text,
-                ImagePath = selectedImagePath
+                CardValue = BarcodeEntry.Text
             };
 
             CardStorageService.SaveCard(card);
             mainPage.AddCard(card);
             await Navigation.PopAsync();
+        }
 
+        private void OnBarcodesDetected(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
+        {
+            var firstBarcode = e.Results.FirstOrDefault();
+            if (firstBarcode != null)
+            {
+                string barcodeValue = firstBarcode.Value;
+                BarcodeEntry.Text = barcodeValue;
+            }
+        }
+
+        private void OnScanBarcodeClicked(object sender, EventArgs e)
+        {
+            barcodeReader.IsVisible = true;
+            barcodeReader.IsDetecting = true;
         }
     }
 }
