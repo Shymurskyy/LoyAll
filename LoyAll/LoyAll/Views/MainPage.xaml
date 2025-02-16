@@ -9,6 +9,7 @@
     <!-- Przycisk "+" w górnym pasku -->
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="+" Clicked="OnAddCardClicked"/>
+        <ToolbarItem Text="📤" Clicked="OnShareCardsClicked"/>
     </ContentPage.ToolbarItems>
 
     <!-- Dodanie ScrollView, aby umożliwić przewijanie -->
