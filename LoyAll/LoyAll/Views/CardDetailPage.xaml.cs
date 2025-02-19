@@ -1,3 +1,4 @@
+using LoyAll.Helper;
 using LoyAll.Model;
 using QRCoder;
 using SkiaSharp;
@@ -18,7 +19,7 @@ namespace LoyAll
             StoreNameLabel.Text = _card.StoreName;
             CardImage.Source = ImageSource.FromFile(_card.CardValue);
 
-            CodeImage.Source = GenerateQrCode(_card.CardValue);
+            CodeImage.Source = CodeGeneratorHelper.GenerateQrCode(_card.CardValue);
         }
 
         private void OnBarcodeSwitchToggled(object sender, ToggledEventArgs e)
@@ -27,52 +28,13 @@ namespace LoyAll
             {
                 CodeImage.WidthRequest = 400; 
                 CodeImage.HeightRequest = 400;
-                CodeImage.Source = GenerateBarcode(_card.CardValue);
+                CodeImage.Source = CodeGeneratorHelper.GenerateBarcode(_card.CardValue);
             }
             else
             {
                 CodeImage.WidthRequest = 200;
                 CodeImage.HeightRequest = 200;
-                CodeImage.Source = GenerateQrCode(_card.CardValue);
-            }
-        }
-
-        public static ImageSource GenerateQrCode(string value, int size = 200)
-        {
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(value, QRCodeGenerator.ECCLevel.L);
-            BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData);
-            byte[] qrCodeImage = qrCode.GetGraphic(10);
-
-            using (SKBitmap skBitmap = SKBitmap.Decode(qrCodeImage))
-            using (SKImage skImage = SKImage.FromBitmap(skBitmap))
-            using (SKData data = skImage.Encode(SKEncodedImageFormat.Png, 100))
-            {
-                MemoryStream stream = new MemoryStream(data.ToArray());
-                return ImageSource.FromStream(() => stream);
-            }
-        }
-
-        public static ImageSource GenerateBarcode(string value)
-        {
-            var writer = new BarcodeWriter
-            {
-                Format = BarcodeFormat.CODE_128,
-                Options = new ZXing.Common.EncodingOptions
-                {
-                    Width = 1600,
-                    Height = 400,
-                    Margin = 40
-                }
-            };
-
-            var bitmap = writer.Write(value);
-
-            using (var image = SKImage.FromBitmap(bitmap))
-            using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
-            {
-                MemoryStream stream = new MemoryStream(data.ToArray());
-                return ImageSource.FromStream(() => stream);
+                CodeImage.Source = CodeGeneratorHelper.GenerateQrCode(_card.CardValue);
             }
         }
 

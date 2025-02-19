@@ -118,24 +118,34 @@ namespace LoyAll.Views
         }
         private async void OnImportSharedCardClicked(object sender, EventArgs e)
         {
-            FileResult? result = await MediaPicker.PickPhotoAsync();
-            if (result != null)
+            try
             {
-                Stream stream = await result.OpenReadAsync();
-                string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream));
-                var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
-                var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
 
-                if (importedCards != null)
+
+                FileResult? result = await MediaPicker.PickPhotoAsync();
+                if (result != null)
                 {
-                    foreach (var item in importedCards)
+                    Stream stream = await result.OpenReadAsync();
+                    string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream));
+                    var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
+                    var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
+
+                    if (importedCards != null)
                     {
-                        CardStorageService.SaveCard(item);
-                        mainPage.AddCard(item);
+                        foreach (var item in importedCards)
+                        {
+                            CardStorageService.SaveCard(item);
+                            mainPage.AddCard(item);
+                        }
                     }
                 }
+                await Navigation.PopAsync();
             }
-            await Navigation.PopAsync();
+            catch (Exception ex)
+            {
+                await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu: {ex.Message}", "OK");
+                return;
+            }
         }
 
         private void OnScanBarcodeClicked(object sender, EventArgs e)
