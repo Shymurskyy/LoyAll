@@ -1,9 +1,13 @@
 using LoyAll.Model;
 using LoyAll.Services;
+using LZStringCSharp;
+using Newtonsoft.Json;
+using SkiaSharp;
+using System.IO;
+using System.Text.Json.Serialization;
 using ZXing;
 using ZXing.Net.Maui;
 using ZXing.SkiaSharp;
-using SkiaSharp;
 
 namespace LoyAll.Views
 {
@@ -30,7 +34,7 @@ namespace LoyAll.Views
                 string barcodeValue = await DecodeBarcodeFromImage(stream);
                 if (!string.IsNullOrEmpty(barcodeValue))
                 {
-                    BarcodeEntry.Text = barcodeValue; 
+                    BarcodeEntry.Text = barcodeValue;
                 }
                 else
                 {
@@ -43,7 +47,7 @@ namespace LoyAll.Views
         {
             try
             {
-                var barcodeReader = new BarcodeReader()
+                BarcodeReader barcodeReader = new BarcodeReader()
                 {
                     Options = new ZXing.Common.DecodingOptions()
                     {
@@ -59,12 +63,12 @@ namespace LoyAll.Views
                     }
                 };
 
-                using (var memoryStream = new MemoryStream())
+                using (MemoryStream memoryStream = new MemoryStream())
                 {
                     await imageStream.CopyToAsync(memoryStream);
                     memoryStream.Position = 0;
 
-                    using (var skBitmap = SKBitmap.Decode(memoryStream))
+                    using (SKBitmap skBitmap = SKBitmap.Decode(memoryStream))
                     {
                         if (skBitmap == null)
                         {
@@ -72,8 +76,8 @@ namespace LoyAll.Views
                             return null;
                         }
 
-                        var barcodeResult = barcodeReader.Decode(skBitmap);
-                        return barcodeResult?.Text; 
+                        Result barcodeResult = barcodeReader.Decode(skBitmap);
+                        return barcodeResult?.Text;
                     }
                 }
             }
@@ -105,12 +109,33 @@ namespace LoyAll.Views
 
         private void OnBarcodesDetected(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
         {
-            var firstBarcode = e.Results.FirstOrDefault();
+            BarcodeResult? firstBarcode = e.Results.FirstOrDefault();
             if (firstBarcode != null)
             {
                 string barcodeValue = firstBarcode.Value;
                 BarcodeEntry.Text = barcodeValue;
             }
+        }
+        private async void OnImportSharedCardClicked(object sender, EventArgs e)
+        {
+            FileResult? result = await MediaPicker.PickPhotoAsync();
+            if (result != null)
+            {
+                Stream stream = await result.OpenReadAsync();
+                string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream));
+                var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
+                var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
+
+                if (importedCards != null)
+                {
+                    foreach (var item in importedCards)
+                    {
+                        CardStorageService.SaveCard(item);
+                        mainPage.AddCard(item);
+                    }
+                }
+            }
+            await Navigation.PopAsync();
         }
 
         private void OnScanBarcodeClicked(object sender, EventArgs e)

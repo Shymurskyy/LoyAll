@@ -18,7 +18,6 @@ namespace LoyAll
             StoreNameLabel.Text = _card.StoreName;
             CardImage.Source = ImageSource.FromFile(_card.CardValue);
 
-            // Domyœlnie pokazujemy QR Code
             CodeImage.Source = GenerateQrCode(_card.CardValue);
         }
 
@@ -26,15 +25,15 @@ namespace LoyAll
         {
             if (e.Value)
             {
-                CodeImage.Source = GenerateBarcode(_card.CardValue);
                 CodeImage.WidthRequest = 400; 
                 CodeImage.HeightRequest = 400;
+                CodeImage.Source = GenerateBarcode(_card.CardValue);
             }
             else
             {
-                CodeImage.Source = GenerateQrCode(_card.CardValue);
                 CodeImage.WidthRequest = 200;
                 CodeImage.HeightRequest = 200;
+                CodeImage.Source = GenerateQrCode(_card.CardValue);
             }
         }
 

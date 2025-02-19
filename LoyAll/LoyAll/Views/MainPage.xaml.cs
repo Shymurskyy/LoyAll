@@ -5,6 +5,8 @@ using LoyAll.Services;
 using LoyAll.Model;
 using LoyAll.Views;
 using System.Collections.ObjectModel;
+using System.Text.Json;
+using LZStringCSharp;
 
 namespace LoyAll
 {
@@ -51,6 +53,20 @@ namespace LoyAll
                     Cards.Remove(cardToRemove);
                     CardStorageService.DeleteCard(cardToRemove);
                 }
+            }
+        }
+        private async void OnShareCardsClicked(object sender, EventArgs e)
+        {
+            if (Cards.Any())
+            {
+                var minimalCards = Cards.Select(c => new { n = c.StoreName, k = c.CardValue });
+                string json = JsonSerializer.Serialize(minimalCards);
+                string compressedData = LZString.CompressToEncodedURIComponent(json);
+                await Navigation.PushAsync(new ShareCardPage(compressedData));
+            }
+            else
+            {
+                await DisplayAlert("Brak kart", "Nie masz zapisanych kart do udostępnienia.", "OK");
             }
         }
 

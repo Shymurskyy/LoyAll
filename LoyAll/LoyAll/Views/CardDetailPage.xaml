@@ -4,7 +4,6 @@
              x:Class="LoyAll.CardDetailPage"
              Title="Szczegóły karty">
     <StackLayout Padding="20">
-        <!-- Przełącznik QR / Barcode -->
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
             <Label Text="QR" VerticalOptions="Center"/>
             <Switch x:Name="BarcodeSwitch" Toggled="OnBarcodeSwitchToggled"/>
@@ -22,7 +21,6 @@
            HorizontalOptions="Center"
            TextColor="Black"/>
 
-        <!-- Obraz QR lub Barcode -->
         <Image x:Name="CodeImage" 
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand"/>
