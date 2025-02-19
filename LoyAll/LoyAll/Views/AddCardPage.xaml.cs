@@ -1,6 +1,10 @@
 using LoyAll.Model;
 using LoyAll.Services;
+using LZStringCSharp;
+using Newtonsoft.Json;
 using SkiaSharp;
+using System.IO;
+using System.Text.Json.Serialization;
 using ZXing;
 using ZXing.Net.Maui;
 using ZXing.SkiaSharp;
@@ -111,6 +115,27 @@ namespace LoyAll.Views
                 string barcodeValue = firstBarcode.Value;
                 BarcodeEntry.Text = barcodeValue;
             }
+        }
+        private async void OnImportSharedCardClicked(object sender, EventArgs e)
+        {
+            FileResult? result = await MediaPicker.PickPhotoAsync();
+            if (result != null)
+            {
+                Stream stream = await result.OpenReadAsync();
+                string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream));
+                var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
+                var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
+
+                if (importedCards != null)
+                {
+                    foreach (var item in importedCards)
+                    {
+                        CardStorageService.SaveCard(item);
+                        mainPage.AddCard(item);
+                    }
+                }
+            }
+            await Navigation.PopAsync();
         }
 
         private void OnScanBarcodeClicked(object sender, EventArgs e)

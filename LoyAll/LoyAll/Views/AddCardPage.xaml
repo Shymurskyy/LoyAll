@@ -19,7 +19,7 @@
         <Button Text="Wybierz zdjęcie"
                 FontSize="18"
                 Clicked="OnPickImageClicked"
-                BackgroundColor="Blue"
+                BackgroundColor="Black"
                 TextColor="White"/>
 
         <!-- Podgląd wybranego zdjęcia -->
@@ -32,15 +32,15 @@
         <Entry x:Name="BarcodeEntry"
                Placeholder="Zeskanowany kod"
                FontSize="18"
-               TextColor="Black"
-               BackgroundColor="LightGray"
+               TextColor="White"
+               BackgroundColor="Black"
                IsReadOnly="True"/>
 
         <!-- Przycisk do uruchomienia skanera kodów -->
         <Button Text="Skanuj kod QR/kreskowy"
                 FontSize="18"
                 Clicked="OnScanBarcodeClicked"
-                BackgroundColor="Orange"
+                BackgroundColor="Black"
                 TextColor="White"/>
 
         <!-- Skaner kodów QR/kreskowych -->
@@ -60,7 +60,12 @@
                 Clicked="OnSaveCardClicked"
                 BackgroundColor="Green"
                 TextColor="White"/>
-
+        
+        <Button Text="Importuj karty znajomych"
+                FontSize="18"
+                Clicked="OnImportSharedCardClicked"
+                BackgroundColor="Black"
+                TextColor="White"/>
     </VerticalStackLayout>
 
 </ContentPage>
