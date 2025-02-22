@@ -7,6 +7,7 @@ using LoyAll.Views;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using LZStringCSharp;
+using CommunityToolkit.Maui.Views;
 
 namespace LoyAll
 {
@@ -57,18 +58,25 @@ namespace LoyAll
         }
         private async void OnShareCardsClicked(object sender, EventArgs e)
         {
-            if (Cards.Any())
-            {
-                var minimalCards = Cards.Select(c => new { n = c.StoreName, k = c.CardValue });
-                string json = JsonSerializer.Serialize(minimalCards);
-                string compressedData = LZString.CompressToEncodedURIComponent(json);
-                await Navigation.PushAsync(new ShareCardPage(compressedData));
-            }
-            else
+            if (!Cards.Any())
             {
                 await DisplayAlert("Brak kart", "Nie masz zapisanych kart do udostępnienia.", "OK");
+                return;
             }
+
+            var popup = new SelectCardsPopup(Cards);
+            var selectedCards = await this.ShowPopupAsync(popup) as List<Card>;
+
+            if (selectedCards == null || !selectedCards.Any())
+                return; 
+
+            var minimalCards = selectedCards.Select(c => new { n = c.StoreName, k = c.CardValue });
+            string json = JsonSerializer.Serialize(minimalCards);
+            string compressedData = LZString.CompressToEncodedURIComponent(json);
+
+            await Navigation.PushAsync(new ShareCardPage(compressedData));
         }
+
 
     }
 }

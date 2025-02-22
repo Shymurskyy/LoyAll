@@ -12,11 +12,9 @@
         <ToolbarItem Text="📤" Clicked="OnShareCardsClicked"/>
     </ContentPage.ToolbarItems>
 
-    <!-- Dodanie ScrollView, aby umożliwić przewijanie -->
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
 
-            <!-- Kolekcja zapisanych kart -->
             <CollectionView x:Name="CardsCollectionView"
                 ItemsSource="{Binding Cards}"
                 SelectionMode="None">
@@ -25,7 +23,6 @@
                         <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
                             <Grid>
 
-                                <!-- Obrazek karty i nazwa sklepu -->
                                 <Frame BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="OnCardTapped"/>
@@ -43,7 +40,6 @@
                                     </Grid>
                                 </Frame>
 
-                                <!-- Przycisk "X" do usunięcia -->
                                 <Button Text="X"
                             FontSize="16"
                             BackgroundColor="Red"

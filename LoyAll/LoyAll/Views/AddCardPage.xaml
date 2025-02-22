@@ -7,7 +7,6 @@
 
     <VerticalStackLayout Spacing="20">
 
-        <!-- Pole do wpisania nazwy karty -->
         <Entry x:Name="StoreNameEntry"
                Placeholder="Nazwa sklepu (np. Lidl, Kaufland)"
                FontSize="18"
@@ -15,20 +14,17 @@
                BackgroundColor="LightGray"
               />
 
-        <!-- Przycisk wyboru zdjęcia -->
         <Button Text="Wybierz zdjęcie"
                 FontSize="18"
                 Clicked="OnPickImageClicked"
                 BackgroundColor="Black"
                 TextColor="White"/>
 
-        <!-- Podgląd wybranego zdjęcia -->
         <Image x:Name="CardImage"
                HeightRequest="200"
                Aspect="AspectFit"
                IsVisible="False"/>
 
-        <!-- Pole do wyświetlenia zeskanowanego kodu -->
         <Entry x:Name="BarcodeEntry"
                Placeholder="Zeskanowany kod"
                FontSize="18"
@@ -36,14 +32,12 @@
                BackgroundColor="Black"
                IsReadOnly="True"/>
 
-        <!-- Przycisk do uruchomienia skanera kodów -->
         <Button Text="Skanuj kod QR/kreskowy"
                 FontSize="18"
                 Clicked="OnScanBarcodeClicked"
                 BackgroundColor="Black"
                 TextColor="White"/>
 
-        <!-- Skaner kodów QR/kreskowych -->
         <zxing:CameraBarcodeReaderView
             x:Name="barcodeReader"
             BarcodesDetected="OnBarcodesDetected"
@@ -54,7 +48,6 @@
             HorizontalOptions="Center"
             VerticalOptions="Center"/>
 
-        <!-- Przycisk zapisu karty -->
         <Button Text="Zapisz kartę"
                 FontSize="18"
                 Clicked="OnSaveCardClicked"

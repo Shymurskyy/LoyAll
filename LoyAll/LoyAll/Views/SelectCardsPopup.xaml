@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="LoyAll.Views.SelectCardsPopup">
+
+    <VerticalStackLayout Padding="20">
+        <Label Text="Wybierz karty do udostępnienia" FontSize="18" />
+
+        <Button Text="Wybierz wszystkie" Clicked="OnSelectAllClicked" />
+
+        <CollectionView ItemsSource="{Binding SelectableCards}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding IsSelected}" />
+                        <Label Text="{Binding Card.StoreName}" VerticalOptions="Center"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Udostępnij" Clicked="OnShareClicked" />
+        <Button Text="Anuluj" Clicked="OnCancelClicked" />
+    </VerticalStackLayout>
+</toolkit:Popup>

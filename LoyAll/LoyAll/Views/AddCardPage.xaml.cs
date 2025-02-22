@@ -120,33 +120,63 @@ namespace LoyAll.Views
         {
             try
             {
+                var action = await DisplayActionSheet("Wybierz sposób importu", "Anuluj", null, "Import z obrazu", "Import z tekstu");
 
-
-                FileResult? result = await MediaPicker.PickPhotoAsync();
-                if (result != null)
+                if (action == "Import z obrazu")
                 {
-                    Stream stream = await result.OpenReadAsync();
-                    string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream));
-                    var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
-                    var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
-
-                    if (importedCards != null)
+                    FileResult? result = await MediaPicker.PickPhotoAsync();
+                    if (result != null)
                     {
-                        foreach (var item in importedCards)
+                        Stream stream = await result.OpenReadAsync();
+                        string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream));
+                        var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
+                        var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
+
+                        if (importedCards != null)
                         {
-                            CardStorageService.SaveCard(item);
-                            mainPage.AddCard(item);
+                            foreach (var item in importedCards)
+                            {
+                                CardStorageService.SaveCard(item);
+                                mainPage.AddCard(item);
+                            }
                         }
                     }
                 }
+                else if (action == "Import z tekstu")
+                {
+                    string inputText = await DisplayPromptAsync("Import z tekstu", "Wklej zakodowan¹ wiadomoœæ:");
+                    if (!string.IsNullOrWhiteSpace(inputText))
+                    {
+                        try
+                        {
+                            string decodedValue = LZString.DecompressFromEncodedURIComponent(inputText);
+                            var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
+                            var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
+
+                            if (importedCards != null)
+                            {
+                                foreach (var item in importedCards)
+                                {
+                                    CardStorageService.SaveCard(item);
+                                    mainPage.AddCard(item);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ wiadomoœci: {ex.Message}", "OK");
+                        }
+                    }
+                }
+
                 await Navigation.PopAsync();
             }
             catch (Exception ex)
             {
                 await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu: {ex.Message}", "OK");
-                return;
             }
         }
+
 
         private void OnScanBarcodeClicked(object sender, EventArgs e)
         {

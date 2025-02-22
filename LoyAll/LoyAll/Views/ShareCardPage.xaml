@@ -6,16 +6,13 @@
 
     <StackLayout Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
 
-        <!-- QR Code Image -->
         <Image x:Name="QrCodeImage" WidthRequest="250" HeightRequest="250" />
 
-        <!-- Label below QR Code -->
         <Label Text="QR code too big? Copy this text!" 
                FontSize="16"
                HorizontalOptions="Center"
                Margin="10,5,10,5"/>
 
-        <!-- Clickable Label for Copying Data -->
         <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
             <Label x:Name="CompressedDataLabel"
                    Text="Compressed Data Here"
