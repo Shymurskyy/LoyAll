@@ -6,7 +6,6 @@
              BackgroundColor="White"
              Padding="20">
 
-    <!-- Przycisk "+" w górnym pasku -->
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="+" Clicked="OnAddCardClicked"/>
         <ToolbarItem Text="📤" Clicked="OnShareCardsClicked"/>
@@ -14,9 +13,17 @@
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
-
+            <Frame BackgroundColor="LightGray"
+                   CornerRadius="20"
+                   Padding="5">
+                <Entry x:Name="SearchBar"
+                       Placeholder="Szukaj kart..."
+                       TextChanged="OnSearchTextChanged"
+                       BackgroundColor="Transparent"/>
+            </Frame>
+            
             <CollectionView x:Name="CardsCollectionView"
-                ItemsSource="{Binding Cards}"
+                ItemsSource="{Binding FilteredCards}"
                 SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

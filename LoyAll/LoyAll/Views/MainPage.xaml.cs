@@ -14,22 +14,42 @@ namespace LoyAll
     public partial class MainPage : ContentPage
     {
         public ObservableCollection<Card> Cards { get; set; }
+        public ObservableCollection<Card> FilteredCards { get; set; }
         public MainPage()
         {
             InitializeComponent();
             LoadCards();
+            FilteredCards = new ObservableCollection<Card>(Cards);
             BindingContext = this;
         }
 
         public void LoadCards()
         {
             var cards = CardStorageService.GetCards();
-            Cards = new ObservableCollection<Card>(cards); 
+            Cards = new ObservableCollection<Card>(cards);
+            FilterCards("");
         }
-
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterCards(e.NewTextValue);
+        }
+        private void FilterCards(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                FilteredCards = new ObservableCollection<Card>(Cards);
+            }
+            else
+            {
+                var filtered = Cards.Where(c => c.StoreName.ToLower().Contains(searchText.ToLower())).ToList();
+                FilteredCards = new ObservableCollection<Card>(filtered);
+            }
+            CardsCollectionView.ItemsSource = FilteredCards;
+        }
         public void AddCard(Card newCard)
         {
-            Cards.Insert(0, newCard); 
+            Cards.Insert(0, newCard);
+            FilterCards(SearchBar.Text);
         }
 
         private async void OnAddCardClicked(object sender, EventArgs e)
@@ -53,6 +73,7 @@ namespace LoyAll
                 {
                     Cards.Remove(cardToRemove);
                     CardStorageService.DeleteCard(cardToRemove);
+                    FilterCards(SearchBar.Text);
                 }
             }
         }
