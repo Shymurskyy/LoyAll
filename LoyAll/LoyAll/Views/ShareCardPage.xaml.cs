@@ -1,19 +1,26 @@
+using Microsoft.Maui.Controls;
 using LoyAll.Helper;
-using QRCoder;
-using SkiaSharp;
+using System;
 
-public class ShareCardPage : ContentPage
+namespace LoyAll.Views
 {
-    public ShareCardPage(string compressedData)
+    public partial class ShareCardPage : ContentPage
     {
-        Title = "Udostêpnij swoje karty";
-        var qrImage = new Image { Source = CodeGeneratorHelper.GenerateQrCode(compressedData), WidthRequest = 200, HeightRequest = 200 };
-        Content = new StackLayout
+        private string _compressedData;
+
+        public ShareCardPage(string compressedData)
         {
-            Padding = 20,
-            VerticalOptions = LayoutOptions.Center,
-            HorizontalOptions = LayoutOptions.Center,
-            Children = { qrImage }
-        };
+            InitializeComponent();
+            _compressedData = compressedData;
+
+            QrCodeImage.Source = CodeGeneratorHelper.GenerateQrCode(compressedData);
+            CompressedDataLabel.Text = compressedData;
+        }
+
+        private async void OnCompressedDataTapped(object sender, EventArgs e)
+        {
+            await Clipboard.SetTextAsync(_compressedData);
+            await DisplayAlert("Copied", "Compressed data copied to clipboard!", "OK");
+        }
     }
 }

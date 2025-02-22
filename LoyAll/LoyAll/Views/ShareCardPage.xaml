@@ -3,16 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="LoyAll.Views.ShareCardPage"
              Title="Udostępnianie karty">
-    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-        <Label Text="Zeskanuj kod QR, aby dodać karty" 
-               FontSize="18" 
-               HorizontalOptions="Center" 
-               Margin="0,0,0,20"/>
+
+    <StackLayout Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
 
         <Image x:Name="QrCodeImage" WidthRequest="250" HeightRequest="250" />
 
-        
+        <Label Text="QR code too big? Copy this text!" 
+               FontSize="16"
+               HorizontalOptions="Center"
+               Margin="10,5,10,5"/>
+
+        <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
+            <Label x:Name="CompressedDataLabel"
+                   Text="Compressed Data Here"
+                   TextColor="Black"
+                   FontSize="14"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   Padding="10">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnCompressedDataTapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </Frame>
+
     </StackLayout>
 
 </ContentPage>
-
