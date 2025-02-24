@@ -32,9 +32,12 @@ namespace LoyAll.Views
                 selectedImagePath = result.FullPath;
 
                 string barcodeValue = await DecodeBarcodeFromImage(stream);
-                if (!string.IsNullOrEmpty(barcodeValue))
+                if (!string.IsNullOrEmpty(barcodeValue) )
                 {
-                    BarcodeEntry.Text = barcodeValue;
+                    if (barcodeValue.StartsWith("Q:#") || barcodeValue.StartsWith("B:#"))
+                        BarcodeEntry.Text = barcodeValue; 
+                    else
+                        BarcodeEntry.Text = "Nieobs³ugiwany kod";
                 }
                 else
                 {
@@ -43,7 +46,7 @@ namespace LoyAll.Views
             }
         }
 
-        private async Task<string> DecodeBarcodeFromImage(Stream imageStream)
+        private async Task<string> DecodeBarcodeFromImage(Stream imageStream, bool isImportShare = false)
         {
             try
             {
@@ -53,13 +56,13 @@ namespace LoyAll.Views
                     {
                         TryHarder = true,
                         PossibleFormats = new List<ZXing.BarcodeFormat>()
-                        {
-                        ZXing.BarcodeFormat.QR_CODE,
-                        ZXing.BarcodeFormat.CODE_128,
-                        ZXing.BarcodeFormat.CODE_39,
-                        ZXing.BarcodeFormat.EAN_13,
-                        ZXing.BarcodeFormat.UPC_A
-                        }
+                {
+                    ZXing.BarcodeFormat.QR_CODE,
+                    ZXing.BarcodeFormat.CODE_128,
+                    ZXing.BarcodeFormat.CODE_39,
+                    ZXing.BarcodeFormat.EAN_13,
+                    ZXing.BarcodeFormat.UPC_A
+                }
                     }
                 };
 
@@ -77,7 +80,23 @@ namespace LoyAll.Views
                         }
 
                         Result barcodeResult = barcodeReader.Decode(skBitmap);
-                        return barcodeResult?.Text;
+
+                        if (barcodeResult != null)
+                        {
+                            if (barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.QR_CODE)
+                            {
+                                return isImportShare? barcodeResult.Text : "Q:#" + barcodeResult.Text; 
+                            }
+                            else if (barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.CODE_128 ||
+                                     barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.CODE_39 ||
+                                     barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.EAN_13 ||
+                                     barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.UPC_A)
+                            {
+                                return isImportShare ? barcodeResult.Text : "B:#" + barcodeResult.Text;
+                            }
+                        }
+
+                        return null;
                     }
                 }
             }
@@ -128,7 +147,7 @@ namespace LoyAll.Views
                     if (result != null)
                     {
                         Stream stream = await result.OpenReadAsync();
-                        string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream));
+                        string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream, true));
                         var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
                         var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
 

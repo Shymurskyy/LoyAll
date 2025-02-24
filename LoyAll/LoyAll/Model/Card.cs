@@ -11,5 +11,14 @@ namespace LoyAll.Model
     {
         public string StoreName { get; set; }
         public string CardValue { get; set; }
+        public string CleanCardValue
+        {
+            get
+            {
+                if (CardValue.StartsWith("Q:#")|| CardValue.StartsWith("B:#"))
+                    return CardValue.Substring(3); 
+                return CardValue;
+            }
+        }
     }
 }
