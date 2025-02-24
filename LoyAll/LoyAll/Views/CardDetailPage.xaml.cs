@@ -19,7 +19,19 @@ namespace LoyAll
             StoreNameLabel.Text = _card.StoreName;
             CardImage.Source = ImageSource.FromFile(_card.CardValue);
 
-            CodeImage.Source = CodeGeneratorHelper.GenerateQrCode(_card.CardValue);
+            if (_card.CardValue.StartsWith("B:#"))
+            {
+                CodeImage.Source = CodeGeneratorHelper.GenerateBarcode(_card.CleanCardValue);
+                BarcodeSwitch.IsToggled = true; 
+            }
+            else
+            {
+                CodeImage.Source = CodeGeneratorHelper.GenerateQrCode(_card.CleanCardValue);
+                BarcodeSwitch.IsToggled = false; 
+            }
+
+            CardValueLabel.Text = _card.CardValue;
+            RealCardValueLabel.Text = _card.CleanCardValue;
         }
 
         private void OnBarcodeSwitchToggled(object sender, ToggledEventArgs e)
