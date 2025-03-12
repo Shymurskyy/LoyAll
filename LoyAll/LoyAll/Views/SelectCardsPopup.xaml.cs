@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.Maui.Controls;
 using LoyAll.Model;
 using LoyAll.Helper;
+using Plugin.MauiMTAdmob;
 
 namespace LoyAll.Views
 {
@@ -13,7 +14,7 @@ namespace LoyAll.Views
     {
         public ObservableCollection<CardSelection> SelectableCards { get; set; }
 
-        private bool _allSelected = false; 
+        private bool _allSelected = false;
 
         public SelectCardsPopup(IEnumerable<Card> cards)
         {
@@ -23,7 +24,7 @@ namespace LoyAll.Views
                 cards.Select(c => new CardSelection { Card = c, IsSelected = false })
             );
 
-            BindingContext = this; 
+            BindingContext = this;
         }
 
         private void OnSelectAllClicked(object sender, EventArgs e)
@@ -43,11 +44,14 @@ namespace LoyAll.Views
         private void OnShareClicked(object sender, EventArgs e)
         {
             var selectedCards = SelectableCards
-                .Where(c => c.IsSelected) 
+                .Where(c => c.IsSelected)
                 .Select(c => c.Card)
                 .ToList();
 
-            Close(selectedCards); 
+            if (AdService.IsRewardedAdLoaded())
+                AdService.ShowRewardedAd();
+
+            Close(selectedCards);
         }
     }
 }

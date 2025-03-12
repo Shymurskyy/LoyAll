@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              x:Class="LoyAll.Views.AddCardPage"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
              Title="New Page">
 
     <VerticalStackLayout Spacing="20">
@@ -59,6 +60,11 @@
                 Clicked="OnImportSharedCardClicked"
                 BackgroundColor="Black"
                 TextColor="White"/>
+        <controls:MTAdView 
+x:Name="AdmobBanner"
+AdsId="ca-app-pub-3940256099942544/6300978111"
+HeightRequest="50">
+        </controls:MTAdView>
     </VerticalStackLayout>
 
 </ContentPage>

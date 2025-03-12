@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Text.Json;
 using LZStringCSharp;
 using CommunityToolkit.Maui.Views;
+using Plugin.MauiMTAdmob;
+
 
 namespace LoyAll
 {
@@ -21,8 +23,13 @@ namespace LoyAll
             LoadCards();
             FilteredCards = new ObservableCollection<Card>(Cards);
             BindingContext = this;
-        }
+            var activity = Platform.CurrentActivity;
+            GpdrService.InitializeUmpSdk(activity);
 
+
+            AdService.LoadRewardedAd("ca-app-pub-3940256099942544/5224354917");
+        }
+        
         public void LoadCards()
         {
             var cards = CardStorageService.GetCards();
@@ -76,6 +83,10 @@ namespace LoyAll
                     FilterCards(SearchBar.Text);
                 }
             }
+        }
+        private async void OnSettingsClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new SettingsPage());
         }
         private async void OnShareCardsClicked(object sender, EventArgs e)
         {

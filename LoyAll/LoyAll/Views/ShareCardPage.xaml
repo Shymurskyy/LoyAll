@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="LoyAll.Views.ShareCardPage"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
              Title="Udostępnianie karty">
 
     <StackLayout Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
@@ -26,7 +27,11 @@
                 </Label.GestureRecognizers>
             </Label>
         </Frame>
-
+        <controls:MTAdView 
+x:Name="AdmobBanner"
+AdsId="ca-app-pub-3940256099942544/6300978111"
+HeightRequest="50">
+        </controls:MTAdView>
     </StackLayout>
 
 </ContentPage>
