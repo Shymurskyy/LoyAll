@@ -2,72 +2,81 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="LoyAll.MainPage"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
              Title="Twoje karty"
              BackgroundColor="White"
              Padding="20">
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="⚙️" Clicked="OnSettingsClicked" Order="Primary" Priority="0"/>
         <ToolbarItem Text="+" Clicked="OnAddCardClicked"/>
         <ToolbarItem Text="📤" Clicked="OnShareCardsClicked"/>
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
-        <StackLayout Padding="20" Spacing="20">
-            <Frame BackgroundColor="LightGray"
-                   CornerRadius="20"
-                   Padding="5">
-                <Entry x:Name="SearchBar"
-                       Placeholder="Szukaj kart..."
-                       TextChanged="OnSearchTextChanged"
-                       BackgroundColor="Transparent"/>
-            </Frame>
-            
-            <CollectionView x:Name="CardsCollectionView"
-                ItemsSource="{Binding FilteredCards}"
-                SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
-                            <Grid>
+    <Grid RowDefinitions="Auto, * , Auto">
+        <Frame BackgroundColor="LightGray"
+               CornerRadius="20"
+               Padding="5"
+               Grid.Row="0">
+            <Entry x:Name="SearchBar"
+                   Placeholder="Szukaj kart..."
+                   TextChanged="OnSearchTextChanged"
+                   BackgroundColor="Transparent"/>
+        </Frame>
 
-                                <Frame BackgroundColor="Transparent">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnCardTapped"/>
-                                    </Frame.GestureRecognizers>
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="20" Spacing="20">
+                <CollectionView x:Name="CardsCollectionView"
+                    ItemsSource="{Binding FilteredCards}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                                <Grid>
+                                    <Frame BackgroundColor="Transparent">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnCardTapped"/>
+                                        </Frame.GestureRecognizers>
 
-                                    <Grid>
-                                        <Image Source="{Binding ImagePath}" HeightRequest="80" Aspect="AspectFill"/>
-                                        <Label Text="{Binding StoreName}" 
-                                   FontSize="18"
-                                   TextColor="Black"
-                                   VerticalOptions="End"
-                                   BackgroundColor="White"
-                                   Padding="5"
-                                   Opacity="0.8"/>
-                                    </Grid>
-                                </Frame>
+                                        <Grid>
+                                            <Image Source="{Binding ImagePath}" HeightRequest="80" Aspect="AspectFill"/>
+                                            <Label Text="{Binding StoreName}" 
+                                                   FontSize="18"
+                                                   TextColor="Black"
+                                                   VerticalOptions="End"
+                                                   BackgroundColor="White"
+                                                   Padding="5"
+                                                   Opacity="0.8"/>
+                                        </Grid>
+                                    </Frame>
 
-                                <Button Text="X"
-                            FontSize="16"
-                            BackgroundColor="Red"
-                            TextColor="White"
-                            CornerRadius="10"
-                            Padding="5"
-                            HorizontalOptions="End"
-                            VerticalOptions="Start"
-                            Clicked="OnDeleteCardClicked">
-                                    <Button.BindingContext>
-                                        <Binding Path="." />
-                                    </Button.BindingContext>
-                                </Button>
+                                    <Button Text="X"
+                                        FontSize="16"
+                                        BackgroundColor="Red"
+                                        TextColor="White"
+                                        CornerRadius="10"
+                                        Padding="5"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        Clicked="OnDeleteCardClicked">
+                                        <Button.BindingContext>
+                                            <Binding Path="." />
+                                        </Button.BindingContext>
+                                    </Button>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
 
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-        </StackLayout>
-    </ScrollView>
-
+        <controls:MTAdView 
+            x:Name="AdmobBanner"
+            AdsId="ca-app-pub-3940256099942544/6300978111"
+            HeightRequest="50"
+            Grid.Row="2"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="End"/>
+    </Grid>
 </ContentPage>

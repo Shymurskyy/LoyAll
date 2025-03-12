@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Plugin.MauiMTAdmob;
 using ZXing.Net.Maui.Controls;
 namespace LoyAll
 {
@@ -12,6 +13,7 @@ namespace LoyAll
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseBarcodeReader()
+                .UseMauiMTAdmob()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
