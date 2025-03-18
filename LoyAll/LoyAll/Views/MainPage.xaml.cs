@@ -108,7 +108,11 @@ namespace LoyAll
 
             await Navigation.PushAsync(new ShareCardPage(compressedData));
         }
-
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            LoadCards(); 
+        }
 
     }
 }

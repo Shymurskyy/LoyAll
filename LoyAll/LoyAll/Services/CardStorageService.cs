@@ -40,6 +40,11 @@ namespace LoyAll.Services
                 File.WriteAllText(filePath, json);
             }
         }
-
+        public static void DeleteAllCards()
+        {
+            var emptyList = new List<Card>();
+            string json = JsonConvert.SerializeObject(emptyList);
+            File.WriteAllText(filePath, json);
+        }
     }
 }
