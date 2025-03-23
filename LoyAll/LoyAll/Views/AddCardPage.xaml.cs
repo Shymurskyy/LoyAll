@@ -1,3 +1,4 @@
+using LoyAll.Helper;
 using LoyAll.Model;
 using LoyAll.Services;
 using LZStringCSharp;
@@ -31,7 +32,7 @@ namespace LoyAll.Views
                 CardImage.Source = ImageSource.FromStream(() => stream);
                 selectedImagePath = result.FullPath;
 
-                string barcodeValue = await DecodeBarcodeFromImage(stream);
+                string barcodeValue = await BarcodeHelper.DecodeBarcodeFromImage(stream);
                 if (!string.IsNullOrEmpty(barcodeValue) )
                 {
                     if (barcodeValue.StartsWith("Q:#") || barcodeValue.StartsWith("B:#"))
@@ -43,67 +44,6 @@ namespace LoyAll.Views
                 {
                     await DisplayAlert("B³¹d", "Nie znaleziono kodu QR/kreskowego na obrazie.", "OK");
                 }
-            }
-        }
-
-        private async Task<string> DecodeBarcodeFromImage(Stream imageStream, bool isImportShare = false)
-        {
-            try
-            {
-                BarcodeReader barcodeReader = new BarcodeReader()
-                {
-                    Options = new ZXing.Common.DecodingOptions()
-                    {
-                        TryHarder = true,
-                        PossibleFormats = new List<ZXing.BarcodeFormat>()
-                {
-                    ZXing.BarcodeFormat.QR_CODE,
-                    ZXing.BarcodeFormat.CODE_128,
-                    ZXing.BarcodeFormat.CODE_39,
-                    ZXing.BarcodeFormat.EAN_13,
-                    ZXing.BarcodeFormat.UPC_A
-                }
-                    }
-                };
-
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    await imageStream.CopyToAsync(memoryStream);
-                    memoryStream.Position = 0;
-
-                    using (SKBitmap skBitmap = SKBitmap.Decode(memoryStream))
-                    {
-                        if (skBitmap == null)
-                        {
-                            await DisplayAlert("B³¹d", "Nie uda³o siê wczytaæ obrazu.", "OK");
-                            return null;
-                        }
-
-                        Result barcodeResult = barcodeReader.Decode(skBitmap);
-
-                        if (barcodeResult != null)
-                        {
-                            if (barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.QR_CODE)
-                            {
-                                return isImportShare? barcodeResult.Text : "Q:#" + barcodeResult.Text; 
-                            }
-                            else if (barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.CODE_128 ||
-                                     barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.CODE_39 ||
-                                     barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.EAN_13 ||
-                                     barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.UPC_A)
-                            {
-                                return isImportShare ? barcodeResult.Text : "B:#" + barcodeResult.Text;
-                            }
-                        }
-
-                        return null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu: {ex.Message}", "OK");
-                return null;
             }
         }
 
@@ -147,7 +87,7 @@ namespace LoyAll.Views
                     if (result != null)
                     {
                         Stream stream = await result.OpenReadAsync();
-                        string decodedValue = LZString.DecompressFromEncodedURIComponent(await DecodeBarcodeFromImage(stream, true));
+                        string decodedValue = LZString.DecompressFromEncodedURIComponent(await BarcodeHelper.DecodeBarcodeFromImage(stream, true));
                         var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
                         var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
 
@@ -197,10 +137,41 @@ namespace LoyAll.Views
         }
 
 
-        private void OnScanBarcodeClicked(object sender, EventArgs e)
+        private async void OnScanBarcodeClicked(object sender, EventArgs e)
         {
-            barcodeReader.IsVisible = true;
-            barcodeReader.IsDetecting = true;
+            try
+            {
+                var photo = await MediaPicker.CapturePhotoAsync();
+
+                if (photo != null)
+                {
+                    Stream photoStream = await photo.OpenReadAsync();
+
+                    string barcodeValue = await BarcodeHelper.DecodeBarcodeFromImage(photoStream);
+
+                    if (!string.IsNullOrEmpty(barcodeValue))
+                    {
+                        if (barcodeValue.StartsWith("Q:#") || barcodeValue.StartsWith("B:#"))
+                        {
+                            BarcodeEntry.Text = barcodeValue; 
+                        }
+                        else
+                        {
+                            BarcodeEntry.Text = "Nieobs³ugiwany kod"; 
+                        }
+                    }
+                    else
+                    {
+                        await DisplayAlert("B³¹d", "Nie znaleziono kodu QR/kreskowego na obrazie.", "OK");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu: {ex.Message}", "OK");
+            }
         }
+
+
     }
 }
