@@ -13,7 +13,7 @@ namespace LoyAll.Views
             InitializeComponent();
             _compressedData = compressedData;
 
-            QrCodeImage.Source = CodeGeneratorHelper.GenerateQrCode(compressedData);
+            QrCodeImage.Source = BarcodeHelper.GenerateQrCode(compressedData);
             CompressedDataLabel.Text = compressedData;
         }
 

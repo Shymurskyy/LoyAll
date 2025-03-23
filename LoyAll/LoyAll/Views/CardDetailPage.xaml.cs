@@ -21,12 +21,12 @@ namespace LoyAll
 
             if (_card.CardValue.StartsWith("B:#"))
             {
-                CodeImage.Source = CodeGeneratorHelper.GenerateBarcode(_card.CleanCardValue);
+                CodeImage.Source = BarcodeHelper.GenerateBarcode(_card.CleanCardValue);
                 BarcodeSwitch.IsToggled = true; 
             }
             else
             {
-                CodeImage.Source = CodeGeneratorHelper.GenerateQrCode(_card.CleanCardValue);
+                CodeImage.Source = BarcodeHelper.GenerateQrCode(_card.CleanCardValue);
                 BarcodeSwitch.IsToggled = false; 
             }
 
@@ -40,13 +40,13 @@ namespace LoyAll
             {
                 CodeImage.WidthRequest = 400; 
                 CodeImage.HeightRequest = 400;
-                CodeImage.Source = CodeGeneratorHelper.GenerateBarcode(_card.CardValue);
+                CodeImage.Source = BarcodeHelper.GenerateBarcode(_card.CardValue);
             }
             else
             {
                 CodeImage.WidthRequest = 200;
                 CodeImage.HeightRequest = 200;
-                CodeImage.Source = CodeGeneratorHelper.GenerateQrCode(_card.CardValue);
+                CodeImage.Source = BarcodeHelper.GenerateQrCode(_card.CardValue);
             }
         }
 
