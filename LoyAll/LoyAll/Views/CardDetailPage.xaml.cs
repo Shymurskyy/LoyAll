@@ -1,13 +1,10 @@
 using LoyAll.Helper;
 using LoyAll.Model;
-using QRCoder;
-using SkiaSharp;
-using ZXing;
-using ZXing.SkiaSharp;
+using The49.Maui.BottomSheet;
 
 namespace LoyAll
 {
-    public partial class CardDetailPage : ContentPage
+    public partial class CardDetailPage : BottomSheet
     {
         private readonly Card _card;
 
@@ -16,21 +13,27 @@ namespace LoyAll
             InitializeComponent();
             _card = card;
 
+            this.HasBackdrop = true;
+            this.BackgroundColor = Colors.White;
+            
+
             StoreNameLabel.Text = _card.StoreName;
-            CardImage.Source = ImageSource.FromFile(_card.CardValue);
 
             if (_card.CardValue.StartsWith("B:#"))
             {
                 CodeImage.Source = BarcodeHelper.GenerateBarcode(_card.CleanCardValue);
-                BarcodeSwitch.IsToggled = true; 
+                BarcodeSwitch.IsToggled = true;
+                CodeImage.WidthRequest = 400;
+                CodeImage.HeightRequest = 150;
             }
             else
             {
                 CodeImage.Source = BarcodeHelper.GenerateQrCode(_card.CleanCardValue);
-                BarcodeSwitch.IsToggled = false; 
+                BarcodeSwitch.IsToggled = false;
+                CodeImage.WidthRequest = 200;
+                CodeImage.HeightRequest = 200;
             }
 
-            CardValueLabel.Text = _card.CardValue;
             RealCardValueLabel.Text = _card.CleanCardValue;
         }
 
@@ -38,17 +41,18 @@ namespace LoyAll
         {
             if (e.Value)
             {
-                CodeImage.WidthRequest = 400; 
-                CodeImage.HeightRequest = 400;
-                CodeImage.Source = BarcodeHelper.GenerateBarcode(_card.CardValue);
+                CodeImage.WidthRequest = 400;
+                CodeImage.HeightRequest = 150;
+                CodeImage.Source = BarcodeHelper.GenerateBarcode(_card.CleanCardValue);
             }
             else
             {
                 CodeImage.WidthRequest = 200;
                 CodeImage.HeightRequest = 200;
-                CodeImage.Source = BarcodeHelper.GenerateQrCode(_card.CardValue);
+                CodeImage.Source = BarcodeHelper.GenerateQrCode(_card.CleanCardValue);
             }
+           
         }
-
+        
     }
 }

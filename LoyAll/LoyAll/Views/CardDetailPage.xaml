@@ -1,46 +1,67 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="LoyAll.CardDetailPage"
+<the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
-             Title="Szczegóły karty">
-    <StackLayout Padding="20">
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-            <Label Text="QR" VerticalOptions="Center"/>
-            <Switch x:Name="BarcodeSwitch" Toggled="OnBarcodeSwitchToggled"/>
-            <Label Text="Barcode" VerticalOptions="Center"/>
+             x:Class="LoyAll.CardDetailPage"
+             BackgroundColor="White"
+             CornerRadius="24"
+             HasBackdrop="True"
+             HasHandle="True"
+             HandleColor="Black">
+
+    <the49:BottomSheet.Detents>
+        <the49:ContentDetent />
+        <the49:FullscreenDetent />
+    </the49:BottomSheet.Detents>
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+            <Label x:Name="StoreNameLabel"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="Black"/>
+
+            <StackLayout Orientation="Horizontal" 
+                        HorizontalOptions="Center"
+                        Spacing="15">
+                <Label Text="QR" 
+                       VerticalOptions="Center"
+                       FontSize="16"
+                       TextColor="Gray"/>
+                <Switch x:Name="BarcodeSwitch" 
+                        Toggled="OnBarcodeSwitchToggled"
+                        VerticalOptions="Center"/>
+                <Label Text="Kod kreskowy" 
+                       VerticalOptions="Center"
+                       FontSize="16"
+                       TextColor="Gray"/>
+            </StackLayout>
+
+
+            <Frame Padding="-20"
+                   BackgroundColor="White"
+                   HorizontalOptions="Center"
+                   BorderColor="Transparent">
+                <Image x:Name="CodeImage" 
+                       HeightRequest="250"
+                       WidthRequest="250"
+                       Aspect="AspectFit"/>
+            </Frame>
+
+            <StackLayout Spacing="5">
+                <Label x:Name="RealCardValueLabel"
+                       FontSize="18"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+
+            <controls:MTAdView 
+                x:Name="AdmobBanner"
+                AdsId="ca-app-pub-3940256099942544/6300978111"
+                HeightRequest="50"/>
         </StackLayout>
-
-        <Image x:Name="CardImage" 
-           HeightRequest="400" 
-           WidthRequest="400" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand"/>
-
-        <Label x:Name="StoreNameLabel"
-           FontSize="24"
-           HorizontalOptions="Center"
-           TextColor="Black"/>
-
-        <Image x:Name="CodeImage" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand"/>
-
-        <Label x:Name="CardValueLabel"
-       FontSize="18"
-       HorizontalOptions="Center"
-       TextColor="Gray"
-       Margin="0,10,0,0"/>
-        <Label x:Name="RealCardValueLabel"
-       FontSize="18"
-       HorizontalOptions="Center"
-       TextColor="Gray"
-       Margin="0,10,0,0"/>
-        <controls:MTAdView 
-        x:Name="AdmobBanner"
-        AdsId="ca-app-pub-3940256099942544/6300978111"
-        HeightRequest="50">
-        </controls:MTAdView>
-    </StackLayout>
-
-</ContentPage>
+    </ScrollView>
+</the49:BottomSheet>

@@ -68,7 +68,8 @@ namespace LoyAll
         {
             if (sender is Frame frame && frame.BindingContext is Card selectedCard)
             {
-                await Navigation.PushAsync(new CardDetailPage(card: selectedCard));
+                var bottomSheet = new CardDetailPage(selectedCard);
+                await bottomSheet.ShowAsync();
             }
         }
         private async void OnDeleteCardClicked(object sender, EventArgs e)
