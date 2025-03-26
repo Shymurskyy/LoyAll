@@ -14,8 +14,6 @@ namespace LoyAll.Views
     {
         public ObservableCollection<CardSelection> SelectableCards { get; set; }
 
-        private bool _allSelected = false;
-
         public SelectCardsPopup(IEnumerable<Card> cards)
         {
             InitializeComponent();
@@ -26,21 +24,42 @@ namespace LoyAll.Views
 
             BindingContext = this;
         }
-
-        private void OnSelectAllClicked(object sender, EventArgs e)
+        private void OnRowTapped(object sender, EventArgs e)
         {
-            _allSelected = !_allSelected;
-
-            foreach (var card in SelectableCards)
+            if (sender is StackLayout stackLayout && stackLayout.BindingContext is CardSelection item)
             {
-                card.IsSelected = _allSelected;
+                item.IsSelected = !item.IsSelected;
+
+                UpdateSelectAllCheckbox();
             }
         }
 
+        private void UpdateSelectAllCheckbox()
+        {
+            if (SelectableCards.All(c => c.IsSelected))
+                SelectAllCheckBox.IsChecked = true;
+            else if (SelectableCards.All(c => !c.IsSelected))
+                SelectAllCheckBox.IsChecked = false;
+        }
+
+        
+        private void OnSelectAllCheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            foreach (var item in SelectableCards)
+            {
+                item.IsSelected = e.Value; 
+            }
+        }
+
+        private void OnSelectAllLabelTapped(object sender, EventArgs e)
+        {
+            SelectAllCheckBox.IsChecked = !SelectAllCheckBox.IsChecked;
+        }
         private void OnCancelClicked(object sender, EventArgs e)
         {
             Close(null);
         }
+        
         private void OnShareClicked(object sender, EventArgs e)
         {
             var selectedCards = SelectableCards

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui;
+﻿using Android.Content.Res;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Plugin.MauiMTAdmob;
 using The49.Maui.BottomSheet;
@@ -20,10 +21,17 @@ namespace LoyAll
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("LilitaOne-Regular.ttf", "LilitaOne");
                 });
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
 
+#endif
+            });
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

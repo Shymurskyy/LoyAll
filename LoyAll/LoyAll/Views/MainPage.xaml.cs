@@ -9,6 +9,7 @@ using System.Text.Json;
 using LZStringCSharp;
 using CommunityToolkit.Maui.Views;
 using Plugin.MauiMTAdmob;
+using Google.Android.Material.FloatingActionButton;
 
 
 namespace LoyAll
@@ -109,10 +110,20 @@ namespace LoyAll
 
             await Navigation.PushAsync(new ShareCardPage(compressedData));
         }
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            LoadCards(); 
+            LoadCards();
+            if (FloatingActionButton == null) return;
+
+            await FloatingActionButton.FadeTo(1, 500);
+
+            while (true) 
+            {
+                await FloatingActionButton.ScaleTo(1.1, 1500, Easing.SinInOut);
+                await FloatingActionButton.ScaleTo(1.0, 1500, Easing.SinInOut);
+                await Task.Delay(1000); 
+            }
         }
 
     }

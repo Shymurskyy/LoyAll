@@ -46,7 +46,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 		<MauiImage Update="Resources\Images\lock.png">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</MauiImage>
@@ -59,7 +58,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\LilitaOne-Regular.ttf" />
+	  <None Remove="Resources\Images\close.png" />
+	  <None Remove="Resources\Images\help.png" />
 	  <None Remove="Resources\Images\lock.png" />
+	  <None Remove="Resources\Images\search.png" />
+	  <None Remove="Resources\Images\settings.png" />
+	  <None Remove="Resources\Images\share.png" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -13,6 +13,7 @@ namespace LoyAll
         {
             base.OnCreate(savedInstanceState);
             CrossMauiMTAdmob.Current.Init(this, "xxx");
+            Window.SetStatusBarColor(Android.Graphics.Color.ParseColor("#1DA1F2"));
         }
     }
 }

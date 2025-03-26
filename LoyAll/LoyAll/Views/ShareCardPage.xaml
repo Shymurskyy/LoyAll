@@ -3,35 +3,90 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="LoyAll.Views.ShareCardPage"
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
-             Title="Udostępnianie karty">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Udostępnianie karty"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
 
-    <StackLayout Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" 
+          VerticalOptions="Fill"
+          HorizontalOptions="Fill">
 
-        <Image x:Name="QrCodeImage" WidthRequest="250" HeightRequest="250" />
+        <BoxView Color="#1DA1F2" 
+                 Grid.Row="0"
+                 HorizontalOptions="FillAndExpand"/>
 
-        <Label Text="QR code too big? Copy this text!" 
+        <StackLayout Orientation="Horizontal"
+                     Grid.Row="0"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Center"
+                     Padding="20,10">
+            <Label Text="LoyAll"
+                   TextColor="White"
+                   FontSize="35"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="StartAndExpand"
+                   FontFamily="LilitaOne"/>
+
+            <ImageButton Source="help.png"
+                         BackgroundColor="Transparent"
+                         HeightRequest="30"
+                         WidthRequest="30"
+                         HorizontalOptions="End"
+                         Clicked="OnHelpClicked"/>
+        </StackLayout>
+
+        <Image x:Name="QrCodeImage" 
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               Grid.Row="2"
+               Margin="0,5"/>
+
+        <Label Text="QR code too big? Tap to copy this text!" 
                FontSize="16"
                HorizontalOptions="Center"
-               Margin="10,5,10,5"/>
+               Margin="10,5,10,5"
+               Grid.Row="3"
+               TextColor="Black"/>
 
-        <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
+        <Frame BackgroundColor="#F5F9FF" 
+               HeightRequest="100"
+               WidthRequest="300"
+               Padding="10" 
+               CornerRadius="10"
+               HorizontalOptions="Center"
+               Grid.Row="4"
+               Margin="10">
             <Label x:Name="CompressedDataLabel"
-                   Text="Compressed Data Here"
-                   TextColor="Black"
+                   Text="Tap to copy sharing link..."
+                   TextColor="#1A8CD8"
                    FontSize="14"
+                   FontAttributes="Bold"
                    HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center"
-                   Padding="10">
+                   VerticalTextAlignment="Center">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnCompressedDataTapped"/>
                 </Label.GestureRecognizers>
             </Label>
         </Frame>
-        <controls:MTAdView 
-x:Name="AdmobBanner"
-AdsId="ca-app-pub-3940256099942544/6300978111"
-HeightRequest="50">
-        </controls:MTAdView>
-    </StackLayout>
 
+        <controls:MTAdView 
+            x:Name="AdmobBanner"
+            AdsId="ca-app-pub-3940256099942544/6300978111"
+            HeightRequest="50"
+            Grid.Row="5" 
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="End"/>
+
+        <Frame x:Name="ToastMessage"
+               Style="{StaticResource ToastMessageStyle}"
+               Grid.RowSpan="6"
+               Margin="10"
+               HorizontalOptions="Center"
+               VerticalOptions="Center">
+            <Label Text="✓ Skopiowano do schowka"
+                   Style="{StaticResource ToastLabelStyle}"/>
+        </Frame>
+    </Grid>
 </ContentPage>

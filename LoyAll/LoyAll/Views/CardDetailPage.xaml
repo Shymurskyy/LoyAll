@@ -8,7 +8,7 @@
              CornerRadius="24"
              HasBackdrop="True"
              HasHandle="True"
-             HandleColor="Black">
+             HandleColor="#1DA1F2">
 
     <the49:BottomSheet.Detents>
         <the49:ContentDetent />
@@ -16,6 +16,14 @@
     </the49:BottomSheet.Detents>
 
     <ScrollView>
+        <StackLayout Spacing="0">
+            <BoxView 
+                Color="LightGray" 
+                HeightRequest="4" 
+                WidthRequest="60"
+                HorizontalOptions="Center"
+                Margin="0,10,0,20"
+                CornerRadius="20"/>
         <StackLayout Padding="20" Spacing="20">
             <Label x:Name="StoreNameLabel"
                    FontSize="24"
@@ -62,6 +70,7 @@
                 x:Name="AdmobBanner"
                 AdsId="ca-app-pub-3940256099942544/6300978111"
                 HeightRequest="50"/>
+        </StackLayout>
         </StackLayout>
     </ScrollView>
 </the49:BottomSheet>

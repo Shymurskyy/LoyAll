@@ -5,64 +5,121 @@
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
              Title="Twoje karty"
              BackgroundColor="White"
-             Padding="20">
+             Shell.NavBarIsVisible="False">
+    <Grid RowDefinitions="Auto, 30, Auto, *, Auto">
+        
+        <BoxView Color="#1DA1F2" 
+                Grid.Row="0"
+                Grid.RowSpan="3" 
+            HorizontalOptions="FillAndExpand"/>
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="⚙️" Clicked="OnSettingsClicked" Order="Primary" Priority="0"/>
-        <ToolbarItem Text="+" Clicked="OnAddCardClicked"/>
-        <ToolbarItem Text="📤" Clicked="OnShareCardsClicked"/>
-    </ContentPage.ToolbarItems>
+            <StackLayout Orientation="Horizontal"
+                     Grid.Row="0"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Center"
+                     Padding="20,10">
+                <Label Text="LoyAll"
+                   TextColor="White"
+                   FontSize="35"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="StartAndExpand"
+                   FontFamily="LilitaOne"/>
 
-    <Grid RowDefinitions="Auto, * , Auto">
-        <Frame BackgroundColor="LightGray"
+            <StackLayout Orientation="Horizontal" 
+             Spacing="20"
+             VerticalOptions="Center">
+                <ImageButton Source="settings.png"
+                 Clicked="OnSettingsClicked" 
+                 BackgroundColor="Transparent"
+                 Aspect="AspectFit"
+                 HeightRequest="24"
+                 WidthRequest="24"/>
+
+                <ImageButton Source="share.png"
+                 Clicked="OnShareCardsClicked"
+                 BackgroundColor="Transparent"
+                 Aspect="AspectFit"
+                 HeightRequest="24"
+                 WidthRequest="24"/>
+            </StackLayout>
+        </StackLayout>
+
+            <Frame BackgroundColor="#1A8CD8" 
+               BorderColor="Transparent"
                CornerRadius="20"
                Padding="5"
-               Grid.Row="0">
-            <Entry x:Name="SearchBar"
-                   Placeholder="Szukaj kart..."
-                   TextChanged="OnSearchTextChanged"
-                   BackgroundColor="Transparent"/>
-        </Frame>
+               Grid.Row="2" 
+                Margin="20,0,20,20"
+               HeightRequest="50">
+                <Grid ColumnDefinitions="30, *">
+                    <Image Source="search.png" 
+                       Grid.Column="0"
+                       Aspect="AspectFit"
+                       HeightRequest="20"
+                       WidthRequest="20"
+                       VerticalOptions="Center"/>
 
-        <ScrollView Grid.Row="1">
+                    <Entry x:Name="SearchBar"
+                       Grid.Column="1"
+                       Placeholder="Szukaj kart"
+                       PlaceholderColor="White"
+                       TextColor="White"
+                       TextChanged="OnSearchTextChanged"
+                       BackgroundColor="Transparent"
+                       Visual="Material"
+                       ClearButtonVisibility="WhileEditing"
+                       Margin="5,0,0,0"/>
+                </Grid>
+            </Frame>
+
+        <ScrollView Grid.Row="3">
             <StackLayout Padding="20" Spacing="20">
                 <CollectionView x:Name="CardsCollectionView"
-                    ItemsSource="{Binding FilteredCards}"
-                    SelectionMode="None">
+            ItemsSource="{Binding FilteredCards}"
+            SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                Span="2"
+                                VerticalItemSpacing="20"
+                                HorizontalItemSpacing="20"/>
+                    </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                            <Frame BorderColor="Transparent" 
+                           CornerRadius="10" 
+                           Padding="-0"
+                           >
                                 <Grid>
                                     <Frame BackgroundColor="Transparent">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="OnCardTapped"/>
                                         </Frame.GestureRecognizers>
-
                                         <Grid>
-                                            <Image Source="{Binding ImagePath}" HeightRequest="80" Aspect="AspectFill"/>
+                                            <Image Source="{Binding ImagePath}" 
+                                           HeightRequest="80" 
+                                           Aspect="AspectFill"/>
                                             <Label Text="{Binding StoreName}" 
-                                                   FontSize="18"
-                                                   TextColor="Black"
-                                                   VerticalOptions="End"
-                                                   BackgroundColor="White"
-                                                   Padding="5"
-                                                   Opacity="0.8"/>
+                                           FontSize="18"
+                                           TextColor="Black"
+                                           VerticalOptions="End"
+                                           BackgroundColor="White"
+                                           Padding="5"
+                                           Opacity="0.8"/>
                                         </Grid>
                                     </Frame>
-
-                                    <Button Text="X"
-                                        FontSize="16"
-                                        BackgroundColor="Red"
-                                        TextColor="White"
-                                        CornerRadius="10"
-                                        Padding="5"
-                                        HorizontalOptions="End"
-                                        VerticalOptions="Start"
-                                        Clicked="OnDeleteCardClicked">
-                                        <Button.BindingContext>
+                                    <ImageButton Source="close.png"
+                                         BackgroundColor="Transparent"
+                                         WidthRequest="24"
+                                         HeightRequest="24"
+                                         HorizontalOptions="End"
+                                         VerticalOptions="Start"
+                                         Margin="5"
+                                         Clicked="OnDeleteCardClicked">
+                                        <ImageButton.BindingContext>
                                             <Binding Path="." />
-                                        </Button.BindingContext>
-                                    </Button>
+                                        </ImageButton.BindingContext>
+                                    </ImageButton>
                                 </Grid>
                             </Frame>
                         </DataTemplate>
@@ -71,12 +128,27 @@
             </StackLayout>
         </ScrollView>
 
-        <controls:MTAdView 
+        <Button x:Name="FloatingActionButton"
+        Text="+"
+        Clicked="OnAddCardClicked"
+        BackgroundColor="#1DA1F2"
+        TextColor="White"
+        FontSize="24"
+        WidthRequest="60"
+        HeightRequest="60"
+        CornerRadius="30"
+        HorizontalOptions="End"
+        VerticalOptions="End"
+        Margin="0,0,20,20"
+        Grid.Row="3"
+        Opacity="0"/>
+
+            <controls:MTAdView 
             x:Name="AdmobBanner"
             AdsId="ca-app-pub-3940256099942544/6300978111"
             HeightRequest="50"
-            Grid.Row="2"
-            HorizontalOptions="FillAndExpand"
+            Grid.Row="4" 
+                HorizontalOptions="FillAndExpand"
             VerticalOptions="End"/>
     </Grid>
 </ContentPage>
