@@ -1,15 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Maui.Views;
+using LoyAll.Model;
+using LoyAll.Services;
+using LoyAll.Views;
+using LZStringCSharp;
 using System.Collections.ObjectModel;
 using System.Text.Json;
-using Microsoft.Maui.Controls;
-using CommunityToolkit.Maui.Views;
-using LZStringCSharp;
-using LoyAll.Services;
-using LoyAll.Model;
-using LoyAll.Views;
 
 namespace LoyAll
 {
@@ -23,6 +18,7 @@ namespace LoyAll
         private string _currentSearchText = string.Empty;
         private DateTime _lastSearchTime = DateTime.MinValue;
         private bool _isDisappearing;
+        private bool _isCardOpening;
 
         public ObservableCollection<Card> Cards { get; } = new();
         public ObservableCollection<Card> FilteredCards { get; } = new();
@@ -31,13 +27,12 @@ namespace LoyAll
         {
             InitializeComponent();
             BindingContext = this;
-
             InitializeServices();
         }
 
         private void InitializeServices()
         {
-            var activity = Platform.CurrentActivity;
+            Android.App.Activity? activity = Platform.CurrentActivity;
             GpdrService.InitializeUmpSdk(activity);
             AdService.LoadRewardedAd(RewardedAdUnitId);
         }
@@ -70,12 +65,12 @@ namespace LoyAll
             try
             {
                 IsBusy = true;
-                var cards = await Task.Run(() => CardStorageService.GetCards()).ConfigureAwait(false);
+                List<Card> cards = await Task.Run(() => CardStorageService.GetCards()).ConfigureAwait(false);
 
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     Cards.Clear();
-                    foreach (var card in cards)
+                    foreach (Card? card in cards)
                     {
                         Cards.Add(card);
                     }
@@ -127,7 +122,7 @@ namespace LoyAll
             _searchCancellationTokenSource = new CancellationTokenSource();
 
             _lastSearchTime = DateTime.Now;
-            var currentSearchTime = _lastSearchTime;
+            DateTime currentSearchTime = _lastSearchTime;
 
             try
             {
@@ -148,11 +143,11 @@ namespace LoyAll
         {
             try
             {
-                var filtered = string.IsNullOrWhiteSpace(searchText)
+                ObservableCollection<Card> filtered = string.IsNullOrWhiteSpace(searchText)
                     ? new ObservableCollection<Card>(Cards)
                     : new ObservableCollection<Card>(
                         await Task.Run(() =>
-                            Cards.Where(c => c.StoreName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                            Cards.Where(c => c.StoreName?.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
                                 .ToList(),
                             token));
 
@@ -161,7 +156,7 @@ namespace LoyAll
                     await MainThread.InvokeOnMainThreadAsync(() =>
                     {
                         FilteredCards.Clear();
-                        foreach (var card in filtered)
+                        foreach (Card card in filtered)
                         {
                             FilteredCards.Add(card);
                         }
@@ -201,36 +196,61 @@ namespace LoyAll
 
         private async void OnSettingsClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new SettingsPage());
+            if (_isCardOpening) return;
+            _isCardOpening = true;
+            try
+            {
+                await Navigation.PushAsync(new SettingsPage());
+            }
+            finally
+            {
+                _isCardOpening = false;
+            }
         }
 
         private async void OnShareCardsClicked(object sender, EventArgs e)
         {
-            if (!Cards.Any())
+            if (_isCardOpening) return;
+            _isCardOpening = true;
+            try
             {
-                await DisplayAlert("Brak kart", "Nie masz zapisanych kart do udostępnienia.", "OK");
-                return;
+                if (!Cards.Any())
+                {
+                    await DisplayAlert("Brak kart", "Nie masz zapisanych kart do udostępnienia.", "OK");
+                    return;
+                }
+
+                SelectCardsPopup popup = new SelectCardsPopup(Cards);
+                List<Card>? selectedCards = await this.ShowPopupAsync(popup) as List<Card>;
+
+                if (selectedCards == null || !selectedCards.Any())
+                    return;
+
+                var minimalCards = selectedCards.Select(c => new { n = c.StoreName, k = c.CardValue });
+                string json = JsonSerializer.Serialize(minimalCards);
+                string compressedData = LZString.CompressToEncodedURIComponent(json);
+
+                await Navigation.PushAsync(new ShareCardPage(compressedData));
             }
-
-            var popup = new SelectCardsPopup(Cards);
-            var selectedCards = await this.ShowPopupAsync(popup) as List<Card>;
-
-            if (selectedCards == null || !selectedCards.Any())
-                return;
-
-            var minimalCards = selectedCards.Select(c => new { n = c.StoreName, k = c.CardValue });
-            string json = JsonSerializer.Serialize(minimalCards);
-            string compressedData = LZString.CompressToEncodedURIComponent(json);
-
-            await Navigation.PushAsync(new ShareCardPage(compressedData));
+            finally { _isCardOpening = false; }
         }
 
         private async void OnCardTapped(object sender, EventArgs e)
         {
-            if (sender is Frame frame && frame.BindingContext is Card selectedCard)
+            if (_isCardOpening) return;
+            _isCardOpening = true;
+
+            try
             {
-                var bottomSheet = new CardDetailPage(selectedCard);
-                await bottomSheet.ShowAsync();
+                if (sender is Frame frame && frame.BindingContext is Card selectedCard)
+                {
+                    CardDetailPage bottomSheet = new CardDetailPage(selectedCard);
+                    await bottomSheet.ShowAsync();
+                }
+            }
+            finally
+            {
+                _isCardOpening = false;
             }
         }
 
