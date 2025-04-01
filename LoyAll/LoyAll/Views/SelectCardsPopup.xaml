@@ -15,39 +15,43 @@
         <Frame BackgroundColor="#F5F9FF" 
                CornerRadius="10"
                Padding="10"
-               HasShadow="False">
-            <CollectionView ItemsSource="{Binding SelectableCards}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Orientation="Horizontal" Spacing="10">
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnRowTapped"/>
-                            </StackLayout.GestureRecognizers>
+               HasShadow="False"
+               HeightRequest="500"
+               BorderColor="#1A8CD8">
+            <ScrollView>
+                <CollectionView ItemsSource="{Binding SelectableCards}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnRowTapped"/>
+                                </StackLayout.GestureRecognizers>
 
-                            <CheckBox IsChecked="{Binding IsSelected}" 
-                                     Color="#1DA1F2"/>
-                            <Label Text="{Binding Card.StoreName}" 
+                                <CheckBox IsChecked="{Binding IsSelected}" 
+                                         Color="#1DA1F2"/>
+                                <Label Text="{Binding Card.StoreName}" 
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.Header>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <CheckBox x:Name="SelectAllCheckBox"
+                                     Color="#1DA1F2"
+                                     CheckedChanged="OnSelectAllCheckedChanged"/>
+                            <Label Text="Wybierz wszystkie" 
                                    VerticalOptions="Center"
-                                   TextColor="Black"/>
+                                   TextColor="#1DA1F2"
+                                   FontAttributes="Bold">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnSelectAllLabelTapped"/>
+                                </Label.GestureRecognizers>
+                            </Label>
                         </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-                <CollectionView.Header>
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <CheckBox x:Name="SelectAllCheckBox"
-                                 Color="#1DA1F2"
-                                 CheckedChanged="OnSelectAllCheckedChanged"/>
-                        <Label Text="Wybierz wszystkie" 
-                               VerticalOptions="Center"
-                               TextColor="#1DA1F2"
-                               FontAttributes="Bold">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnSelectAllLabelTapped"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </StackLayout>
-                </CollectionView.Header>
-            </CollectionView>
+                    </CollectionView.Header>
+                </CollectionView>
+            </ScrollView>
         </Frame>
 
         <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
