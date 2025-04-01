@@ -1,95 +1,209 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Text.Json;
 using Microsoft.Maui.Controls;
+using CommunityToolkit.Maui.Views;
+using LZStringCSharp;
 using LoyAll.Services;
 using LoyAll.Model;
 using LoyAll.Views;
-using System.Collections.ObjectModel;
-using System.Text.Json;
-using LZStringCSharp;
-using CommunityToolkit.Maui.Views;
-using Plugin.MauiMTAdmob;
-using Google.Android.Material.FloatingActionButton;
-
 
 namespace LoyAll
 {
     public partial class MainPage : ContentPage
     {
-        public ObservableCollection<Card> Cards { get; set; }
-        public ObservableCollection<Card> FilteredCards { get; set; }
+        private const int SearchDelayMs = 300;
+        private const string RewardedAdUnitId = "ca-app-pub-3940256099942544/5224354917";
+
+        private CancellationTokenSource _animationCts;
+        private CancellationTokenSource _searchCancellationTokenSource;
+        private string _currentSearchText = string.Empty;
+        private DateTime _lastSearchTime = DateTime.MinValue;
+        private bool _isDisappearing;
+
+        public ObservableCollection<Card> Cards { get; } = new();
+        public ObservableCollection<Card> FilteredCards { get; } = new();
+
         public MainPage()
         {
             InitializeComponent();
-            LoadCards();
-            FilteredCards = new ObservableCollection<Card>(Cards);
             BindingContext = this;
+
+            InitializeServices();
+        }
+
+        private void InitializeServices()
+        {
             var activity = Platform.CurrentActivity;
             GpdrService.InitializeUmpSdk(activity);
+            AdService.LoadRewardedAd(RewardedAdUnitId);
+        }
 
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            _isDisappearing = false;
 
-            AdService.LoadRewardedAd("ca-app-pub-3940256099942544/5224354917");
-        }
-        
-        public void LoadCards()
-        {
-            var cards = CardStorageService.GetCards();
-            Cards = new ObservableCollection<Card>(cards);
-            FilterCards("");
-        }
-        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
-        {
-            FilterCards(e.NewTextValue);
-        }
-        private void FilterCards(string searchText)
-        {
-            if (string.IsNullOrWhiteSpace(searchText))
+            _animationCts?.Cancel();
+            _animationCts = new CancellationTokenSource();
+
+            if (!Cards.Any())
             {
-                FilteredCards = new ObservableCollection<Card>(Cards);
+                await LoadCardsAsync();
             }
-            else
-            {
-                var filtered = Cards.Where(c => c.StoreName.ToLower().Contains(searchText.ToLower())).ToList();
-                FilteredCards = new ObservableCollection<Card>(filtered);
-            }
-            CardsCollectionView.ItemsSource = FilteredCards;
+
+            _ = AnimateFloatingButtonAsync(_animationCts.Token);
         }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            _isDisappearing = true;
+            _animationCts?.Cancel();
+        }
+
+        public async Task LoadCardsAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                var cards = await Task.Run(() => CardStorageService.GetCards()).ConfigureAwait(false);
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Cards.Clear();
+                    foreach (var card in cards)
+                    {
+                        Cards.Add(card);
+                    }
+                    FilterCards(SearchBar.Text);
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading cards: {ex}");
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                    await DisplayAlert("Błąd", "Nie udało się załadować kart", "OK"));
+            }
+            finally
+            {
+                MainThread.BeginInvokeOnMainThread(() => IsBusy = false);
+            }
+        }
+
         public void AddCard(Card newCard)
         {
             Cards.Insert(0, newCard);
             FilterCards(SearchBar.Text);
         }
 
-        private async void OnAddCardClicked(object sender, EventArgs e)
+        private async Task DeleteCardAsync(Card cardToRemove)
         {
-            await Navigation.PushAsync(new AddCardPage(this)); 
+            bool confirm = await DisplayAlert(
+                "Usuń kartę",
+                $"Czy na pewno chcesz usunąć kartę {cardToRemove.StoreName}?",
+                "Tak", "Nie");
+
+            if (confirm)
+            {
+                Cards.Remove(cardToRemove);
+                CardStorageService.DeleteCard(cardToRemove);
+                FilterCards(SearchBar.Text);
+            }
         }
 
-        private async void OnCardTapped(object sender, EventArgs e)
+        private void FilterCards(string searchText)
         {
-            if (sender is Frame frame && frame.BindingContext is Card selectedCard)
-            {
-                var bottomSheet = new CardDetailPage(selectedCard);
-                await bottomSheet.ShowAsync();
-            }
+            _ = FilterCardsAsync(searchText, CancellationToken.None);
         }
-        private async void OnDeleteCardClicked(object sender, EventArgs e)
+
+        private async void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is ImageButton button && button.CommandParameter is Card cardToRemove)
+            _currentSearchText = e.NewTextValue;
+            _searchCancellationTokenSource?.Cancel();
+            _searchCancellationTokenSource = new CancellationTokenSource();
+
+            _lastSearchTime = DateTime.Now;
+            var currentSearchTime = _lastSearchTime;
+
+            try
             {
-                bool confirm = await DisplayAlert("Usuń kartę", $"Czy na pewno chcesz usunąć kartę {cardToRemove.StoreName}?", "Tak", "Nie");
-                if (confirm)
+                await Task.Delay(SearchDelayMs, _searchCancellationTokenSource.Token);
+
+                if (currentSearchTime == _lastSearchTime)
                 {
-                    Cards.Remove(cardToRemove);
-                    CardStorageService.DeleteCard(cardToRemove);
-                    FilterCards(SearchBar.Text);
+                    await FilterCardsAsync(_currentSearchText, _searchCancellationTokenSource.Token);
                 }
             }
+            catch (TaskCanceledException)
+            {
+                // Search was canceled - ignore
+            }
         }
+
+        private async Task FilterCardsAsync(string searchText, CancellationToken token)
+        {
+            try
+            {
+                var filtered = string.IsNullOrWhiteSpace(searchText)
+                    ? new ObservableCollection<Card>(Cards)
+                    : new ObservableCollection<Card>(
+                        await Task.Run(() =>
+                            Cards.Where(c => c.StoreName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                                .ToList(),
+                            token));
+
+                if (!token.IsCancellationRequested)
+                {
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        FilteredCards.Clear();
+                        foreach (var card in filtered)
+                        {
+                            FilteredCards.Add(card);
+                        }
+                    });
+                }
+            }
+            catch (Exception ex) when (ex is TaskCanceledException or OperationCanceledException)
+            {
+                // Filtering was canceled - ignore
+            }
+        }
+
+        private async Task AnimateFloatingButtonAsync(CancellationToken token)
+        {
+            if (FloatingActionButton == null) return;
+
+            try
+            {
+                await FloatingActionButton.FadeTo(1, 250).ConfigureAwait(false);
+
+                while (!token.IsCancellationRequested && !_isDisappearing)
+                {
+                    await FloatingActionButton.ScaleTo(1.05, 1000, Easing.Linear).ConfigureAwait(false);
+                    if (token.IsCancellationRequested) break;
+
+                    await FloatingActionButton.ScaleTo(1.0, 1000, Easing.Linear).ConfigureAwait(false);
+                    if (token.IsCancellationRequested) break;
+
+                    await Task.Delay(500, token).ConfigureAwait(false);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // Animation was canceled - ignore
+            }
+        }
+
         private async void OnSettingsClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new SettingsPage());
         }
+
         private async void OnShareCardsClicked(object sender, EventArgs e)
         {
             if (!Cards.Any())
@@ -102,7 +216,7 @@ namespace LoyAll
             var selectedCards = await this.ShowPopupAsync(popup) as List<Card>;
 
             if (selectedCards == null || !selectedCards.Any())
-                return; 
+                return;
 
             var minimalCards = selectedCards.Select(c => new { n = c.StoreName, k = c.CardValue });
             string json = JsonSerializer.Serialize(minimalCards);
@@ -110,21 +224,27 @@ namespace LoyAll
 
             await Navigation.PushAsync(new ShareCardPage(compressedData));
         }
-        protected override async void OnAppearing()
+
+        private async void OnCardTapped(object sender, EventArgs e)
         {
-            base.OnAppearing();
-            LoadCards();
-            if (FloatingActionButton == null) return;
-
-            await FloatingActionButton.FadeTo(1, 500);
-
-            while (true) 
+            if (sender is Frame frame && frame.BindingContext is Card selectedCard)
             {
-                await FloatingActionButton.ScaleTo(1.1, 1500, Easing.SinInOut);
-                await FloatingActionButton.ScaleTo(1.0, 1500, Easing.SinInOut);
-                await Task.Delay(1000); 
+                var bottomSheet = new CardDetailPage(selectedCard);
+                await bottomSheet.ShowAsync();
             }
         }
 
+        private async void OnDeleteCardClicked(object sender, EventArgs e)
+        {
+            if (sender is ImageButton button && button.CommandParameter is Card cardToRemove)
+            {
+                await DeleteCardAsync(cardToRemove);
+            }
+        }
+
+        private async void OnAddCardClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new AddCardPage(this));
+        }
     }
 }

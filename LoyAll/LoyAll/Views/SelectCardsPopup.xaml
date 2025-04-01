@@ -16,7 +16,8 @@
                CornerRadius="10"
                Padding="10"
                HasShadow="False"
-               HeightRequest="500"
+               HeightRequest="400"
+               MaximumHeightRequest="500"
                BorderColor="#1A8CD8">
             <ScrollView>
                 <CollectionView ItemsSource="{Binding SelectableCards}">

@@ -7,18 +7,18 @@
              BackgroundColor="White"
              Shell.NavBarIsVisible="False">
     <Grid RowDefinitions="Auto, 30, Auto, *, Auto">
-        
+
         <BoxView Color="#1DA1F2" 
                 Grid.Row="0"
                 Grid.RowSpan="3" 
             HorizontalOptions="FillAndExpand"/>
 
-            <StackLayout Orientation="Horizontal"
+        <StackLayout Orientation="Horizontal"
                      Grid.Row="0"
                      HorizontalOptions="Fill"
                      VerticalOptions="Center"
                      Padding="20,10">
-                <Label Text="LoyAll"
+            <Label Text="LoyAll"
                    TextColor="White"
                    FontSize="35"
                    FontAttributes="Bold"
@@ -33,34 +33,34 @@
                  Clicked="OnSettingsClicked" 
                  BackgroundColor="Transparent"
                  Aspect="AspectFit"
-                 HeightRequest="24"
-                 WidthRequest="24"/>
+                 HeightRequest="34"
+                 WidthRequest="34"/>
 
                 <ImageButton Source="share.png"
                  Clicked="OnShareCardsClicked"
                  BackgroundColor="Transparent"
                  Aspect="AspectFit"
-                 HeightRequest="24"
-                 WidthRequest="24"/>
+                 HeightRequest="34"
+                 WidthRequest="34"/>
             </StackLayout>
         </StackLayout>
 
-            <Frame BackgroundColor="#1A8CD8" 
+        <Frame BackgroundColor="#1A8CD8" 
                BorderColor="Transparent"
                CornerRadius="20"
                Padding="5"
                Grid.Row="2" 
                 Margin="20,0,20,20"
                HeightRequest="50">
-                <Grid ColumnDefinitions="30, *">
-                    <Image Source="search.png" 
+            <Grid ColumnDefinitions="30, *">
+                <Image Source="search.png" 
                        Grid.Column="0"
                        Aspect="AspectFit"
                        HeightRequest="20"
                        WidthRequest="20"
                        VerticalOptions="Center"/>
 
-                    <Entry x:Name="SearchBar"
+                <Entry x:Name="SearchBar"
                        Grid.Column="1"
                        Placeholder="Szukaj kart"
                        PlaceholderColor="White"
@@ -70,14 +70,14 @@
                        Visual="Material"
                        ClearButtonVisibility="WhileEditing"
                        Margin="5,0,0,0"/>
-                </Grid>
-            </Frame>
+            </Grid>
+        </Frame>
 
         <ScrollView Grid.Row="3">
             <StackLayout Padding="20" Spacing="20">
                 <CollectionView x:Name="CardsCollectionView"
-            ItemsSource="{Binding FilteredCards}"
-            SelectionMode="None">
+                                ItemsSource="{Binding FilteredCards}"
+                                SelectionMode="None">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical"
                                 Span="2"
@@ -140,7 +140,7 @@
         Grid.Row="3"
         Opacity="0"/>
 
-            <controls:MTAdView 
+        <controls:MTAdView 
             x:Name="AdmobBanner"
             AdsId="ca-app-pub-3940256099942544/6300978111"
             HeightRequest="50"
