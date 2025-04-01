@@ -82,9 +82,9 @@
         <Frame x:Name="ToastMessage"
                Style="{StaticResource ToastMessageStyle}"
                Grid.RowSpan="6"
-               Margin="10"
+               Margin="0,0,0,150"
                HorizontalOptions="Center"
-               VerticalOptions="Center">
+               VerticalOptions="End">
             <Label Text="✓ Skopiowano do schowka"
                    Style="{StaticResource ToastLabelStyle}"/>
         </Frame>

@@ -109,17 +109,14 @@
                                         </Grid>
                                     </Frame>
                                     <ImageButton Source="close.png"
-                                         BackgroundColor="Transparent"
-                                         WidthRequest="24"
-                                         HeightRequest="24"
-                                         HorizontalOptions="End"
-                                         VerticalOptions="Start"
-                                         Margin="5"
-                                         Clicked="OnDeleteCardClicked">
-                                        <ImageButton.BindingContext>
-                                            <Binding Path="." />
-                                        </ImageButton.BindingContext>
-                                    </ImageButton>
+     BackgroundColor="Transparent"
+     WidthRequest="24"
+     HeightRequest="24"
+     HorizontalOptions="End"
+     VerticalOptions="Start"
+     Margin="5"
+     Clicked="OnDeleteCardClicked"
+     CommandParameter="{Binding .}"/>
                                 </Grid>
                             </Frame>
                         </DataTemplate>

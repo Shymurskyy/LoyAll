@@ -75,7 +75,7 @@ namespace LoyAll
         }
         private async void OnDeleteCardClicked(object sender, EventArgs e)
         {
-            if (sender is Button button && button.BindingContext is Card cardToRemove)
+            if (sender is ImageButton button && button.CommandParameter is Card cardToRemove)
             {
                 bool confirm = await DisplayAlert("Usuń kartę", $"Czy na pewno chcesz usunąć kartę {cardToRemove.StoreName}?", "Tak", "Nie");
                 if (confirm)
