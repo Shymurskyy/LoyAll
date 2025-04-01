@@ -4,40 +4,130 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              x:Class="LoyAll.Views.AddCardPage"
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
-             Title="New Page">
+             Title="Dodaj kartę"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,*"
+          VerticalOptions="Fill"
+          HorizontalOptions="Fill"
+          RowSpacing="0">
 
-    <VerticalStackLayout Spacing="20">
+        <BoxView Color="#1DA1F2" 
+                 Grid.Row="0"
+                 HorizontalOptions="FillAndExpand"/>
 
-        <Entry x:Name="StoreNameEntry"
-               Placeholder="Nazwa sklepu (np. Lidl, Kaufland)"
-               FontSize="18"
-               TextColor="Black"
-               BackgroundColor="LightGray"
-              />
+        <StackLayout Orientation="Horizontal"
+                     Grid.Row="0"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Center"
+                     Padding="20,10">
+            <Label Text="LoyAll"
+                   TextColor="White"
+                   FontSize="35"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="StartAndExpand"
+                   FontFamily="LilitaOne"/>
 
-        <Button Text="Wybierz zdjęcie"
-                FontSize="18"
-                Clicked="OnPickImageClicked"
-                BackgroundColor="Black"
-                TextColor="White"/>
+            <ImageButton Source="save.png"
+                         BackgroundColor="Transparent"
+                         HeightRequest="30"
+                         WidthRequest="30"
+                         HorizontalOptions="End"
+                         VerticalOptions="Center"
+                         Clicked="OnSaveCardClicked"/>
+        </StackLayout>
 
-        <Image x:Name="CardImage"
-               HeightRequest="200"
-               Aspect="AspectFit"
-               IsVisible="False"/>
+        <Grid Grid.Row="1" 
+              VerticalOptions="Start"
+              Margin="0,20,0,0">
 
-        <Entry x:Name="BarcodeEntry"
-               Placeholder="Zeskanowany kod"
-               FontSize="18"
-               TextColor="White"
-               BackgroundColor="Black"
-               IsReadOnly="True"/>
+            <StackLayout x:Name="AddButtonsView"
+                         IsVisible="True"
+                         Spacing="20"
+                         HorizontalOptions="Fill">
 
-        <Button Text="Skanuj kod QR/kreskowy"
-                FontSize="18"
-                Clicked="OnScanBarcodeClicked"
-                BackgroundColor="Black"
-                TextColor="White"/>
+                <Grid HeightRequest="180">
+                    <ImageButton Source="plus.png"
+                                 BackgroundColor="#7AC8F9"
+                                 HeightRequest="130"
+                                 WidthRequest="130"
+                                 CornerRadius="65"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Padding="25"/>
+
+                    <ImageButton Source="gallery.png"
+                                 BackgroundColor="#1DA1F2"
+                                 HeightRequest="80"
+                                 WidthRequest="80"
+                                 CornerRadius="40"
+                                 HorizontalOptions="Start"
+                                 VerticalOptions="End"
+                                 Margin="60,0,0,0"
+                                 Clicked="OnPickImageClicked"
+                                 Padding="10"/>
+
+                    <ImageButton Source="photo.png"
+                                 BackgroundColor="#1DA1F2"
+                                 HeightRequest="80"
+                                 WidthRequest="80"
+                                 CornerRadius="40"
+                                 HorizontalOptions="End"
+                                 VerticalOptions="End"
+                                 Margin="0,0,60,0"
+                                 Clicked="OnScanBarcodeClicked"
+                                 Padding="10"/>
+                </Grid>
+
+                <Button Text="Importuj z innego urządzenia"
+                        FontSize="16"
+                        Clicked="OnImportSharedCardClicked"
+                        BackgroundColor="#1A8CD8"
+                        TextColor="White"
+                        CornerRadius="35"
+                        HeightRequest="50"
+                        Margin="20,20,20,0"
+                        HorizontalOptions="Fill"/>
+            </StackLayout>
+
+
+            <StackLayout x:Name="CodePreviewView"
+                   IsVisible="False"
+                   Spacing="10"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <Image x:Name="PreviewCodeImage" 
+                       HeightRequest="200"
+                       WidthRequest="200"
+                       HorizontalOptions="Center"/>
+
+                <Entry x:Name="BarcodeEntry"
+                       FontSize="14"
+                       TextColor="Gray"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       VerticalOptions="Start"
+                       Margin="0,20,0,0"
+                       IsReadOnly="True"/>
+            </StackLayout>
+        </Grid>
+
+        <Frame Grid.Row="3"
+               BackgroundColor="#F5F9FF"
+               CornerRadius="35"
+               Padding="3"
+               Margin="20,20,20,0"
+               VerticalOptions="Start"
+               BorderColor="#1A8CD8">
+            <Entry x:Name="StoreNameEntry"
+                   Placeholder="Nazwa karty"
+                   FontSize="16"
+                   TextColor="Black"
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="Fill"
+                   HorizontalTextAlignment="Center"/>
+        </Frame>
 
         <zxing:CameraBarcodeReaderView
             x:Name="barcodeReader"
@@ -47,24 +137,15 @@
             HeightRequest="300"
             WidthRequest="300"
             HorizontalOptions="Center"
-            VerticalOptions="Center"/>
+            VerticalOptions="Center"
+            Grid.Row="3"/>
 
-        <Button Text="Zapisz kartę"
-                FontSize="18"
-                Clicked="OnSaveCardClicked"
-                BackgroundColor="Green"
-                TextColor="White"/>
-        
-        <Button Text="Importuj karty znajomych"
-                FontSize="18"
-                Clicked="OnImportSharedCardClicked"
-                BackgroundColor="Black"
-                TextColor="White"/>
         <controls:MTAdView 
-x:Name="AdmobBanner"
-AdsId="ca-app-pub-3940256099942544/6300978111"
-HeightRequest="50">
-        </controls:MTAdView>
-    </VerticalStackLayout>
-
+            x:Name="AdmobBanner"
+            AdsId="ca-app-pub-3940256099942544/6300978111"
+            HeightRequest="50"
+            Grid.Row="4" 
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="End"/>
+    </Grid>
 </ContentPage>

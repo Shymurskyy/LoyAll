@@ -29,29 +29,30 @@ namespace LoyAll.Views
             if (result != null)
             {
                 Stream stream = await result.OpenReadAsync();
-                CardImage.Source = ImageSource.FromStream(() => stream);
                 selectedImagePath = result.FullPath;
 
                 string barcodeValue = await BarcodeHelper.DecodeBarcodeFromImage(stream);
-                if (!string.IsNullOrEmpty(barcodeValue) )
+                if (!string.IsNullOrEmpty(barcodeValue))
                 {
                     if (barcodeValue.StartsWith("Q:#") || barcodeValue.StartsWith("B:#"))
-                        BarcodeEntry.Text = barcodeValue; 
+                    {
+                        BarcodeEntry.Text = barcodeValue;
+                        ShowCodePreview(barcodeValue);
+                    }
                     else
+                    {
                         BarcodeEntry.Text = "Nieobs³ugiwany kod";
-                }
-                else
-                {
-                    await DisplayAlert("B³¹d", "Nie znaleziono kodu QR/kreskowego na obrazie.", "OK");
+                    }
                 }
             }
         }
 
+
         private async void OnSaveCardClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(StoreNameEntry.Text) || CardImage.Source == null)
+            if (string.IsNullOrWhiteSpace(StoreNameEntry.Text) || string.IsNullOrWhiteSpace(BarcodeEntry.Text))
             {
-                await DisplayAlert("B³¹d", "Podaj nazwê i wybierz obrazek!", "OK");
+                await DisplayAlert("B³¹d", "Podaj nazwê i zeskanuj kod", "OK");
                 return;
             }
 
@@ -73,7 +74,28 @@ namespace LoyAll.Views
             {
                 string barcodeValue = firstBarcode.Value;
                 BarcodeEntry.Text = barcodeValue;
+
+                ShowCodePreview(barcodeValue);
             }
+        }
+        private void ShowCodePreview(string barcodeValue)
+        {
+            if (barcodeValue.StartsWith("B:#"))
+            {
+                PreviewCodeImage.Source = BarcodeHelper.GenerateBarcode(barcodeValue.Replace("B:#", ""));
+                PreviewCodeImage.WidthRequest = 400;
+                PreviewCodeImage.HeightRequest = 200;
+            }
+            else if (barcodeValue.StartsWith("Q:#"))
+            {
+                PreviewCodeImage.Source = BarcodeHelper.GenerateQrCode(barcodeValue.Replace("Q:#", ""));
+                PreviewCodeImage.WidthRequest = 200;
+                PreviewCodeImage.HeightRequest = 200;
+            }
+
+            BarcodeEntry.Text = barcodeValue;
+            AddButtonsView.IsVisible = false;
+            CodePreviewView.IsVisible = true;
         }
         private async void OnImportSharedCardClicked(object sender, EventArgs e)
         {
@@ -132,7 +154,7 @@ namespace LoyAll.Views
             }
             catch (Exception ex)
             {
-                await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu: {ex.Message}", "OK");
+                await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu. Upewnij siê ¿e importujesz kod wygenerowany w tej aplikacji!", "OK");
             }
         }
 
@@ -153,7 +175,8 @@ namespace LoyAll.Views
                     {
                         if (barcodeValue.StartsWith("Q:#") || barcodeValue.StartsWith("B:#"))
                         {
-                            BarcodeEntry.Text = barcodeValue; 
+                            BarcodeEntry.Text = barcodeValue;
+                            ShowCodePreview(barcodeValue);
                         }
                         else
                         {
@@ -172,6 +195,16 @@ namespace LoyAll.Views
             }
         }
 
-
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            ResetForm();
+        }
+        private void ResetForm()
+        {
+            AddButtonsView.IsVisible = true;
+            StoreNameEntry.Text = string.Empty;
+            BarcodeEntry.Text = string.Empty;
+        }
     }
 }
