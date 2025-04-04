@@ -12,7 +12,7 @@
                FontAttributes="Bold"
                HorizontalOptions="Center" />
 
-        <Frame BackgroundColor="#F5F9FF" 
+        <Frame BackgroundColor="#EBF5FB" 
                CornerRadius="10"
                Padding="10"
                HasShadow="False"

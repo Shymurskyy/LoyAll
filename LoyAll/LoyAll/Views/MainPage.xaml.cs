@@ -18,7 +18,7 @@ namespace LoyAll
         private string _currentSearchText = string.Empty;
         private DateTime _lastSearchTime = DateTime.MinValue;
         private bool _isDisappearing;
-        private bool _isCardOpening;
+        private readonly SemaphoreSlim _cardOpeningSemaphore = new SemaphoreSlim(1, 1);
 
         public ObservableCollection<Card> Cards { get; } = new();
         public ObservableCollection<Card> FilteredCards { get; } = new();
@@ -196,23 +196,15 @@ namespace LoyAll
 
         private async void OnSettingsClicked(object sender, EventArgs e)
         {
-            if (_isCardOpening) return;
-            _isCardOpening = true;
-            try
+            await ExecuteWithCardOpeningLock(async () =>
             {
                 await Navigation.PushAsync(new SettingsPage());
-            }
-            finally
-            {
-                _isCardOpening = false;
-            }
+            });
         }
 
         private async void OnShareCardsClicked(object sender, EventArgs e)
         {
-            if (_isCardOpening) return;
-            _isCardOpening = true;
-            try
+            await ExecuteWithCardOpeningLock(async () =>
             {
                 if (!Cards.Any())
                 {
@@ -231,40 +223,60 @@ namespace LoyAll
                 string compressedData = LZString.CompressToEncodedURIComponent(json);
 
                 await Navigation.PushAsync(new ShareCardPage(compressedData));
-            }
-            finally { _isCardOpening = false; }
+            });
         }
 
         private async void OnCardTapped(object sender, EventArgs e)
         {
-            if (_isCardOpening) return;
-            _isCardOpening = true;
 
             try
             {
+                if (!await _cardOpeningSemaphore.WaitAsync(0))
+                    return;
+
                 if (sender is Frame frame && frame.BindingContext is Card selectedCard)
                 {
-                    CardDetailPage bottomSheet = new CardDetailPage(selectedCard);
+                    var bottomSheet = new CardDetailPage(selectedCard);
                     await bottomSheet.ShowAsync();
                 }
             }
             finally
             {
-                _isCardOpening = false;
+                if (_cardOpeningSemaphore.CurrentCount == 0)
+                    _cardOpeningSemaphore.Release();
             }
         }
 
         private async void OnDeleteCardClicked(object sender, EventArgs e)
         {
-            if (sender is ImageButton button && button.CommandParameter is Card cardToRemove)
+            await ExecuteWithCardOpeningLock(async () =>
             {
-                await DeleteCardAsync(cardToRemove);
-            }
+                if (sender is ImageButton button && button.CommandParameter is Card cardToRemove)
+                    await DeleteCardAsync(cardToRemove);
+            });
         }
 
         private async void OnAddCardClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AddCardPage(this));
+            await ExecuteWithCardOpeningLock(async () =>
+            {
+                await Navigation.PushAsync(new AddCardPage(this));
+            });
+        }
+
+        private async Task ExecuteWithCardOpeningLock(Func<Task> action)
+        {
+            if (!await _cardOpeningSemaphore.WaitAsync(0))
+                return;
+
+            try
+            {
+                await action();
+            }
+            finally
+            {
+                _cardOpeningSemaphore.Release();
+            }
         }
     }
 }

@@ -61,7 +61,7 @@
             <StackLayout Spacing="5">
                 <Label x:Name="RealCardValueLabel"
                        FontSize="18"
-                       TextColor="Black"
+                       TextColor="Gray"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"/>
             </StackLayout>
