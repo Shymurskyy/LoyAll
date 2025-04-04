@@ -59,12 +59,18 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\LilitaOne-Regular.ttf" />
-	  <None Remove="Resources\Images\close.png" />
+	  <None Remove="Resources\Images\barcode_placeholder.png" />
+	  <None Remove="Resources\Images\blue_barcode_placeholder.png" />
+	  <None Remove="Resources\Images\blue_close.png" />
+	  <None Remove="Resources\Images\blue_qr_placeholder.png" />
+	  <None Remove="Resources\Images\favorite_empty.png" />
+	  <None Remove="Resources\Images\favorite_full.png" />
 	  <None Remove="Resources\Images\gallery.png" />
 	  <None Remove="Resources\Images\help.png" />
 	  <None Remove="Resources\Images\lock.png" />
 	  <None Remove="Resources\Images\photo.png" />
 	  <None Remove="Resources\Images\plus.png" />
+	  <None Remove="Resources\Images\qr_placeholder.png" />
 	  <None Remove="Resources\Images\save.png" />
 	  <None Remove="Resources\Images\search.png" />
 	  <None Remove="Resources\Images\settings.png" />

@@ -3,9 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="LoyAll.MainPage"
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
+             xmlns:converters="clr-namespace:LoyAll.Helper"
              Title="Twoje karty"
              BackgroundColor="White"
              Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CardTypeToImageConverter x:Key="CardTypeToImageConverter"/>
+            <converters:FavoriteToImageConverter x:Key="FavoriteToImageConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid RowDefinitions="Auto, 30, Auto, *, Auto">
 
         <BoxView Color="#1DA1F2" 
@@ -82,41 +89,67 @@
                         <GridItemsLayout Orientation="Vertical"
                                 Span="2"
                                 VerticalItemSpacing="20"
-                                HorizontalItemSpacing="20"/>
+                                HorizontalItemSpacing="10"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BorderColor="Transparent" 
-                           CornerRadius="10" 
-                           Padding="-0"
-                           >
+                            <Frame BorderColor="#1DA1F2" CornerRadius="15" Padding="0" HeightRequest="150" >
                                 <Grid>
-                                    <Frame BackgroundColor="Transparent">
+                                    <Frame CornerRadius="15" BorderColor="Transparent">
+                                        <Frame.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F7FBFE" Offset="0.1"/>
+                                                <GradientStop Color="#F7FBFE" Offset="0.5"/>
+                                                <GradientStop Color="#E5F3FD" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Frame.Background>
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="OnCardTapped"/>
                                         </Frame.GestureRecognizers>
-                                        <Grid>
-                                            <Image Source="{Binding ImagePath}" 
-                                           HeightRequest="80" 
-                                           Aspect="AspectFill"/>
-                                            <Label Text="{Binding StoreName}" 
-                                           FontSize="18"
-                                           TextColor="Black"
-                                           VerticalOptions="End"
-                                           BackgroundColor="White"
-                                           Padding="5"
-                                           Opacity="0.8"/>
-                                        </Grid>
                                     </Frame>
-                                    <ImageButton Source="close.png"
-     BackgroundColor="Transparent"
-     WidthRequest="24"
-     HeightRequest="24"
-     HorizontalOptions="End"
-     VerticalOptions="Start"
-     Margin="5"
-     Clicked="OnDeleteCardClicked"
-     CommandParameter="{Binding .}"/>
+
+                                    <Image Source="{Binding CardValue, Converter={StaticResource CardTypeToImageConverter}}"
+                       Aspect="AspectFit"
+                       HeightRequest="100"
+                       WidthRequest="100"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="0,0,0,10"/>
+
+                                    <Label Text="{Binding StoreName}" 
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#1A8CD8"
+                       VerticalOptions="End"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,3"/>
+
+                                    <Grid HorizontalOptions="Fill" VerticalOptions="Start">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image Grid.Column="0"
+                           Source="favorite_empty.png"
+                           Aspect="AspectFit"
+                           HeightRequest="24"
+                           WidthRequest="24"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"
+                           Margin="5"/>
+
+                                        <ImageButton Grid.Column="1"
+                               Source="blue_close.png"
+                               BackgroundColor="Transparent"
+                               WidthRequest="24"
+                               HeightRequest="24"
+                               HorizontalOptions="End"
+                               VerticalOptions="Start"
+                               Margin="5"
+                               Clicked="OnDeleteCardClicked"
+                               CommandParameter="{Binding .}"/>
+                                    </Grid>
                                 </Grid>
                             </Frame>
                         </DataTemplate>

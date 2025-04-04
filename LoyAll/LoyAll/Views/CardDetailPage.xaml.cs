@@ -7,6 +7,8 @@ namespace LoyAll
     public partial class CardDetailPage : BottomSheet
     {
         private readonly Card _card;
+        private bool _isDisposed;
+        private readonly SemaphoreSlim _initSemaphore = new(1, 1);
 
         public CardDetailPage(Card card)
         {
@@ -15,44 +17,97 @@ namespace LoyAll
 
             this.HasBackdrop = true;
             this.BackgroundColor = Colors.White;
-            
+            this.Dismissed += OnDismissed;
 
             StoreNameLabel.Text = _card.StoreName;
-
-            if (_card.CardValue.StartsWith("B:#"))
-            {
-                CodeImage.Source = BarcodeHelper.GenerateBarcode(_card.CleanCardValue);
-                BarcodeSwitch.IsToggled = true;
-                CodeImage.WidthRequest = 400;
-                CodeImage.HeightRequest = 150;
-            }
-            else
-            {
-                CodeImage.Source = BarcodeHelper.GenerateQrCode(_card.CleanCardValue);
-                BarcodeSwitch.IsToggled = false;
-                CodeImage.WidthRequest = 200;
-                CodeImage.HeightRequest = 200;
-            }
-
             RealCardValueLabel.Text = _card.CleanCardValue;
+            BarcodeSwitch.IsToggled = _card.CardValue.StartsWith("B:#");
+
+            _ = InitializeAsync();
         }
 
-        private void OnBarcodeSwitchToggled(object sender, ToggledEventArgs e)
+        private async Task InitializeAsync()
         {
-            if (e.Value)
+            try
             {
-                CodeImage.WidthRequest = 400;
-                CodeImage.HeightRequest = 150;
-                CodeImage.Source = BarcodeHelper.GenerateBarcode(_card.CleanCardValue);
+                await _initSemaphore.WaitAsync();
+                if (_isDisposed) return;
+
+                await Task.Delay(100); 
+
+                if (_card.CardValue.StartsWith("B:#"))
+                {
+                    await LoadBarcodeAsync();
+                }
+                else
+                {
+                    await LoadQrCodeAsync();
+                }
             }
-            else
+            finally
             {
-                CodeImage.WidthRequest = 200;
-                CodeImage.HeightRequest = 200;
-                CodeImage.Source = BarcodeHelper.GenerateQrCode(_card.CleanCardValue);
+                _initSemaphore.Release();
             }
-           
         }
-        
+
+        private async Task LoadBarcodeAsync()
+        {
+            var barcode = await Task.Run(() =>
+                BarcodeHelper.GenerateBarcode(_card.CleanCardValue));
+
+            if (!_isDisposed)
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    CodeImage.WidthRequest = 400;
+                    CodeImage.HeightRequest = 150;
+                    CodeImage.Source = barcode;
+                });
+            }
+        }
+
+        private async Task LoadQrCodeAsync()
+        {
+            var qrCode = await Task.Run(() =>
+                BarcodeHelper.GenerateQrCode(_card.CleanCardValue));
+
+            if (!_isDisposed)
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    CodeImage.WidthRequest = 200;
+                    CodeImage.HeightRequest = 200;
+                    CodeImage.Source = qrCode;
+                });
+            }
+        }
+
+        private async void OnBarcodeSwitchToggled(object sender, ToggledEventArgs e)
+        {
+            try
+            {
+                await _initSemaphore.WaitAsync();
+                if (_isDisposed) return;
+
+                if (e.Value)
+                {
+                    await LoadBarcodeAsync();
+                }
+                else
+                {
+                    await LoadQrCodeAsync();
+                }
+            }
+            finally
+            {
+                _initSemaphore.Release();
+            }
+        }
+
+        private void OnDismissed(object sender, DismissOrigin e)
+        {
+            _isDisposed = true;
+            this.Dismissed -= OnDismissed;
+        }
     }
 }
