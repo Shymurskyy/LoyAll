@@ -9,41 +9,56 @@ namespace LoyAll.Services
     public static class CardStorageService
     {
         private static string filePath = Path.Combine(FileSystem.AppDataDirectory, "cards.json");
+        private static readonly object _fileLock = new object();
 
         public static void SaveCard(Card card)
         {
-            List<Card> cards = GetCards();
+            var cards = GetCards();
             cards.Add(card);
-
-            string json = JsonConvert.SerializeObject(cards);
-            File.WriteAllText(filePath, json);
+            SaveAllCards(cards);
         }
 
         public static List<Card> GetCards()
         {
-            if (File.Exists(filePath))
-            {
-                string json = File.ReadAllText(filePath);
-                return JsonConvert.DeserializeObject<List<Card>>(json) ?? new List<Card>();
-            }
-            return new List<Card>();
+            if (!File.Exists(filePath))
+                return new List<Card>();
+
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<Card>>(json) ?? new List<Card>();
         }
+
         public static void DeleteCard(Card card)
         {
-            List<Card> cards = GetCards();
-            var cardToRemove = cards.FirstOrDefault(c => c.StoreName == card.StoreName && c.CardValue == card.CardValue);
+            var cards = GetCards();
+            var cardToRemove = cards.FirstOrDefault(c => c.Equals(card));
 
             if (cardToRemove != null)
             {
                 cards.Remove(cardToRemove);
-                string json = JsonConvert.SerializeObject(cards);
-                File.WriteAllText(filePath, json);
+                SaveAllCards(cards);
             }
         }
-        public static void DeleteAllCards()
+
+        public static void DeleteAllCards() => SaveAllCards(new List<Card>());
+
+        public static void ToggleFavorite(Card card)
         {
-            var emptyList = new List<Card>();
-            string json = JsonConvert.SerializeObject(emptyList);
+            lock (_fileLock)
+            {
+                var cards = GetCards();
+                var cardToUpdate = cards.FirstOrDefault(c => c.Equals(card));
+
+                if (cardToUpdate != null)
+                {
+                    cardToUpdate.IsFavorite = !cardToUpdate.IsFavorite;
+                    SaveAllCards(cards);
+                }
+            }
+        }
+
+        private static void SaveAllCards(List<Card> cards)
+        {
+            var json = JsonConvert.SerializeObject(cards);
             File.WriteAllText(filePath, json);
         }
     }

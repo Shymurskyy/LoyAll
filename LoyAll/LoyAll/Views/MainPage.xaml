@@ -130,14 +130,16 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Image Grid.Column="0"
-                           Source="favorite_empty.png"
-                           Aspect="AspectFit"
-                           HeightRequest="24"
-                           WidthRequest="24"
-                           HorizontalOptions="Start"
-                           VerticalOptions="Start"
-                           Margin="5"/>
+                                        <ImageButton Grid.Column="0"
+             Source="{Binding IsFavoriteImage}"
+             Aspect="AspectFit"
+             HeightRequest="24"
+             WidthRequest="24"
+             HorizontalOptions="Start"
+             VerticalOptions="Start"
+             Margin="5"
+             Clicked="OnFavoriteClicked"
+             CommandParameter="{Binding .}"/>
 
                                         <ImageButton Grid.Column="1"
                                Source="blue_close.png"

@@ -143,29 +143,24 @@ namespace LoyAll
         {
             try
             {
-                ObservableCollection<Card> filtered = string.IsNullOrWhiteSpace(searchText)
-                    ? new ObservableCollection<Card>(Cards)
-                    : new ObservableCollection<Card>(
-                        await Task.Run(() =>
-                            Cards.Where(c => c.StoreName?.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
-                                .ToList(),
-                            token));
+                var sortedCards = await Task.Run(() =>
+                    GetSortedCards(Cards, searchText).ToList(), token);
 
                 if (!token.IsCancellationRequested)
                 {
                     await MainThread.InvokeOnMainThreadAsync(() =>
                     {
                         FilteredCards.Clear();
-                        foreach (Card card in filtered)
+                        foreach (var card in sortedCards)
                         {
                             FilteredCards.Add(card);
                         }
                     });
                 }
             }
-            catch (Exception ex) when (ex is TaskCanceledException or OperationCanceledException)
+            catch (TaskCanceledException)
             {
-                // Filtering was canceled - ignore
+                //ignore
             }
         }
 
@@ -190,7 +185,7 @@ namespace LoyAll
             }
             catch (TaskCanceledException)
             {
-                // Animation was canceled - ignore
+                //ignore
             }
         }
 
@@ -277,6 +272,51 @@ namespace LoyAll
             {
                 _cardOpeningSemaphore.Release();
             }
+        }
+        private void OnFavoriteClicked(object sender, EventArgs e)
+        {
+            if (sender is ImageButton button && button.CommandParameter is Card card)
+            {
+                if (button.IsEnabled)
+                {
+                    button.IsEnabled = false;
+
+                    card.IsFavorite = !card.IsFavorite;
+
+                    _ = Task.Run(() =>
+                    {
+                        CardStorageService.ToggleFavorite(card);
+                        Dispatcher.Dispatch(() =>
+                        {
+                            ReorderList();
+                            button.IsEnabled = true;
+                        });
+                    });
+                }
+            }
+        }
+        private void ReorderList()
+        {
+            var currentSearch = SearchBar.Text;
+            var sorted = GetSortedCards(Cards, currentSearch).ToList();
+
+            for (int i = 0; i < sorted.Count; i++)
+            {
+                if (!FilteredCards[i].Equals(sorted[i]))
+                {
+                    FilteredCards.Move(FilteredCards.IndexOf(sorted[i]), i);
+                }
+            }
+        }
+        private IEnumerable<Card> GetSortedCards(IEnumerable<Card> cards, string searchText)
+        {
+            var filtered = string.IsNullOrWhiteSpace(searchText)
+                ? cards
+                : cards.AsParallel() 
+                      .Where(c => c.StoreName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false);
+
+            return filtered.OrderByDescending(c => c.IsFavorite)
+                          .ThenBy(c => c.StoreName);
         }
     }
 }
