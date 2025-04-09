@@ -18,7 +18,13 @@ namespace LoyAll.Views
         }
         private async void OnHelpClicked(object sender, EventArgs e)
         {
-            await DisplayAlert("","Tutaj mo¿esz udostêpniæ swoje karty lojalnoœciowe. Wygeneruj kod QR lub skopiuj link a nastêpnie zaimportuj na innym urz¹dzeniu aby dzieliæ siê tymi samymi kartami!", "OK");
+            using (var errorPopup = new CustomPopup(false))
+            {
+                errorPopup.SetTitle("Pomoc");
+                errorPopup.SetMessage($"Tutaj mo¿esz udostêpniæ swoje karty lojalnoœciowe. Wygeneruj kod QR lub skopiuj link a nastêpnie zaimportuj na innym urz¹dzeniu aby dzieliæ siê tymi samymi kartami!");
+                errorPopup.AddOption("OK", () => { });
+                await errorPopup.ShowAsync(this);
+            }
         }
         private async void OnCompressedDataTapped(object sender, EventArgs e)
         {

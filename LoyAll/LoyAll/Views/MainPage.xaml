@@ -10,7 +10,6 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:CardTypeToImageConverter x:Key="CardTypeToImageConverter"/>
-            <converters:FavoriteToImageConverter x:Key="FavoriteToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid RowDefinitions="Auto, 30, Auto, *, Auto">

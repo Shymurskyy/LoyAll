@@ -1,5 +1,6 @@
 using System.Globalization;
 using Java.Util.Functions;
+using LoyAll.Helper;
 using LoyAll.Services;
 using Microsoft.Maui.Controls;
 
@@ -54,15 +55,14 @@ namespace LoyAll
 
         private async void OnDeleteDataClicked(object sender, EventArgs e)
         {
-            bool confirm = await Application.Current.MainPage.DisplayAlert(
-                "Usuñ dane",
-                "Czy na pewno chcesz usun¹æ wszystkie dane? Wszystkie zapisane karty zostan¹ usuniête",
-                "Tak", "Anuluj");
-
-            if (confirm)
+            using (CustomPopup deletePopup = new CustomPopup())
             {
-                CardStorageService.DeleteAllCards();
-                await Application.Current.MainPage.DisplayAlert("Gotowe", "Wszystkie dane zosta³y usuniête.", "OK");
+                deletePopup.SetTitle("Usuñ kartê");
+                deletePopup.SetMessage($"Czy na pewno chcesz usun¹æ wszystkie dane?");
+
+                bool confirm = await deletePopup.ShowConfirmationAsync(this, "Tak");
+                if (confirm)
+                    CardStorageService.DeleteAllCards();
             }
         }
 
