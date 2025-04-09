@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Views;
+using LoyAll.Helper;
 using LoyAll.Model;
 using LoyAll.Services;
 using LoyAll.Views;
@@ -79,9 +80,14 @@ namespace LoyAll
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading cards: {ex}");
-                await MainThread.InvokeOnMainThreadAsync(async () =>
-                    await DisplayAlert("Błąd", "Nie udało się załadować kart", "OK"));
+                using (CustomPopup errorPopup = new CustomPopup(false))
+                {
+                    errorPopup.SetTitle("Błąd");
+                    errorPopup.SetMessage("Nie udało się załadować kart");
+                    errorPopup.AddOption("OK", () => { });
+                    await errorPopup.ShowAsync(this);
+                }
+                return;
             }
             finally
             {
@@ -93,21 +99,6 @@ namespace LoyAll
         {
             Cards.Insert(0, newCard);
             FilterCards(SearchBar.Text);
-        }
-
-        private async Task DeleteCardAsync(Card cardToRemove)
-        {
-            bool confirm = await DisplayAlert(
-                "Usuń kartę",
-                $"Czy na pewno chcesz usunąć kartę {cardToRemove.StoreName}?",
-                "Tak", "Nie");
-
-            if (confirm)
-            {
-                Cards.Remove(cardToRemove);
-                CardStorageService.DeleteCard(cardToRemove);
-                FilterCards(SearchBar.Text);
-            }
         }
 
         private void FilterCards(string searchText)
@@ -143,7 +134,7 @@ namespace LoyAll
         {
             try
             {
-                var sortedCards = await Task.Run(() =>
+                List<Card> sortedCards = await Task.Run(() =>
                     GetSortedCards(Cards, searchText).ToList(), token);
 
                 if (!token.IsCancellationRequested)
@@ -151,7 +142,7 @@ namespace LoyAll
                     await MainThread.InvokeOnMainThreadAsync(() =>
                     {
                         FilteredCards.Clear();
-                        foreach (var card in sortedCards)
+                        foreach (Card? card in sortedCards)
                         {
                             FilteredCards.Add(card);
                         }
@@ -203,7 +194,13 @@ namespace LoyAll
             {
                 if (!Cards.Any())
                 {
-                    await DisplayAlert("Brak kart", "Nie masz zapisanych kart do udostępnienia.", "OK");
+                    using (CustomPopup errorPopup = new CustomPopup(false))
+                    {
+                        errorPopup.SetTitle("Brak kart");
+                        errorPopup.SetMessage($"Nie masz kart do udostępnienia");
+                        errorPopup.AddOption("OK", () => { });
+                        await errorPopup.ShowAsync(this);
+                    }
                     return;
                 }
 
@@ -231,7 +228,7 @@ namespace LoyAll
 
                 if (sender is Frame frame && frame.BindingContext is Card selectedCard)
                 {
-                    var bottomSheet = new CardDetailPage(selectedCard);
+                    CardDetailPage bottomSheet = new CardDetailPage(selectedCard);
                     await bottomSheet.ShowAsync();
                 }
             }
@@ -244,79 +241,93 @@ namespace LoyAll
 
         private async void OnDeleteCardClicked(object sender, EventArgs e)
         {
-            await ExecuteWithCardOpeningLock(async () =>
-            {
-                if (sender is ImageButton button && button.CommandParameter is Card cardToRemove)
-                    await DeleteCardAsync(cardToRemove);
-            });
-        }
 
-        private async void OnAddCardClicked(object sender, EventArgs e)
-        {
-            await ExecuteWithCardOpeningLock(async () =>
+            if (sender is ImageButton button && button.CommandParameter is Card cardToRemove)
             {
-                await Navigation.PushAsync(new AddCardPage(this));
-            });
-        }
-
-        private async Task ExecuteWithCardOpeningLock(Func<Task> action)
-        {
-            if (!await _cardOpeningSemaphore.WaitAsync(0))
-                return;
-
-            try
-            {
-                await action();
-            }
-            finally
-            {
-                _cardOpeningSemaphore.Release();
-            }
-        }
-        private void OnFavoriteClicked(object sender, EventArgs e)
-        {
-            if (sender is ImageButton button && button.CommandParameter is Card card)
-            {
-                if (button.IsEnabled)
+                using (CustomPopup deletePopup = new CustomPopup())
                 {
-                    button.IsEnabled = false;
+                    deletePopup.SetTitle("Usuń kartę");
+                    deletePopup.SetMessage($"Czy na pewno chcesz usunąć kartę {cardToRemove.StoreName}?");
 
-                    card.IsFavorite = !card.IsFavorite;
+                    bool confirm = await deletePopup.ShowConfirmationAsync(this, "Tak");
 
-                    _ = Task.Run(() =>
+                    if (confirm)
                     {
-                        CardStorageService.ToggleFavorite(card);
-                        Dispatcher.Dispatch(() =>
-                        {
-                            ReorderList();
-                            button.IsEnabled = true;
-                        });
-                    });
+                        Cards.Remove(cardToRemove);
+                        FilteredCards.Remove(cardToRemove);
+                        CardStorageService.DeleteCard(cardToRemove);
+                    }
                 }
             }
         }
-        private void ReorderList()
-        {
-            var currentSearch = SearchBar.Text;
-            var sorted = GetSortedCards(Cards, currentSearch).ToList();
+    
 
-            for (int i = 0; i < sorted.Count; i++)
-            {
-                if (!FilteredCards[i].Equals(sorted[i]))
-                {
-                    FilteredCards.Move(FilteredCards.IndexOf(sorted[i]), i);
-                }
-            }
+    private async void OnAddCardClicked(object sender, EventArgs e)
+    {
+        await ExecuteWithCardOpeningLock(async () =>
+        {
+            await Navigation.PushAsync(new AddCardPage(this));
+        });
+    }
+
+    private async Task ExecuteWithCardOpeningLock(Func<Task> action)
+    {
+        if (!await _cardOpeningSemaphore.WaitAsync(0))
+            return;
+
+        try
+        {
+            await action();
         }
-        private IEnumerable<Card> GetSortedCards(IEnumerable<Card> cards, string searchText)
+        finally
         {
-            var filtered = string.IsNullOrWhiteSpace(searchText)
-                ? cards
-                : cards.AsParallel() 
-                      .Where(c => c.StoreName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false);
-
-            return filtered.OrderByDescending(c => c.IsFavorite)
-                          .ThenBy(c => c.StoreName);
+            _cardOpeningSemaphore.Release();
         }
     }
+    private void OnFavoriteClicked(object sender, EventArgs e)
+    {
+        if (sender is ImageButton button && button.CommandParameter is Card card)
+        {
+            if (button.IsEnabled)
+            {
+                button.IsEnabled = false;
+
+                card.IsFavorite = !card.IsFavorite;
+
+                _ = Task.Run(() =>
+                {
+                    CardStorageService.ToggleFavorite(card);
+                    Dispatcher.Dispatch(() =>
+                    {
+                        ReorderList();
+                        button.IsEnabled = true;
+                    });
+                });
+            }
+        }
+    }
+    private void ReorderList()
+    {
+        string currentSearch = SearchBar.Text;
+        List<Card> sorted = GetSortedCards(Cards, currentSearch).ToList();
+
+        for (int i = 0; i < sorted.Count; i++)
+        {
+            if (!FilteredCards[i].Equals(sorted[i]))
+            {
+                FilteredCards.Move(FilteredCards.IndexOf(sorted[i]), i);
+            }
+        }
+    }
+    private IEnumerable<Card> GetSortedCards(IEnumerable<Card> cards, string searchText)
+    {
+        IEnumerable<Card> filtered = string.IsNullOrWhiteSpace(searchText)
+            ? cards
+            : cards.AsParallel()
+                  .Where(c => c.StoreName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false);
+
+        return filtered.OrderByDescending(c => c.IsFavorite)
+                      .ThenBy(c => c.StoreName);
+    }
+}
 }

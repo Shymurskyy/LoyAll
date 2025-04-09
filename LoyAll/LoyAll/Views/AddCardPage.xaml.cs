@@ -3,12 +3,8 @@ using LoyAll.Model;
 using LoyAll.Services;
 using LZStringCSharp;
 using Newtonsoft.Json;
-using SkiaSharp;
-using System.IO;
-using System.Text.Json.Serialization;
-using ZXing;
 using ZXing.Net.Maui;
-using ZXing.SkiaSharp;
+using Color = Microsoft.Maui.Graphics.Color;
 
 namespace LoyAll.Views
 {
@@ -52,7 +48,13 @@ namespace LoyAll.Views
         {
             if (string.IsNullOrWhiteSpace(StoreNameEntry.Text) || string.IsNullOrWhiteSpace(BarcodeEntry.Text))
             {
-                await DisplayAlert("B³¹d", "Podaj nazwê i zeskanuj kod", "OK");
+                using (CustomPopup errorPopup = new CustomPopup(false))
+                {
+                    errorPopup.SetTitle("B³¹d");
+                    errorPopup.SetMessage("Podaj nazwê i zeskanuj kod");
+                    errorPopup.AddOption("OK", () => { });
+                    await errorPopup.ShowAsync(this);
+                }
                 return;
             }
 
@@ -101,60 +103,103 @@ namespace LoyAll.Views
         {
             try
             {
-                var action = await DisplayActionSheet("Wybierz sposób importu", "Anuluj", null, "Import z obrazu", "Import z tekstu");
+                CustomPopup popup = new CustomPopup();
+                popup.SetTitle("Wybierz sposób importu");
 
-                if (action == "Import z obrazu")
+                popup.AddOption("Import z obrazu", async () =>
                 {
                     FileResult? result = await MediaPicker.PickPhotoAsync();
                     if (result != null)
                     {
                         Stream stream = await result.OpenReadAsync();
                         string decodedValue = LZString.DecompressFromEncodedURIComponent(await BarcodeHelper.DecodeBarcodeFromImage(stream, true));
-                        var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
-                        var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
+
+                        List<dynamic>? tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
+                        List<Card> importedCards = tempCards.Select(x => new Card
+                        {
+                            StoreName = x.n,
+                            CardValue = x.k
+                        }).ToList();
 
                         if (importedCards != null)
                         {
-                            foreach (var item in importedCards)
+                            foreach (Card? item in importedCards)
                             {
                                 CardStorageService.SaveCard(item);
                                 mainPage.AddCard(item);
                             }
                         }
                     }
-                }
-                else if (action == "Import z tekstu")
-                {
-                    string inputText = await DisplayPromptAsync("Import z tekstu", "Wklej zakodowan¹ wiadomoœæ:");
-                    if (!string.IsNullOrWhiteSpace(inputText))
-                    {
-                        try
-                        {
-                            string decodedValue = LZString.DecompressFromEncodedURIComponent(inputText);
-                            var tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
-                            var importedCards = tempCards.Select(x => new Card { StoreName = x.n, CardValue = x.k }).ToList();
+                    await Navigation.PopAsync();
+                });
 
-                            if (importedCards != null)
+                popup.AddOption("Import z tekstu", async () =>
+                {
+                    CustomPopup textPopup = new CustomPopup();
+                    textPopup.SetTitle("Wklej zakodowan¹ wiadomoœæ");
+                    Entry entry = new Entry
+                    {
+                        Placeholder = "WprowadŸ tekst...",
+                        Margin = new Thickness(0, 0, 0, 20),
+                        TextColor = Color.FromArgb("#1A8CD8"),
+                    };
+
+                    textPopup.InsertView(1, entry);
+
+                    textPopup.AddOption("Importuj", async () =>
+                    {
+                        string inputText = entry.Text;
+                        if (!string.IsNullOrWhiteSpace(inputText))
+                        {
+                            try
                             {
-                                foreach (var item in importedCards)
+                                string decodedValue = LZString.DecompressFromEncodedURIComponent(inputText);
+                                List<dynamic>? tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
+                                List<Card> importedCards = tempCards.Select(x => new Card
                                 {
-                                    CardStorageService.SaveCard(item);
-                                    mainPage.AddCard(item);
+                                    StoreName = x.n,
+                                    CardValue = x.k
+                                }).ToList();
+
+                                if (importedCards != null)
+                                {
+                                    foreach (Card? item in importedCards)
+                                    {
+                                        CardStorageService.SaveCard(item);
+                                        mainPage.AddCard(item);
+                                    }
                                 }
+                                await Navigation.PopAsync();
+                            }
+                            catch (Exception ex)
+                            {
+                                using (CustomPopup errorPopup = new CustomPopup(false))
+                                {
+                                    errorPopup.SetTitle("B³¹d");
+                                    errorPopup.SetMessage($"Nie uda³o siê zdekodowaæ wiadomoœci. Upewnij siê ¿e importujesz kod wygenerowany w tej aplikacji!");
+                                    errorPopup.AddOption("OK", () => { });
+                                    await errorPopup.ShowAsync(this);
+                                }
+                                return;
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ wiadomoœci: {ex.Message}", "OK");
-                        }
-                    }
-                }
+                    });
 
-                await Navigation.PopAsync();
+                    await textPopup.ShowAsync(this);
+                });
+
+                await popup.ShowAsync(this);
             }
             catch (Exception ex)
             {
-                await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu. Upewnij siê ¿e importujesz kod wygenerowany w tej aplikacji!", "OK");
+                using (CustomPopup errorPopup = new CustomPopup(false))
+                {
+                    errorPopup.SetTitle("B³¹d");
+                    errorPopup.SetMessage("Nie uda³o siê zdekodowaæ kodu. Upewnij siê ¿e importujesz kod wygenerowany w tej aplikacji!");
+                    errorPopup.AddOption("OK", () => { });
+                    await errorPopup.ShowAsync(this);
+                }
+                return;
             }
         }
 
@@ -163,7 +208,7 @@ namespace LoyAll.Views
         {
             try
             {
-                var photo = await MediaPicker.CapturePhotoAsync();
+                FileResult? photo = await MediaPicker.CapturePhotoAsync();
 
                 if (photo != null)
                 {
@@ -180,18 +225,32 @@ namespace LoyAll.Views
                         }
                         else
                         {
-                            BarcodeEntry.Text = "Nieobs³ugiwany kod"; 
+                            BarcodeEntry.Text = "Nieobs³ugiwany kod";
                         }
                     }
                     else
                     {
-                        await DisplayAlert("B³¹d", "Nie znaleziono kodu QR/kreskowego na obrazie.", "OK");
+                        using (CustomPopup errorPopup = new CustomPopup(false))
+                        {
+                            errorPopup.SetTitle("B³¹d");
+                            errorPopup.SetMessage("Nie znaleziono kodu QR/kreskowego na obrazie.");
+                            errorPopup.AddOption("OK", () => { });
+                            await errorPopup.ShowAsync(this);
+                        }
+                        return;
                     }
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("B³¹d", $"Nie uda³o siê zdekodowaæ kodu: {ex.Message}", "OK");
+                using (CustomPopup errorPopup = new CustomPopup(false))
+                {
+                    errorPopup.SetTitle("B³¹d");
+                    errorPopup.SetMessage($"Nie uda³o siê zdekodowaæ kodu: {ex.Message}");
+                    errorPopup.AddOption("OK", () => { });
+                    await errorPopup.ShowAsync(this);
+                }
+                return;
             }
         }
 

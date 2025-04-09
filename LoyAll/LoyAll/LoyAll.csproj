@@ -68,6 +68,8 @@
 	  <None Remove="Resources\Images\gallery.png" />
 	  <None Remove="Resources\Images\help.png" />
 	  <None Remove="Resources\Images\lock.png" />
+	  <None Remove="Resources\Images\orange_favorite.png" />
+	  <None Remove="Resources\Images\orange_favorite_full.png" />
 	  <None Remove="Resources\Images\photo.png" />
 	  <None Remove="Resources\Images\plus.png" />
 	  <None Remove="Resources\Images\qr_placeholder.png" />
@@ -98,6 +100,9 @@
 	  <Compile Update="Views\AddCardPage.xaml.cs">
 	    <DependentUpon>AddCardPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\CustomPopup.xaml.cs">
+	    <DependentUpon>CustomPopup.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\SettingsPage.xaml.cs">
 	    <DependentUpon>SettingsPage.xaml</DependentUpon>
 	  </Compile>
@@ -110,6 +115,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\CustomPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

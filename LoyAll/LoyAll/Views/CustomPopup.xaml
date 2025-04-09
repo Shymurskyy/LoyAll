@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LoyAll.Helper.CustomPopup"
+             x:Name="popupRoot">
+    <ContentView.Resources>
+        <Style TargetType="Label" x:Key="PopupTitleStyle">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="#1A8CD8"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="PopupMessageStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="PopupButtonStyle">
+            <Setter Property="BackgroundColor" Value="#1A8CD8"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="PopupCancelButtonStyle">
+            <Setter Property="BackgroundColor" Value="#7AC8F9"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="HeightRequest" Value="40"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+        </Style>
+    </ContentView.Resources>
+
+    <Grid BackgroundColor="#80000000"
+          IsVisible="{Binding IsVisible, Source={x:Reference popupRoot}}">
+        <Frame BackgroundColor="#F5F9FF"
+               BorderColor="#1A8CD8"
+               CornerRadius="20"
+               Padding="20"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               WidthRequest="300"
+               InputTransparent="False">
+            <StackLayout x:Name="contentLayout">
+                <Button x:Name="cancelButton"
+                        Text="Anuluj"
+                        Style="{StaticResource PopupCancelButtonStyle}"
+                        Clicked="OnCancelClicked"
+                        Padding="5"/>
+            </StackLayout>
+        </Frame>
+    </Grid>
+</ContentView>
