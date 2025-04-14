@@ -31,21 +31,7 @@
                    HorizontalOptions="Center"
                    TextColor="Black"/>
 
-            <StackLayout Orientation="Horizontal" 
-                        HorizontalOptions="Center"
-                        Spacing="15">
-                <Label Text="QR" 
-                       VerticalOptions="Center"
-                       FontSize="16"
-                       TextColor="Gray"/>
-                <Switch x:Name="BarcodeSwitch" 
-                        Toggled="OnBarcodeSwitchToggled"
-                        VerticalOptions="Center"/>
-                <Label Text="Kod kreskowy" 
-                       VerticalOptions="Center"
-                       FontSize="16"
-                       TextColor="Gray"/>
-            </StackLayout>
+           
 
 
             <Frame Padding="-20"

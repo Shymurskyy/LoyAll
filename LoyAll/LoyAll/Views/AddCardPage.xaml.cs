@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Views;
 using LoyAll.Helper;
 using LoyAll.Model;
 using LoyAll.Services;
@@ -21,6 +22,11 @@ namespace LoyAll.Views
 
         private async void OnPickImageClicked(object sender, EventArgs e)
         {
+            await ExecuteImageClicked();
+        }
+
+        private async Task ExecuteImageClicked()
+        {
             FileResult? result = await MediaPicker.PickPhotoAsync();
             if (result != null)
             {
@@ -42,7 +48,6 @@ namespace LoyAll.Views
                 }
             }
         }
-
 
         private async void OnSaveCardClicked(object sender, EventArgs e)
         {
@@ -206,6 +211,11 @@ namespace LoyAll.Views
 
         private async void OnScanBarcodeClicked(object sender, EventArgs e)
         {
+            await ExecuteBarcodeClicked();
+        }
+
+        private async Task ExecuteBarcodeClicked()
+        {
             try
             {
                 FileResult? photo = await MediaPicker.CapturePhotoAsync();
@@ -264,6 +274,19 @@ namespace LoyAll.Views
             AddButtonsView.IsVisible = true;
             StoreNameEntry.Text = string.Empty;
             BarcodeEntry.Text = string.Empty;
+        }
+        private async void OnAddClicked(object sender, EventArgs e)
+        {
+            using (CustomPopup customPopup = new CustomPopup())
+            {
+                customPopup.SetTitle("Dodaj now¹ karte");
+                customPopup.AddOption("Dodaj z galerii", async () =>
+                {
+                    await ExecuteImageClicked();
+                });
+                customPopup.AddOption("Skanuj kod",async () => { await ExecuteBarcodeClicked(); });
+                await customPopup.ShowAsync(this);
+            }
         }
     }
 }

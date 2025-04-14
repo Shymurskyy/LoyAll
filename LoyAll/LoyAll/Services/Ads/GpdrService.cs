@@ -122,7 +122,5 @@ public class ConsentFormDismissedListener : Java.Lang.Object, IConsentFormOnCons
 
         editor.PutBoolean("personalized_ads", personalizedAds);
         editor.Apply();
-
-        Console.WriteLine($"Zgoda na reklamy personalizowane: {personalizedAds}");
     }
 }

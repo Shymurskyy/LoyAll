@@ -21,7 +21,7 @@ namespace LoyAll
 
             StoreNameLabel.Text = _card.StoreName;
             RealCardValueLabel.Text = _card.CleanCardValue;
-            BarcodeSwitch.IsToggled = _card.CardValue.StartsWith("B:#");
+            //BarcodeSwitch.IsToggled = _card.CardValue.StartsWith("B:#");
 
             _ = InitializeAsync();
         }

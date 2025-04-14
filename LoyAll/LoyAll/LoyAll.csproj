@@ -39,17 +39,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
-
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.png" Color="#FFFFFF" />
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\lock.png">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</MauiImage>
-
+		<!-- Splash Screen -->
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
@@ -67,9 +60,11 @@
 	  <None Remove="Resources\Images\favorite_full.png" />
 	  <None Remove="Resources\Images\gallery.png" />
 	  <None Remove="Resources\Images\help.png" />
+	  <None Remove="Resources\Images\language.png" />
 	  <None Remove="Resources\Images\lock.png" />
+	  <None Remove="Resources\Images\misc.png" />
 	  <None Remove="Resources\Images\orange_favorite.png" />
-	  <None Remove="Resources\Images\orange_favorite_full.png" />
+	  <None Remove="Resources\Images\person.png" />
 	  <None Remove="Resources\Images\photo.png" />
 	  <None Remove="Resources\Images\plus.png" />
 	  <None Remove="Resources\Images\qr_placeholder.png" />
@@ -77,8 +72,13 @@
 	  <None Remove="Resources\Images\search.png" />
 	  <None Remove="Resources\Images\settings.png" />
 	  <None Remove="Resources\Images\share.png" />
+	  <None Remove="Resources\Splash\icon.png" />
+	  <None Remove="Resources\Splash\splashicon.png" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiSplashScreen Include="Resources\Splash\icon.png" Color="White" BaseSize="1024,1024" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
 		<PackageReference Include="LZStringCSharp" Version="1.4.0" />

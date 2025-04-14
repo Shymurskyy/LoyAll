@@ -26,7 +26,7 @@
                      Padding="20,10">
             <Label Text="LoyAll"
                    TextColor="White"
-                   FontSize="35"
+                   FontSize="45"
                    FontAttributes="Bold"
                    VerticalOptions="Center"
                    HorizontalOptions="StartAndExpand"
@@ -35,14 +35,14 @@
             <StackLayout Orientation="Horizontal" 
              Spacing="20"
              VerticalOptions="Center">
-                <ImageButton Source="settings.png"
+                <ImageButton Source="settings.svg"
                  Clicked="OnSettingsClicked" 
                  BackgroundColor="Transparent"
                  Aspect="AspectFit"
                  HeightRequest="34"
                  WidthRequest="34"/>
 
-                <ImageButton Source="share.png"
+                <ImageButton Source="share.svg"
                  Clicked="OnShareCardsClicked"
                  BackgroundColor="Transparent"
                  Aspect="AspectFit"
@@ -59,7 +59,7 @@
                 Margin="20,0,20,20"
                HeightRequest="50">
             <Grid ColumnDefinitions="30, *">
-                <Image Source="search.png" 
+                <Image Source="search.svg" 
                        Grid.Column="0"
                        Aspect="AspectFit"
                        HeightRequest="20"
@@ -121,7 +121,7 @@
                        TextColor="#1A8CD8"
                        VerticalOptions="End"
                        HorizontalOptions="Center"
-                       Margin="0,0,0,3"/>
+                       Margin="0,0,0,8"/>
 
                                     <Grid HorizontalOptions="Fill" VerticalOptions="Start">
                                         <Grid.ColumnDefinitions>
@@ -141,7 +141,7 @@
              CommandParameter="{Binding .}"/>
 
                                         <ImageButton Grid.Column="1"
-                               Source="blue_close.png"
+                               Source="blue_close.svg"
                                BackgroundColor="Transparent"
                                WidthRequest="24"
                                HeightRequest="24"
