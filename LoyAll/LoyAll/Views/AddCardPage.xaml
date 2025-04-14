@@ -55,7 +55,8 @@
                                  CornerRadius="65"
                                  HorizontalOptions="Center"
                                  VerticalOptions="Center"
-                                 Padding="25"/>
+                                 Padding="25"
+                                 Clicked="OnAddClicked"/>
 
                     <ImageButton Source="gallery.svg"
                                  BackgroundColor="#1DA1F2"
