@@ -23,13 +23,13 @@
                      Padding="20,10">
             <Label Text="LoyAll"
                    TextColor="White"
-                   FontSize="35"
+                   FontSize="45"
                    FontAttributes="Bold"
                    VerticalOptions="Center"
                    HorizontalOptions="StartAndExpand"
                    FontFamily="LilitaOne"/>
 
-            <ImageButton Source="save.png"
+            <ImageButton Source="save.svg"
                          BackgroundColor="Transparent"
                          HeightRequest="30"
                          WidthRequest="30"
@@ -48,7 +48,7 @@
                          HorizontalOptions="Fill">
 
                 <Grid HeightRequest="180">
-                    <ImageButton Source="plus.png"
+                    <ImageButton Source="plus.svg"
                                  BackgroundColor="#7AC8F9"
                                  HeightRequest="130"
                                  WidthRequest="130"
@@ -57,7 +57,7 @@
                                  VerticalOptions="Center"
                                  Padding="25"/>
 
-                    <ImageButton Source="gallery.png"
+                    <ImageButton Source="gallery.svg"
                                  BackgroundColor="#1DA1F2"
                                  HeightRequest="80"
                                  WidthRequest="80"
@@ -68,7 +68,7 @@
                                  Clicked="OnPickImageClicked"
                                  Padding="10"/>
 
-                    <ImageButton Source="photo.png"
+                    <ImageButton Source="photo.svg"
                                  BackgroundColor="#1DA1F2"
                                  HeightRequest="80"
                                  WidthRequest="80"

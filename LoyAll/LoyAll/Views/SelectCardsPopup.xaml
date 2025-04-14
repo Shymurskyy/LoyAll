@@ -3,71 +3,87 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:Class="LoyAll.Views.SelectCardsPopup">
+    x:Class="LoyAll.Views.SelectCardsPopup"
+    Size="300, 500"
+    Color="Transparent">
 
-    <VerticalStackLayout Padding="20" BackgroundColor="White" Spacing="15">
-        <Label Text="Wybierz karty do udostępnienia" 
-               FontSize="18" 
-               TextColor="#1DA1F2"
-               FontAttributes="Bold"
-               HorizontalOptions="Center" />
+    <Frame CornerRadius="20"
+           Padding="0"
+           HasShadow="True"
+           BorderColor="#1DA1F2"
+           BackgroundColor="#EBF5FB">
 
-        <Frame BackgroundColor="#EBF5FB" 
-               CornerRadius="10"
-               Padding="10"
-               HasShadow="False"
-               HeightRequest="400"
-               MaximumHeightRequest="500"
-               BorderColor="#1A8CD8">
-            <ScrollView>
-                <CollectionView ItemsSource="{Binding SelectableCards}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
+        <Grid RowDefinitions="Auto,*,Auto" 
+              RowSpacing="0"
+              Padding="10">
+
+            <Label Text="Wybierz karty do udostępnienia" 
+                   FontSize="18" 
+                   TextColor="#1DA1F2"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Grid.Row="0"
+                   Margin="0,10,0,10"/>
+
+            <Frame CornerRadius="15"
+                   Padding="10"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   BackgroundColor="#EBF5FB"
+                   Grid.Row="1">
+                <ScrollView>
+                    <CollectionView ItemsSource="{Binding SelectableCards}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnRowTapped"/>
+                                    </StackLayout.GestureRecognizers>
+
+                                    <CheckBox IsChecked="{Binding IsSelected}" 
+                                             Color="#1DA1F2"/>
+                                    <Label Text="{Binding Card.StoreName}" 
+                                           VerticalOptions="Center"
+                                           TextColor="Black"/>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.Header>
                             <StackLayout Orientation="Horizontal" Spacing="10">
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnRowTapped"/>
-                                </StackLayout.GestureRecognizers>
-
-                                <CheckBox IsChecked="{Binding IsSelected}" 
-                                         Color="#1DA1F2"/>
-                                <Label Text="{Binding Card.StoreName}" 
+                                <CheckBox x:Name="SelectAllCheckBox"
+                                         Color="#1DA1F2"
+                                         CheckedChanged="OnSelectAllCheckedChanged"/>
+                                <Label Text="Wybierz wszystkie" 
                                        VerticalOptions="Center"
-                                       TextColor="Black"/>
+                                       TextColor="#1DA1F2"
+                                       FontAttributes="Bold">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnSelectAllLabelTapped"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
                             </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                    <CollectionView.Header>
-                        <StackLayout Orientation="Horizontal" Spacing="10">
-                            <CheckBox x:Name="SelectAllCheckBox"
-                                     Color="#1DA1F2"
-                                     CheckedChanged="OnSelectAllCheckedChanged"/>
-                            <Label Text="Wybierz wszystkie" 
-                                   VerticalOptions="Center"
-                                   TextColor="#1DA1F2"
-                                   FontAttributes="Bold">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnSelectAllLabelTapped"/>
-                                </Label.GestureRecognizers>
-                            </Label>
-                        </StackLayout>
-                    </CollectionView.Header>
-                </CollectionView>
-            </ScrollView>
-        </Frame>
+                        </CollectionView.Header>
+                    </CollectionView>
+                </ScrollView>
+            </Frame>
 
-        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-            <Button Text="Udostępnij" 
-                    Clicked="OnShareClicked"
-                    BackgroundColor="#1A8CD8"
-                    TextColor="White"
-                    CornerRadius="10"
-                    Grid.Column="0"/>
-            <Button Text="Anuluj" 
-                    Clicked="OnCancelClicked"
-                    BackgroundColor="LightGray"
-                    TextColor="Black"
-                    CornerRadius="10"
-                    Grid.Column="1"/>
+            <Grid ColumnDefinitions="*,*" 
+                  ColumnSpacing="10"
+                  Grid.Row="2"
+                  Margin="0,15,0,10">
+                <Button Text="Udostępnij" 
+                        Clicked="OnShareClicked"
+                        BackgroundColor="#1A8CD8"
+                        TextColor="White"   
+                        CornerRadius="10"
+                        Grid.Column="0"/>
+                <Button Text="Anuluj" 
+                        Clicked="OnCancelClicked"
+                        BackgroundColor="LightGray"
+                        TextColor="Black"
+                        CornerRadius="10"
+                        Grid.Column="1"/>
+            </Grid>
         </Grid>
-    </VerticalStackLayout>
+    </Frame>
 </toolkit:Popup>

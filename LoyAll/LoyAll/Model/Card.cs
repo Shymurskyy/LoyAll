@@ -28,7 +28,7 @@ namespace LoyAll.Model
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;
-        public string IsFavoriteImage => IsFavorite ? "orange_favorite_full.png" : "favorite_empty.png";
+        public string IsFavoriteImage => IsFavorite ? "orange_favorite_full.svg" : "favorite_empty.svg";
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

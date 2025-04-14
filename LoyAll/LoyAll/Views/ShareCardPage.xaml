@@ -23,13 +23,13 @@
                      Padding="20,10">
             <Label Text="LoyAll"
                    TextColor="White"
-                   FontSize="35"
+                   FontSize="45"
                    FontAttributes="Bold"
                    VerticalOptions="Center"
                    HorizontalOptions="StartAndExpand"
                    FontFamily="LilitaOne"/>
 
-            <ImageButton Source="help.png"
+            <ImageButton Source="help.svg"
                          BackgroundColor="Transparent"
                          HeightRequest="30"
                          WidthRequest="30"
