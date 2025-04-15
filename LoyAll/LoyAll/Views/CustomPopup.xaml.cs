@@ -141,6 +141,10 @@ namespace LoyAll.Helper
                 throw;
             }
         }
+        private void OnOverlayTapped(object sender, EventArgs e)
+        {
+          
+        }
 
         public async Task CloseAsync(bool result)
         {
