@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="LoyAll.MainPage"
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
              xmlns:converters="clr-namespace:LoyAll.Helper"
-             Title="Twoje karty"
+             xmlns:translate="clr-namespace:LoyAll.Helper"
+             x:Class="LoyAll.MainPage"
+             Title="{translate:Localization TitleCards}"
              BackgroundColor="White"
              Shell.NavBarIsVisible="False">
     <ContentPage.Resources>
@@ -12,18 +13,11 @@
             <converters:CardTypeToImageConverter x:Key="CardTypeToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
+
     <Grid RowDefinitions="Auto, 30, Auto, *, Auto">
+        <BoxView Color="#1DA1F2" Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="FillAndExpand"/>
 
-        <BoxView Color="#1DA1F2" 
-                Grid.Row="0"
-                Grid.RowSpan="3" 
-            HorizontalOptions="FillAndExpand"/>
-
-        <StackLayout Orientation="Horizontal"
-                     Grid.Row="0"
-                     HorizontalOptions="Fill"
-                     VerticalOptions="Center"
-                     Padding="20,10">
+        <StackLayout Orientation="Horizontal" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Center" Padding="20,10">
             <Label Text="LoyAll"
                    TextColor="White"
                    FontSize="45"
@@ -32,43 +26,20 @@
                    HorizontalOptions="StartAndExpand"
                    FontFamily="LilitaOne"/>
 
-            <StackLayout Orientation="Horizontal" 
-             Spacing="20"
-             VerticalOptions="Center">
-                <ImageButton Source="settings.svg"
-                 Clicked="OnSettingsClicked" 
-                 BackgroundColor="Transparent"
-                 Aspect="AspectFit"
-                 HeightRequest="34"
-                 WidthRequest="34"/>
-
-                <ImageButton Source="share.svg"
-                 Clicked="OnShareCardsClicked"
-                 BackgroundColor="Transparent"
-                 Aspect="AspectFit"
-                 HeightRequest="34"
-                 WidthRequest="34"/>
+            <StackLayout Orientation="Horizontal" Spacing="20" VerticalOptions="Center">
+                <ImageButton Source="settings.svg" Clicked="OnSettingsClicked" BackgroundColor="Transparent"
+                             Aspect="AspectFit" HeightRequest="34" WidthRequest="34"/>
+                <ImageButton Source="share.svg" Clicked="OnShareCardsClicked" BackgroundColor="Transparent"
+                             Aspect="AspectFit" HeightRequest="34" WidthRequest="34"/>
             </StackLayout>
         </StackLayout>
 
-        <Frame BackgroundColor="#1A8CD8" 
-               BorderColor="Transparent"
-               CornerRadius="20"
-               Padding="5"
-               Grid.Row="2" 
-                Margin="20,0,20,20"
-               HeightRequest="50">
+        <Frame BackgroundColor="#1A8CD8" BorderColor="Transparent" CornerRadius="20" Padding="5" Grid.Row="2" Margin="20,0,20,20" HeightRequest="50">
             <Grid ColumnDefinitions="30, *">
-                <Image Source="search.svg" 
-                       Grid.Column="0"
-                       Aspect="AspectFit"
-                       HeightRequest="20"
-                       WidthRequest="20"
-                       VerticalOptions="Center"/>
-
+                <Image Source="search.svg" Grid.Column="0" Aspect="AspectFit" HeightRequest="20" WidthRequest="20" VerticalOptions="Center"/>
                 <Entry x:Name="SearchBar"
                        Grid.Column="1"
-                       Placeholder="Szukaj kart"
+                       Placeholder="{translate:Localization SearchPlaceholder}"
                        PlaceholderColor="White"
                        TextColor="White"
                        TextChanged="OnSearchTextChanged"

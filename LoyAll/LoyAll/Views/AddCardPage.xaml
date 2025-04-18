@@ -4,7 +4,8 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              x:Class="LoyAll.Views.AddCardPage"
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
-             Title="Dodaj kartę"
+             xmlns:translate="clr-namespace:LoyAll.Helper"
+             Title="{translate:Localization AddCardTitle}"
              Shell.NavBarIsVisible="False"
              BackgroundColor="White">
     <Grid RowDefinitions="Auto,Auto,Auto,*,*"
@@ -81,7 +82,7 @@
                                  Padding="10"/>
                 </Grid>
 
-                <Button Text="Importuj z innego urządzenia"
+                <Button Text="{translate:Localization ImportFromDevice}"
                         FontSize="16"
                         Clicked="OnImportSharedCardClicked"
                         BackgroundColor="#1A8CD8"
@@ -122,7 +123,7 @@
                VerticalOptions="Start"
                BorderColor="#1A8CD8">
             <Entry x:Name="StoreNameEntry"
-                   Placeholder="Nazwa karty"
+                   Placeholder="{translate:Localization CardNamePlaceholder}"
                    FontSize="16"
                    TextColor="Black"
                    BackgroundColor="Transparent"

@@ -82,9 +82,9 @@ namespace LoyAll
             {
                 using (CustomPopup errorPopup = new CustomPopup(false))
                 {
-                    errorPopup.SetTitle("Błąd");
-                    errorPopup.SetMessage("Nie udało się załadować kart");
-                    errorPopup.AddOption("OK", () => { });
+                    errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                    errorPopup.SetMessage(LanguageHelper.Instance["LoadCardsError"]);
+                    errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
                     await errorPopup.ShowAsync(this);
                 }
                 return;
@@ -196,9 +196,9 @@ namespace LoyAll
                 {
                     using (CustomPopup errorPopup = new CustomPopup(false))
                     {
-                        errorPopup.SetTitle("Brak kart");
-                        errorPopup.SetMessage($"Nie masz kart do udostępnienia");
-                        errorPopup.AddOption("OK", () => { });
+                        errorPopup.SetTitle(LanguageHelper.Instance["NoCardsTitle"]);
+                        errorPopup.SetMessage(LanguageHelper.Instance["NoCardsMessage"]);
+                        errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
                         await errorPopup.ShowAsync(this);
                     }
                     return;
@@ -246,10 +246,9 @@ namespace LoyAll
             {
                 using (CustomPopup deletePopup = new CustomPopup())
                 {
-                    deletePopup.SetTitle("Usuń kartę");
-                    deletePopup.SetMessage($"Czy na pewno chcesz usunąć kartę {cardToRemove.StoreName}?");
-
-                    bool confirm = await deletePopup.ShowConfirmationAsync(this, "Tak");
+                    deletePopup.SetTitle(LanguageHelper.Instance["DeleteCardTitle"]);
+                    deletePopup.SetMessage(string.Format(LanguageHelper.Instance["DeleteCardMessage"], cardToRemove.StoreName));
+                    bool confirm = await deletePopup.ShowConfirmationAsync(this, LanguageHelper.Instance["ConfirmButton"]);
 
                     if (confirm)
                     {

@@ -16,12 +16,7 @@ namespace LoyAll
 
             LanguagePicker.ItemsSource = _availableLanguages;
 
-            string deviceLanguage = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-
-            if (deviceLanguage == "pl")
-                LanguagePicker.SelectedItem = "Polski";
-            else
-                LanguagePicker.SelectedItem = "English";
+            LanguagePicker.SelectedItem = LanguageHelper.Instance.GetCurrentLanguage();
         }
 
         private void OnTogglePrivacyOptions(object sender, EventArgs e)
@@ -72,7 +67,7 @@ namespace LoyAll
 
             if (!string.IsNullOrEmpty(selectedLanguage))
             {
-                //TODO Actual language change
+                LanguageHelper.Instance.ChangeLanguage(selectedLanguage);
             }
         }
     }

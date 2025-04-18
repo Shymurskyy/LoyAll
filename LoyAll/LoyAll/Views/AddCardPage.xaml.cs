@@ -43,7 +43,7 @@ namespace LoyAll.Views
                     }
                     else
                     {
-                        BarcodeEntry.Text = "Nieobs³ugiwany kod";
+                        BarcodeEntry.Text = LanguageHelper.Instance["UnsupportedCode"];
                     }
                 }
             }
@@ -55,9 +55,9 @@ namespace LoyAll.Views
             {
                 using (CustomPopup errorPopup = new CustomPopup(false))
                 {
-                    errorPopup.SetTitle("B³¹d");
-                    errorPopup.SetMessage("Podaj nazwê i zeskanuj kod");
-                    errorPopup.AddOption("OK", () => { });
+                    errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                    errorPopup.SetMessage(LanguageHelper.Instance["EnterNameAndScanError"]);
+                    errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
                     await errorPopup.ShowAsync(this);
                 }
                 return;
@@ -85,6 +85,7 @@ namespace LoyAll.Views
                 ShowCodePreview(barcodeValue);
             }
         }
+
         private void ShowCodePreview(string barcodeValue)
         {
             if (barcodeValue.StartsWith("B:#"))
@@ -104,14 +105,15 @@ namespace LoyAll.Views
             AddButtonsView.IsVisible = false;
             CodePreviewView.IsVisible = true;
         }
+
         private async void OnImportSharedCardClicked(object sender, EventArgs e)
         {
             try
             {
                 CustomPopup popup = new CustomPopup();
-                popup.SetTitle("Wybierz sposób importu");
+                popup.SetTitle(LanguageHelper.Instance["ChooseImportMethod"]);
 
-                popup.AddOption("Import z obrazu", async () =>
+                popup.AddOption(LanguageHelper.Instance["ImportFromImage"], async () =>
                 {
                     FileResult? result = await MediaPicker.PickPhotoAsync();
                     if (result != null)
@@ -138,20 +140,20 @@ namespace LoyAll.Views
                     await Navigation.PopAsync();
                 });
 
-                popup.AddOption("Import z tekstu", async () =>
+                popup.AddOption(LanguageHelper.Instance["ImportFromText"], async () =>
                 {
                     CustomPopup textPopup = new CustomPopup();
-                    textPopup.SetTitle("Wklej zakodowan¹ wiadomoœæ");
+                    textPopup.SetTitle(LanguageHelper.Instance["PasteEncodedMessage"]);
                     Entry entry = new Entry
                     {
-                        Placeholder = "WprowadŸ tekst...",
+                        Placeholder = LanguageHelper.Instance["EnterTextPlaceholder"],
                         Margin = new Thickness(0, 0, 0, 20),
                         TextColor = Color.FromArgb("#1A8CD8"),
                     };
 
                     textPopup.InsertView(1, entry);
 
-                    textPopup.AddOption("Importuj", async () =>
+                    textPopup.AddOption(LanguageHelper.Instance["ImportButton"], async () =>
                     {
                         string inputText = entry.Text;
                         if (!string.IsNullOrWhiteSpace(inputText))
@@ -180,9 +182,9 @@ namespace LoyAll.Views
                             {
                                 using (CustomPopup errorPopup = new CustomPopup(false))
                                 {
-                                    errorPopup.SetTitle("B³¹d");
-                                    errorPopup.SetMessage($"Nie uda³o siê zdekodowaæ wiadomoœci. Upewnij siê ¿e importujesz kod wygenerowany w tej aplikacji!");
-                                    errorPopup.AddOption("OK", () => { });
+                                    errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                                    errorPopup.SetMessage(LanguageHelper.Instance["DecodeErrorMessage"]);
+                                    errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
                                     await errorPopup.ShowAsync(this);
                                 }
                                 return;
@@ -199,16 +201,14 @@ namespace LoyAll.Views
             {
                 using (CustomPopup errorPopup = new CustomPopup(false))
                 {
-                    errorPopup.SetTitle("B³¹d");
-                    errorPopup.SetMessage("Nie uda³o siê zdekodowaæ kodu. Upewnij siê ¿e importujesz kod wygenerowany w tej aplikacji!");
-                    errorPopup.AddOption("OK", () => { });
+                    errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                    errorPopup.SetMessage(LanguageHelper.Instance["DecodeErrorMessage"]);
+                    errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
                     await errorPopup.ShowAsync(this);
                 }
                 return;
             }
         }
-
-
         private async void OnScanBarcodeClicked(object sender, EventArgs e)
         {
             await ExecuteBarcodeClicked();
@@ -235,16 +235,16 @@ namespace LoyAll.Views
                         }
                         else
                         {
-                            BarcodeEntry.Text = "Nieobs³ugiwany kod";
+                            BarcodeEntry.Text = LanguageHelper.Instance["UnsupportedCode"];
                         }
                     }
                     else
                     {
                         using (CustomPopup errorPopup = new CustomPopup(false))
                         {
-                            errorPopup.SetTitle("B³¹d");
-                            errorPopup.SetMessage("Nie znaleziono kodu QR/kreskowego na obrazie.");
-                            errorPopup.AddOption("OK", () => { });
+                            errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                            errorPopup.SetMessage(LanguageHelper.Instance["NoBarcodeFound"]);
+                            errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
                             await errorPopup.ShowAsync(this);
                         }
                         return;
@@ -255,9 +255,9 @@ namespace LoyAll.Views
             {
                 using (CustomPopup errorPopup = new CustomPopup(false))
                 {
-                    errorPopup.SetTitle("B³¹d");
-                    errorPopup.SetMessage($"Nie uda³o siê zdekodowaæ kodu: {ex.Message}");
-                    errorPopup.AddOption("OK", () => { });
+                    errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                    errorPopup.SetMessage($"{LanguageHelper.Instance["DecodeErrorPrefix"]} {ex.Message}");
+                    errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
                     await errorPopup.ShowAsync(this);
                 }
                 return;
@@ -279,12 +279,12 @@ namespace LoyAll.Views
         {
             using (CustomPopup customPopup = new CustomPopup())
             {
-                customPopup.SetTitle("Dodaj now¹ karte");
-                customPopup.AddOption("Dodaj z galerii", async () =>
+                customPopup.SetTitle(LanguageHelper.Instance["AddNewCard"]);
+                customPopup.AddOption(LanguageHelper.Instance["AddFromGallery"], async () =>
                 {
                     await ExecuteImageClicked();
                 });
-                customPopup.AddOption("Skanuj kod",async () => { await ExecuteBarcodeClicked(); });
+                customPopup.AddOption(LanguageHelper.Instance["ScanCode"], async () => { await ExecuteBarcodeClicked(); });
                 await customPopup.ShowAsync(this);
             }
         }

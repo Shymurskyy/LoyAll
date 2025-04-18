@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
+             xmlns:translate="clr-namespace:LoyAll.Helper"
              Shell.NavBarIsVisible="False"
              x:Class="LoyAll.SettingsPage"
-             Title="Ustawienia"
+             Title="{translate:Localization SettingsTitle}"
              BackgroundColor="White">
     <Grid RowDefinitions="Auto, *, Auto">
         <BoxView Color="#1DA1F2" 
@@ -35,7 +36,7 @@
                                VerticalOptions="Center"
                                Margin="0,0,10,0"
                                Grid.Column="0" />
-                        <Label Text="Prywatność i bezpieczeństwo"
+                        <Label Text="{translate:Localization PrivacyAndSecurity}"
                                FontSize="16"
                                FontAttributes="Bold"
                                TextColor="#1A8CD8"
@@ -44,13 +45,13 @@
                     </Grid>
 
                     <StackLayout x:Name="PrivacyOptions" Spacing="10" Padding="10,0,0,0">
-                        <Button Text="Ponownie wyświetl zgodę GDPR"
+                        <Button Text="{translate:Localization ShowGDPRConsent}"
                                 Clicked="OnShowGdprConsentClicked"
                                 BackgroundColor="Transparent"
                                 TextColor="Black"
                                 HorizontalOptions="Start"
                                 FontSize="14" />
-                        <Button Text="Polityka prywatności"
+                        <Button Text="{translate:Localization PrivacyPolicy}"
                                 Clicked="OnPrivacyPolicyClicked"
                                 BackgroundColor="Transparent"
                                 TextColor="Black"
@@ -69,7 +70,7 @@
                                VerticalOptions="Center"
                                Margin="0,0,10,0"
                                Grid.Column="0" />
-                        <Label Text="Konto"
+                        <Label Text="{translate:Localization Account}"
                                FontSize="16"
                                FontAttributes="Bold"
                                TextColor="#1A8CD8"
@@ -77,7 +78,7 @@
                                Grid.Column="1" />
                     </Grid>
 
-                    <Button Text="Usuń dane"
+                    <Button Text="{translate:Localization DeleteData}"
                             Clicked="OnDeleteDataClicked"
                             BackgroundColor="Transparent"
                             TextColor="Black"
@@ -96,7 +97,7 @@
                                VerticalOptions="Center"
                                Margin="0,0,10,0"
                                Grid.Column="0" />
-                        <Label Text="Społeczność"
+                        <Label Text="{translate:Localization Community}"
                                FontSize="16"
                                FontAttributes="Bold"
                                TextColor="#1A8CD8"
@@ -105,13 +106,13 @@
                     </Grid>
 
                     <StackLayout Spacing="10" Padding="10,0,0,0">
-                        <Button Text="Zaproś znajomych"
+                        <Button Text="{translate:Localization InviteFriends}"
                                 Clicked="OnInviteFriendsClicked"
                                 BackgroundColor="Transparent"
                                 TextColor="Black"
                                 HorizontalOptions="Start"
                                 FontSize="14" />
-                        <Button Text="Oceń nas"
+                        <Button Text="{translate:Localization RateUs}"
                                 Clicked="OnRateUsClicked"
                                 BackgroundColor="Transparent"
                                 TextColor="Black"
@@ -130,7 +131,7 @@
                                VerticalOptions="Center"
                                Margin="0,0,10,0"
                                Grid.Column="0" />
-                        <Label Text="Język"
+                        <Label Text="{translate:Localization Language}"
                                FontSize="16"
                                FontAttributes="Bold"
                                TextColor="#1A8CD8"
