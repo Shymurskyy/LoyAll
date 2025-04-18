@@ -18,18 +18,18 @@ namespace LoyAll.Views
         }
         private async void OnHelpClicked(object sender, EventArgs e)
         {
-            using (var errorPopup = new CustomPopup(false))
+            using (var helpPopup = new CustomPopup(false))
             {
-                errorPopup.SetTitle("Pomoc");
-                errorPopup.SetMessage($"Tutaj mo¿esz udostêpniæ swoje karty lojalnoœciowe. Wygeneruj kod QR lub skopiuj link a nastêpnie zaimportuj na innym urz¹dzeniu aby dzieliæ siê tymi samymi kartami!");
-                errorPopup.AddOption("OK", () => { });
-                await errorPopup.ShowAsync(this);
+                helpPopup.SetTitle(LanguageHelper.Instance["HelpTitle"]);
+                helpPopup.SetMessage(LanguageHelper.Instance["ShareCardHelpMessage"]);
+                helpPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
+                await helpPopup.ShowAsync(this);
             }
         }
         private async void OnCompressedDataTapped(object sender, EventArgs e)
         {
             await Clipboard.SetTextAsync(_compressedData);
-            await ShowToast("Skopiowano do schowka");
+            await ShowToast(LanguageHelper.Instance["CopiedToClipboardMessage"]);
         }
 
         private async Task ShowToast(string message)

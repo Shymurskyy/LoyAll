@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="TitleCards" xml:space="preserve">
+    <value>My Cards</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Search cards...</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="PrivacyAndSecurity" xml:space="preserve">
+    <value>Privacy and security</value>
+  </data>
+  <data name="ShowGDPRConsent" xml:space="preserve">
+    <value>Show GDPR consent again</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Privacy policy</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="DeleteData" xml:space="preserve">
+    <value>Delete data</value>
+  </data>
+  <data name="Community" xml:space="preserve">
+    <value>Community</value>
+  </data>
+  <data name="InviteFriends" xml:space="preserve">
+    <value>Invite friends</value>
+  </data>
+  <data name="RateUs" xml:space="preserve">
+    <value>Rate us</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="AddCardTitle" xml:space="preserve">
+  <value>Add Card</value>
+  </data>
+  <data name="CardNamePlaceholder" xml:space="preserve">
+  <value>Card name</value>
+  </data>
+  <data name="ImportFromDevice" xml:space="preserve">
+  <value>Import from another device</value>
+  </data>
+  <data name="UnsupportedCode" xml:space="preserve">
+  <value>Unsupported code</value>
+</data>
+<data name="EnterNameAndScanError" xml:space="preserve">
+  <value>Please enter name and scan code</value>
+</data>
+<data name="ChooseImportMethod" xml:space="preserve">
+  <value>Choose import method</value>
+</data>
+<data name="ImportFromImage" xml:space="preserve">
+  <value>Import from image</value>
+</data>
+<data name="ImportFromText" xml:space="preserve">
+  <value>Import from text</value>
+</data>
+<data name="PasteEncodedMessage" xml:space="preserve">
+  <value>Paste encoded message</value>
+</data>
+<data name="EnterTextPlaceholder" xml:space="preserve">
+  <value>Enter text...</value>
+</data>
+<data name="ImportButton" xml:space="preserve">
+  <value>Import</value>
+</data>
+<data name="DecodeErrorMessage" xml:space="preserve">
+  <value>Failed to decode message. Make sure you're importing code generated by this app!</value>
+</data>
+<data name="NoBarcodeFound" xml:space="preserve">
+  <value>No QR/barcode found on the image.</value>
+</data>
+<data name="DecodeErrorPrefix" xml:space="preserve">
+  <value>Failed to decode code:</value>
+</data>
+<data name="AddNewCard" xml:space="preserve">
+  <value>Add new card</value>
+</data>
+<data name="AddFromGallery" xml:space="preserve">
+  <value>Add from gallery</value>
+</data>
+<data name="ScanCode" xml:space="preserve">
+  <value>Scan code</value>
+</data>
+<data name="ErrorTitle" xml:space="preserve">
+  <value>Error</value>
+</data>
+<data name="EnterCardNameError" xml:space="preserve">
+  <value>Please enter card name</value>
+</data>
+<data name="OKButton" xml:space="preserve">
+  <value>OK</value>
+</data>
+<data name="CancelButton" xml:space="preserve">
+  <value>Cancel</value>
+</data>
+<data name="DeleteCardTitle" xml:space="preserve">
+  <value>Delete card</value>
+</data>
+<data name="DeleteCardMessage" xml:space="preserve">
+  <value>Are you sure you want to delete card {0}?</value>
+</data>
+<data name="ConfirmButton" xml:space="preserve">
+  <value>Confirm</value>
+</data>
+<data name="NoCardsTitle" xml:space="preserve">
+  <value>No cards</value>
+</data>
+<data name="NoCardsMessage" xml:space="preserve">
+  <value>You don't have any cards to share</value>
+</data>
+<data name="ShareCardsTitle" xml:space="preserve">
+  <value>Share cards</value>
+</data>
+<data name="LoadCardsError" xml:space="preserve">
+  <value>Failed to load cards</value>
+</data>
+<data name="ShareCardsTitle" xml:space="preserve">
+  <value>Select cards to share</value>
+</data>
+<data name="SelectAllCards" xml:space="preserve">
+  <value>Select all</value>
+</data>
+<data name="ShareButton" xml:space="preserve">
+  <value>Share</value>
+</data>
+<data name="ShareCardTitle" xml:space="preserve">
+  <value>Share Card</value>
+</data>
+<data name="QrCodeTooBigMessage" xml:space="preserve">
+  <value>QR code too big? Tap to copy this text!</value>
+</data>
+<data name="TapToCopyMessage" xml:space="preserve">
+  <value>Tap to copy sharing link...</value>
+</data>
+<data name="CopiedToClipboardMessage" xml:space="preserve">
+  <value>Copied!</value>
+</data>
+<data name="HelpTitle" xml:space="preserve">
+  <value>Help</value>
+</data>
+<data name="ShareCardHelpMessage" xml:space="preserve">
+  <value>Here you can share your loyalty cards. Generate QR code or copy the link and then import on another device to share the same cards!</value>
+</data>
+</root>

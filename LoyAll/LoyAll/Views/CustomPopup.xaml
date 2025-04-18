@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LoyAll.Helper.CustomPopup"
+             xmlns:translate="clr-namespace:LoyAll.Helper"
              x:Name="popupRoot"
              InputTransparent="False">
     <ContentView.Resources>
@@ -61,7 +62,7 @@
            InputTransparent="False">
             <StackLayout x:Name="contentLayout">
                 <Button x:Name="cancelButton"
-                    Text="Anuluj"
+                    Text="{translate:Localization CancelButton}"
                     Style="{StaticResource PopupCancelButtonStyle}"
                     Clicked="OnCancelClicked"
                     Padding="5"/>
