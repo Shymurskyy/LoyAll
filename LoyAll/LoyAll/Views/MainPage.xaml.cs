@@ -184,7 +184,7 @@ namespace LoyAll
         {
             await ExecuteWithCardOpeningLock(async () =>
             {
-                await Navigation.PushAsync(new SettingsPage());
+                await Navigation.PushAsync(new SettingsPage(this));
             });
         }
 

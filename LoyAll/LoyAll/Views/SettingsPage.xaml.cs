@@ -9,14 +9,15 @@ namespace LoyAll
     public partial class SettingsPage : ContentPage
     {
         private readonly List<string> _availableLanguages = new() { "Polski", "English" };
-
-        public SettingsPage()
+        private readonly MainPage _mainPage;
+        public SettingsPage(MainPage mainPage)
         {
             InitializeComponent();
 
             LanguagePicker.ItemsSource = _availableLanguages;
 
             LanguagePicker.SelectedItem = LanguageHelper.Instance.GetCurrentLanguage();
+            _mainPage = mainPage;
         }
 
         private void OnTogglePrivacyOptions(object sender, EventArgs e)
@@ -52,12 +53,16 @@ namespace LoyAll
         {
             using (CustomPopup deletePopup = new CustomPopup())
             {
-                deletePopup.SetTitle("Usuñ kartê");
-                deletePopup.SetMessage($"Czy na pewno chcesz usun¹æ wszystkie dane?");
+                deletePopup.SetTitle(LanguageHelper.Instance["DeleteData"]);
+                deletePopup.SetMessage(LanguageHelper.Instance["DeleteConfirmation"]);
 
                 bool confirm = await deletePopup.ShowConfirmationAsync(this, "Tak");
                 if (confirm)
+                {
                     CardStorageService.DeleteAllCards();
+                    await _mainPage.LoadCardsAsync();
+                    await Navigation.PopAsync();
+                }
             }
         }
 
