@@ -46,6 +46,16 @@ namespace LoyAll.Views
                         BarcodeEntry.Text = LanguageHelper.Instance["UnsupportedCode"];
                     }
                 }
+                else
+                {
+                    using (CustomPopup errorPopup = new CustomPopup(false))
+                    {
+                        errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                        errorPopup.SetMessage(LanguageHelper.Instance["NoBarcodeFound"]);
+                        errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
+                        await errorPopup.ShowAsync(this);
+                    }
+                }
             }
         }
 
@@ -119,8 +129,30 @@ namespace LoyAll.Views
                     if (result != null)
                     {
                         Stream stream = await result.OpenReadAsync();
-                        string decodedValue = LZString.DecompressFromEncodedURIComponent(await BarcodeHelper.DecodeBarcodeFromImage(stream, true));
-
+                        var barcodeValue = await BarcodeHelper.DecodeBarcodeFromImage(stream, true);
+                        if (string.IsNullOrEmpty(barcodeValue))
+                        { 
+                            using (CustomPopup errorPopup = new CustomPopup(false))
+                            {
+                                errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                                errorPopup.SetMessage(LanguageHelper.Instance["DecodeErrorMessage"]);
+                                errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
+                                await errorPopup.ShowAsync(this);
+                                return;
+                            }
+                        }
+                        string decodedValue = LZString.DecompressFromEncodedURIComponent(barcodeValue);
+                        if (string.IsNullOrEmpty(decodedValue))
+                        {
+                            using (CustomPopup errorPopup = new CustomPopup(false))
+                            {
+                                errorPopup.SetTitle(LanguageHelper.Instance["ErrorTitle"]);
+                                errorPopup.SetMessage(LanguageHelper.Instance["DecodeErrorMessage"]);
+                                errorPopup.AddOption(LanguageHelper.Instance["OKButton"], () => { });
+                                await errorPopup.ShowAsync(this);
+                                return;
+                            }
+                        }
                         List<dynamic>? tempCards = JsonConvert.DeserializeObject<List<dynamic>>(decodedValue);
                         List<Card> importedCards = tempCards.Select(x => new Card
                         {
