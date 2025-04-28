@@ -49,6 +49,28 @@ namespace LoyAll.Helper
                 return ImageSource.FromStream(() => stream);
             }
         }
+        public static ImageSource GeneratePDF417Code(string value)
+        {
+            var writer = new BarcodeWriter
+            {
+                Format = BarcodeFormat.PDF_417,
+                Options = new ZXing.Common.EncodingOptions
+                {
+                    Width = 1600,
+                    Height = 400,
+                }
+            };
+
+            var bitmap = writer.Write(value);
+
+            using (var image = SKImage.FromBitmap(bitmap))
+            using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+            {
+                MemoryStream stream = new MemoryStream(data.ToArray());
+                return ImageSource.FromStream(() => stream);
+            }
+        }
+
         public static async Task<string> DecodeBarcodeFromImage(Stream imageStream, bool isImportShare = false)
         {
             try
@@ -64,7 +86,8 @@ namespace LoyAll.Helper
                             ZXing.BarcodeFormat.CODE_128,
                             ZXing.BarcodeFormat.CODE_39,
                             ZXing.BarcodeFormat.EAN_13,
-                            ZXing.BarcodeFormat.UPC_A
+                            ZXing.BarcodeFormat.UPC_A,
+                            ZXing.BarcodeFormat.PDF_417
                         }
                     }
                 };
@@ -109,16 +132,16 @@ namespace LoyAll.Helper
                                 if (barcodeResult != null)
                                 {
                                     if (barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.QR_CODE)
-                                    {
                                         return isImportShare ? barcodeResult.Text : "Q:#" + barcodeResult.Text;
-                                    }
+
                                     else if (barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.CODE_128 ||
                                              barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.CODE_39 ||
                                              barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.EAN_13 ||
                                              barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.UPC_A)
-                                    {
                                         return isImportShare ? barcodeResult.Text : "B:#" + barcodeResult.Text;
-                                    }
+
+                                    else if (barcodeResult.BarcodeFormat == ZXing.BarcodeFormat.PDF_417)
+                                        return isImportShare ? barcodeResult.Text : "P:#" + barcodeResult.Text;
                                 }
                             }
                         }

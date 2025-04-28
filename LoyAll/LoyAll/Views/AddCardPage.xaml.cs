@@ -36,7 +36,7 @@ namespace LoyAll.Views
                 string barcodeValue = await BarcodeHelper.DecodeBarcodeFromImage(stream);
                 if (!string.IsNullOrEmpty(barcodeValue))
                 {
-                    if (barcodeValue.StartsWith("Q:#") || barcodeValue.StartsWith("B:#"))
+                    if (barcodeValue.StartsWith("Q:#") || barcodeValue.StartsWith("B:#")|| barcodeValue.StartsWith("P:#"))
                     {
                         BarcodeEntry.Text = barcodeValue;
                         ShowCodePreview(barcodeValue);
@@ -110,6 +110,12 @@ namespace LoyAll.Views
                 PreviewCodeImage.WidthRequest = 200;
                 PreviewCodeImage.HeightRequest = 200;
             }
+            else if (barcodeValue.StartsWith("P:#"))
+            {
+                PreviewCodeImage.Source = BarcodeHelper.GeneratePDF417Code(barcodeValue.Replace("P:#", ""));
+                PreviewCodeImage.WidthRequest = 300;
+                PreviewCodeImage.HeightRequest = 200;
+            }
 
             BarcodeEntry.Text = barcodeValue;
             AddButtonsView.IsVisible = false;
@@ -142,7 +148,7 @@ namespace LoyAll.Views
                             }
                         }
                         string decodedValue = LZString.DecompressFromEncodedURIComponent(barcodeValue);
-                        if (string.IsNullOrEmpty(decodedValue))
+                        if (string.IsNullOrEmpty(decodedValue) || decodedValue == "\0")
                         {
                             using (CustomPopup errorPopup = new CustomPopup(false))
                             {
@@ -319,6 +325,11 @@ namespace LoyAll.Views
                 customPopup.AddOption(LanguageHelper.Instance["ScanCode"], async () => { await ExecuteBarcodeClicked(); });
                 await customPopup.ShowAsync(this);
             }
+        }
+
+        private async void OnLoyAllTapped(object sender, TappedEventArgs e)
+        {
+            await Shell.Current.GoToAsync("//MainPage");
         }
     }
 }

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="TitleCards" xml:space="preserve">
+    <value>Meine Karten</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Karten suchen...</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="PrivacyAndSecurity" xml:space="preserve">
+    <value>Datenschutz und Sicherheit</value>
+  </data>
+  <data name="ShowGDPRConsent" xml:space="preserve">
+    <value>DSGVO-Zustimmung erneut anzeigen</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Datenschutzerklärung</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="DeleteData" xml:space="preserve">
+    <value>Daten löschen</value>
+  </data>
+  <data name="Community" xml:space="preserve">
+    <value>Community</value>
+  </data>
+  <data name="InviteFriends" xml:space="preserve">
+    <value>Freunde einladen</value>
+  </data>
+  <data name="RateUs" xml:space="preserve">
+    <value>Bewerte uns</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="AddCardTitle" xml:space="preserve">
+    <value>Karte hinzufügen</value>
+  </data>
+  <data name="CardNamePlaceholder" xml:space="preserve">
+    <value>Kartenname</value>
+  </data>
+  <data name="ImportFromDevice" xml:space="preserve">
+    <value>Von anderem Gerät importieren</value>
+  </data>
+  <data name="UnsupportedCode" xml:space="preserve">
+    <value>Nicht unterstützter Code</value>
+  </data>
+  <data name="EnterNameAndScanError" xml:space="preserve">
+    <value>Namen eingeben und Code scannen</value>
+  </data>
+  <data name="ChooseImportMethod" xml:space="preserve">
+    <value>Importmethode wählen</value>
+  </data>
+  <data name="ImportFromImage" xml:space="preserve">
+    <value>Aus Bild importieren</value>
+  </data>
+  <data name="ImportFromText" xml:space="preserve">
+    <value>Aus Text importieren</value>
+  </data>
+  <data name="PasteEncodedMessage" xml:space="preserve">
+    <value>Kodierte Nachricht einfügen</value>
+  </data>
+  <data name="EnterTextPlaceholder" xml:space="preserve">
+    <value>Text eingeben...</value>
+  </data>
+  <data name="ImportButton" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="DecodeErrorMessage" xml:space="preserve">
+    <value>Nachricht konnte nicht decodiert werden. Stellen Sie sicher, dass Sie einen Code importieren, der mit dieser App erstellt wurde!</value>
+  </data>
+  <data name="NoBarcodeFound" xml:space="preserve">
+    <value>Kein QR-/Barcode auf dem Bild gefunden.</value>
+  </data>
+  <data name="DecodeErrorPrefix" xml:space="preserve">
+    <value>Code konnte nicht decodiert werden:</value>
+  </data>
+  <data name="AddNewCard" xml:space="preserve">
+    <value>Neue Karte hinzufügen</value>
+  </data>
+  <data name="AddFromGallery" xml:space="preserve">
+    <value>Aus Galerie hinzufügen</value>
+  </data>
+  <data name="ScanCode" xml:space="preserve">
+    <value>Code scannen</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="EnterCardNameError" xml:space="preserve">
+    <value>Bitte geben Sie einen Kartennamen ein</value>
+  </data>
+  <data name="OKButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="DeleteCardTitle" xml:space="preserve">
+    <value>Karte löschen</value>
+  </data>
+  <data name="DeleteCardMessage" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die Karte {0} löschen möchten?</value>
+  </data>
+  <data name="ConfirmButton" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="NoCardsTitle" xml:space="preserve">
+    <value>Keine Karten</value>
+  </data>
+  <data name="NoCardsMessage" xml:space="preserve">
+    <value>Sie haben keine Karten zum Teilen</value>
+  </data>
+  <data name="ShareCardsTitle" xml:space="preserve">
+    <value>Karten zum Teilen auswählen</value>
+  </data>
+  <data name="LoadCardsError" xml:space="preserve">
+    <value>Karten konnten nicht geladen werden</value>
+  </data>
+  <data name="SelectAllCards" xml:space="preserve">
+    <value>Alle auswählen</value>
+  </data>
+  <data name="ShareButton" xml:space="preserve">
+    <value>Teilen</value>
+  </data>
+  <data name="ShareCardTitle" xml:space="preserve">
+    <value>Karte teilen</value>
+  </data>
+  <data name="QrCodeTooBigMessage" xml:space="preserve">
+    <value>QR-Code zu groß? Tippen Sie hier, um den Text zu kopieren!</value>
+  </data>
+  <data name="TapToCopyMessage" xml:space="preserve">
+    <value>Zum Kopieren des Teilen-Links tippen...</value>
+  </data>
+  <data name="CopiedToClipboardMessage" xml:space="preserve">
+    <value>In Zwischenablage kopiert</value>
+  </data>
+  <data name="HelpTitle" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="ShareCardHelpMessage" xml:space="preserve">
+    <value>Hier können Sie Ihre Treuepunktekarten teilen. Generieren Sie einen QR-Code oder kopieren Sie den Code und importieren Sie ihn auf einem anderen Gerät, um dieselben Karten zu teilen!</value>
+  </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie alle Daten löschen möchten?</value>
+  </data>
+  <data name="InviteFriendsText" xml:space="preserve">
+    <value>Hey, schau dir diese Treuepunkte-App an! https://play.google.com/store/apps/details?id=com.companyname.loyall</value>
+  </data>
+</root>

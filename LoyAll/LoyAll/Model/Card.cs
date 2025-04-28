@@ -42,7 +42,7 @@ namespace LoyAll.Model
         {
             get
             {
-                if (CardValue.StartsWith("Q:#")|| CardValue.StartsWith("B:#"))
+                if (CardValue.StartsWith("Q:#")|| CardValue.StartsWith("B:#") || CardValue.StartsWith("P:#"))
                     return CardValue.Substring(3); 
                 return CardValue;
             }

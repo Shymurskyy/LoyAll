@@ -28,9 +28,13 @@
                    FontAttributes="Bold"
                    VerticalOptions="Center"
                    HorizontalOptions="StartAndExpand"
-                   FontFamily="LilitaOne"/>
+                   FontFamily="LilitaOne">
+                <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnLoyAllTapped"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+             </Label>
 
-            <ImageButton Source="save.svg"
+                <ImageButton Source="save.svg"
                          BackgroundColor="Transparent"
                          HeightRequest="30"
                          WidthRequest="30"
