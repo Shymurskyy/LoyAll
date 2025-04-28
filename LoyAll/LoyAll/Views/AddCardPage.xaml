@@ -128,7 +128,8 @@
                    TextColor="Black"
                    BackgroundColor="Transparent"
                    HorizontalOptions="Fill"
-                   HorizontalTextAlignment="Center"/>
+                   HorizontalTextAlignment="Center"
+                   Keyboard="Text"/>
         </Frame>
 
         <zxing:CameraBarcodeReaderView

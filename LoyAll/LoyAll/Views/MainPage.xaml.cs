@@ -320,13 +320,16 @@ namespace LoyAll
     }
     private IEnumerable<Card> GetSortedCards(IEnumerable<Card> cards, string searchText)
     {
-        IEnumerable<Card> filtered = string.IsNullOrWhiteSpace(searchText)
+            searchText ??= string.Empty;
+            IEnumerable<Card> filtered = string.IsNullOrWhiteSpace(searchText)
             ? cards
             : cards.AsParallel()
                   .Where(c => c.StoreName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false);
 
-        return filtered.OrderByDescending(c => c.IsFavorite)
-                      .ThenBy(c => c.StoreName);
-    }
+            return filtered
+        .OrderBy(c => !(c.StoreName?.StartsWith(searchText, StringComparison.OrdinalIgnoreCase) ?? false))
+        .ThenByDescending(c => c.IsFavorite)
+        .ThenBy(c => c.StoreName);
+        }
 }
 }

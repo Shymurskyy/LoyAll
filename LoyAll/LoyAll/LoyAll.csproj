@@ -77,7 +77,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiSplashScreen Include="Resources\Splash\icon.png" Color="White" BaseSize="1024,1024" />
+	  <MauiSplashScreen Include="Resources\Splash\icon.png" Color="White" BaseSize="206,206" Resize="True" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />

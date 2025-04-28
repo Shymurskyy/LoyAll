@@ -295,6 +295,15 @@ namespace LoyAll.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hey, check out this loyalty app! https://play.google.com/store/apps/details?id=com.companyname.loyall.
+        /// </summary>
+        internal static string InviteFriendsText {
+            get {
+                return ResourceManager.GetString("InviteFriendsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         internal static string Language {

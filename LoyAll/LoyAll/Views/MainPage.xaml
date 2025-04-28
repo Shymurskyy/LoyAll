@@ -130,20 +130,20 @@
             </StackLayout>
         </ScrollView>
 
-        <Button x:Name="FloatingActionButton"
-        Text="+"
-        Clicked="OnAddCardClicked"
-        BackgroundColor="#1DA1F2"
-        TextColor="White"
-        FontSize="24"
-        WidthRequest="60"
-        HeightRequest="60"
-        CornerRadius="30"
-        HorizontalOptions="End"
-        VerticalOptions="End"
-        Margin="0,0,20,20"
-        Grid.Row="3"
-        Opacity="0"/>
+        <ImageButton x:Name="FloatingActionButton"
+             Clicked="OnAddCardClicked"
+             Source="plus.svg"
+             BackgroundColor="#1DA1F2"
+             WidthRequest="60"
+             HeightRequest="60"
+             CornerRadius="30"
+             HorizontalOptions="End"
+             VerticalOptions="End"
+             Margin="0,0,20,20"
+             Grid.Row="3"
+             Opacity="0"
+             Aspect="AspectFit"
+             Padding="15"/>
 
         <controls:MTAdView 
             x:Name="AdmobBanner"
