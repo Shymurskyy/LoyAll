@@ -36,13 +36,11 @@ namespace LoyAll
                 await Task.Delay(100); 
 
                 if (_card.CardValue.StartsWith("B:#"))
-                {
                     await LoadBarcodeAsync();
-                }
+                if (_card.CardValue.StartsWith("P:#"))
+                    await LoadPDF417CodeAsync();
                 else
-                {
                     await LoadQrCodeAsync();
-                }
             }
             finally
             {
@@ -78,6 +76,21 @@ namespace LoyAll
                     CodeImage.WidthRequest = 200;
                     CodeImage.HeightRequest = 200;
                     CodeImage.Source = qrCode;
+                });
+            }
+        }
+        private async Task LoadPDF417CodeAsync()
+        {
+            var pdf417Code = await Task.Run(() =>
+                BarcodeHelper.GeneratePDF417Code(_card.CleanCardValue));
+
+            if (!_isDisposed)
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    CodeImage.WidthRequest = 300;
+                    CodeImage.HeightRequest = 150;
+                    CodeImage.Source = pdf417Code;
                 });
             }
         }

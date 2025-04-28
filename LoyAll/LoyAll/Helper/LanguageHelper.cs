@@ -43,7 +43,12 @@ namespace LoyAll.Helper
             if (string.IsNullOrEmpty(languageCode))
             {
                 var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-                languageCode = culture == "pl" ? "pl" : "en";
+                languageCode = culture switch
+                {
+                    "pl" => "pl",
+                    "de" => "de",
+                    _ => "en"     
+                };
                 Preferences.Set(LanguageKey, languageCode);
             }
 
@@ -56,6 +61,7 @@ namespace LoyAll.Helper
             {
                 "Polski" => "pl",
                 "English" => "en",
+                "Deutsch" => "de", 
                 _ => "en"
             };
 
@@ -68,7 +74,12 @@ namespace LoyAll.Helper
         public string GetCurrentLanguage()
         {
             string languageCode = Preferences.Get(LanguageKey, "en");
-            return languageCode == "pl" ? "Polski" : "English";
+            return languageCode switch
+            {
+                "pl" => "Polski",
+                "de" => "Deutsch", 
+                _ => "English"
+            };
         }
     }
 }

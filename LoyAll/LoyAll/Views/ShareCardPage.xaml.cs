@@ -55,5 +55,10 @@ namespace LoyAll.Views
 
             ToastMessage.TranslationY = 50;
         }
+
+        private async void OnLoyAllTapped(object sender, TappedEventArgs e)
+        {
+            await Shell.Current.GoToAsync("//MainPage");
+        }
     }
 }

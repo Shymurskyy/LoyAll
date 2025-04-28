@@ -23,7 +23,11 @@
                    FontAttributes="Bold"
                    VerticalOptions="Center"
                    HorizontalOptions="StartAndExpand"
-                   FontFamily="LilitaOne"/>
+                   FontFamily="LilitaOne">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLoyAllTapped"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
         </StackLayout>
 
         <ScrollView Grid.Row="1">

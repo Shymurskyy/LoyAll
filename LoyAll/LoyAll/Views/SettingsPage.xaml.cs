@@ -8,7 +8,7 @@ namespace LoyAll
 {
     public partial class SettingsPage : ContentPage
     {
-        private readonly List<string> _availableLanguages = new() { "Polski", "English" };
+        private readonly List<string> _availableLanguages = new() { "Polski", "English", "Deutsch" };
         private readonly MainPage _mainPage;
         public SettingsPage(MainPage mainPage)
         {
@@ -74,6 +74,11 @@ namespace LoyAll
             {
                 LanguageHelper.Instance.ChangeLanguage(selectedLanguage);
             }
+        }
+
+        private async void OnLoyAllTapped(object sender, TappedEventArgs e)
+        {
+            await Shell.Current.GoToAsync("//MainPage");
         }
     }
 }
