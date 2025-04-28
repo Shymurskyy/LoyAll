@@ -264,4 +264,7 @@
   <data name="DeleteConfirmation" xml:space="preserve">
     <value>Czy na pewno chcesz usunąć wszystkie dane?</value>
   </data>
+  <data name="InviteFriendsText" xml:space="preserve">
+    <value>Hej, sprawdź te apkę lojalnościową! https://play.google.com/store/apps/details?id=com.companyname.loyall</value>
+  </data>
 </root>

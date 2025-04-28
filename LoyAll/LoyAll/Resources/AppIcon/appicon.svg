@@ -1,1 +1,9 @@
-<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456 456" width="456" height="456"><defs><image  width="456" height="456" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcgAAAHIAQMAAADwb+ipAAAAAXNSR0IB2cksfwAAAANQTFRFVav21CDjigAAAGhJREFUeJztyzENAAAMA6DVv+l5aHrCT64V0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN05zNB6OcAcm2KNubAAAAAElFTkSuQmCC"/></defs><style></style><use  href="#img1" x="0" y="0"/></svg>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456 456" width="456" height="456">
+	<title>appicon</title>
+	<defs>
+		<image  width="456" height="456" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcgAAAHIAQMAAADwb+ipAAAAAXNSR0IB2cksfwAAAANQTFRFHaHyVysTYQAAAGhJREFUeJztyzENAAAMA6DVv+l5aHrCT64V0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN0zRN05zNB6OcAcm2KNubAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use id="Path 0" href="#img1" x="0" y="0"/>
+</svg>

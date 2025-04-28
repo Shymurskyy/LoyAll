@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
@@ -15,48 +14,46 @@
         <the49:FullscreenDetent />
     </the49:BottomSheet.Detents>
 
-    <ScrollView>
-        <StackLayout Spacing="0">
-            <BoxView 
-                Color="LightGray" 
-                HeightRequest="4" 
-                WidthRequest="60"
-                HorizontalOptions="Center"
-                Margin="0,10,0,20"
-                CornerRadius="20"/>
-        <StackLayout Padding="20" Spacing="20">
-            <Label x:Name="StoreNameLabel"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   TextColor="Black"/>
+    <StackLayout Spacing="0">
+            <StackLayout Spacing="0">
+                <BoxView 
+                    Color="LightGray" 
+                    HeightRequest="4" 
+                    WidthRequest="60"
+                    HorizontalOptions="Center"
+                    Margin="0,10,0,20"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"/>
 
-           
+                <StackLayout Padding="20" Spacing="20">
+                    <Label x:Name="StoreNameLabel"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="Black"/>
+                    <Frame Padding="0"
+                           BackgroundColor="White"
+                           HorizontalOptions="Center"
+                           BorderColor="Transparent">
+                        <Image x:Name="CodeImage" 
+                               HeightRequest="250"
+                               WidthRequest="250"
+                               Aspect="AspectFit"/>
+                    </Frame>
 
-
-            <Frame Padding="-20"
-                   BackgroundColor="White"
-                   HorizontalOptions="Center"
-                   BorderColor="Transparent">
-                <Image x:Name="CodeImage" 
-                       HeightRequest="250"
-                       WidthRequest="250"
-                       Aspect="AspectFit"/>
-            </Frame>
-
-            <StackLayout Spacing="5">
-                <Label x:Name="RealCardValueLabel"
-                       FontSize="18"
-                       TextColor="Gray"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center"/>
+                    <StackLayout Spacing="5">
+                        <Label x:Name="RealCardValueLabel"
+                               FontSize="18"
+                               TextColor="Gray"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"/>
+                    </StackLayout>
+                </StackLayout>
             </StackLayout>
 
-            <controls:MTAdView 
-                x:Name="AdmobBanner"
-                AdsId="ca-app-pub-3940256099942544/6300978111"
-                HeightRequest="50"/>
-        </StackLayout>
-        </StackLayout>
-    </ScrollView>
+        <controls:MTAdView 
+            x:Name="AdmobBanner"
+            AdsId="ca-app-pub-3940256099942544/6300978111"
+            HeightRequest="50"/>
+    </StackLayout>
 </the49:BottomSheet>

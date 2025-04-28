@@ -39,14 +39,14 @@ namespace LoyAll
         {
             Share.RequestAsync(new ShareTextRequest
             {
-                Text = "TODO Real Link",
-                Title = "TODO"
+                Text = LanguageHelper.Instance["InviteFriendsText"],
+                Title = LanguageHelper.Instance["InviteFriends"]
             });
         }
 
         private void OnRateUsClicked(object sender, EventArgs e)
         {
-            Launcher.OpenAsync(new Uri("market://TODOAPPSTORE"));
+            Launcher.OpenAsync(new Uri("market://details?id=com.companyname.loyall"));
         }
 
         private async void OnDeleteDataClicked(object sender, EventArgs e)
