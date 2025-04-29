@@ -8,6 +8,18 @@
 Turn a phone full of loyalty card apps into **one convenient place**—LoyAll is a simple, fast, and privacy-focused way to manage all your loyalty cards.  
 ## 📥 Download  
 [![Download on Google Play](https://img.shields.io/badge/Download_📲_on_Google_Play-4285F4?style=for-the-badge&logo=google-play&logoColor=white&labelColor=4285F4&color=34A853&gradient=linear-gradient(145deg,%234285F4,%2334A853))](https://play.google.com/store/apps/details?id=com.companyname.loyall)
+---
+**LoyAll is currently in testing phase.**  
+If you’d like to become a tester, feel free to [contact me via email](mailto:murraya.solutions@interia.com)!
+## 🖼️ Screenshots
+
+<div align="center">
+  <img src="Assets/mockup_1.png" alt="Main screen" width="180" style="margin-right: 10px;" />
+  <img src="Assets/mockup_2.png" alt="Card details" width="180" />
+  <img src="Assets/mockup_3.png" alt="Add card page" width="180" />
+  <img src="Assets/mockup_4.png" alt="Add card page" width="180" />
+  <img src="Assets/mockup_5.png" alt="Add card page" width="180" />
+</div>
 
 
 ## ✨ Key Features  
@@ -34,4 +46,4 @@ Found a bug or have a feature request? Open an **Issue** or submit a **Pull Requ
 ## 📌 What’s New  
 - ✅ **Added support for PDF417 codes** – Scan even more loyalty card types.  
 - 🏠 **Clickable logo** – Tap to quickly return to the home screen.  
-- 🌍 **New language support** – Use LoyAll in your preferred language.  
+- 🌍 **New language support** – Use LoyAll in your preferred language.)
