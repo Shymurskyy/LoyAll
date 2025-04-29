@@ -13,12 +13,18 @@ Turn a phone full of loyalty card apps into **one convenient place**—LoyAll is
 If you’d like to become a tester, feel free to [contact me via email](mailto:murraya.solutions@interia.com)!
 ## 🖼️ Screenshots
 
+
 <div align="center">
-  <img src="Assets/mockup_1.png" alt="Main screen" width="180" style="margin-right: 10px;" />
-  <img src="Assets/mockup_2.png" alt="Card details" width="180" />
-  <img src="Assets/mockup_3.png" alt="Add card page" width="180" />
-  <img src="Assets/mockup_4.png" alt="Add card page" width="180" />
-  <img src="Assets/mockup_5.png" alt="Add card page" width="180" />
+  <img src="Assets/mockup_1.png" alt="Main screen" width="200"  />
+  <img src="Assets/mockup_2.png" alt="Card details" width="200"  />
+  <img src="Assets/mockup_3.png" alt="Add card page" width="200" />
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="Assets/mockup_4.png" alt="Share cards popup" width="200"  />
+  <img src="Assets/mockup_5.png" alt="Share cards" width="200" />
 </div>
 
 
