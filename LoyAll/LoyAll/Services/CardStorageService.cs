@@ -55,7 +55,16 @@ namespace LoyAll.Services
                 }
             }
         }
-
+        public static void Edit(Card card, string name)
+        {
+            var cards = GetCards();
+            var cardToUpdate = cards.FirstOrDefault(x => x.CardValue==card.CardValue);
+            if (cardToUpdate != null)
+            {
+                cardToUpdate.StoreName = name;
+                SaveAllCards(cards);
+            }
+        }
         private static void SaveAllCards(List<Card> cards)
         {
             var json = JsonConvert.SerializeObject(cards);

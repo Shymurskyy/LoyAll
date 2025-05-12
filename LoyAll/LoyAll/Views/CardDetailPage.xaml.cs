@@ -1,5 +1,6 @@
 using LoyAll.Helper;
 using LoyAll.Model;
+using LoyAll.Services;
 using The49.Maui.BottomSheet;
 
 namespace LoyAll
@@ -115,6 +116,39 @@ namespace LoyAll
             {
                 _initSemaphore.Release();
             }
+        }
+        private void OnEditButtonClicked(object sender, EventArgs e)
+        {
+            StoreNameLabel.IsVisible = false;
+            EditButton.IsVisible = false;
+            EditModeLayout.IsVisible = true;
+            StoreNameEntry.Text = _card.StoreName;
+            StoreNameEntry.Focus();
+        }
+
+        private void OnSaveNameClicked(object sender, EventArgs e)
+        {
+            var newName = StoreNameEntry.Text?.Trim();
+            if (!string.IsNullOrEmpty(newName) && newName != _card.StoreName)
+            {
+                _card.StoreName = newName;
+                CardStorageService.Edit(_card, newName);
+                StoreNameLabel.Text = newName;
+            }
+
+            ExitEditMode();
+        }
+
+        private void OnCancelEditClicked(object sender, EventArgs e)
+        {
+            ExitEditMode();
+        }
+
+        private void ExitEditMode()
+        {
+            EditModeLayout.IsVisible = false;
+            StoreNameLabel.IsVisible = true;
+            EditButton.IsVisible = true;
         }
 
         private void OnDismissed(object sender, DismissOrigin e)

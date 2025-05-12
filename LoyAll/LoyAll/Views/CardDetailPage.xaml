@@ -26,30 +26,73 @@
                     BackgroundColor="Transparent"/>
 
                 <StackLayout Padding="20" Spacing="20">
+                <Grid HorizontalOptions="FillAndExpand" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
                     <Label x:Name="StoreNameLabel"
+                           Grid.Column="1"
                            FontSize="24"
                            FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           TextColor="Black"/>
-                    <Frame Padding="0"
-                           BackgroundColor="White"
-                           HorizontalOptions="Center"
-                           BorderColor="Transparent">
-                        <Image x:Name="CodeImage" 
-                               HeightRequest="250"
-                               WidthRequest="250"
-                               Aspect="AspectFit"/>
-                    </Frame>
+                           TextColor="Black"
+                           HorizontalOptions="Center"/>
 
-                    <StackLayout Spacing="5">
-                        <Label x:Name="RealCardValueLabel"
-                               FontSize="18"
-                               TextColor="Gray"
+                    <ImageButton x:Name="EditButton"
+                                 Grid.Column="2"
+                                 Source="edit.svg"
+                                 HeightRequest="24"
+                                 WidthRequest="24"
+                                 BackgroundColor="Transparent"
+                                 Margin="20,0,0,0"
+                                 HorizontalOptions="End"
+                                 Clicked="OnEditButtonClicked"/>
+                    <StackLayout x:Name="EditModeLayout"
+                                 Grid.ColumnSpan="3"
+                                 IsVisible="False"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="Center"
+                                 Spacing="10">
+                        <Entry x:Name="StoreNameEntry"
+                               FontSize="24"
                                FontAttributes="Bold"
-                               HorizontalOptions="Center"/>
+                               TextColor="Black"
+                               HorizontalOptions="Center"
+                               WidthRequest="250"/>
+                        <ImageButton Source="done.svg"
+                                HeightRequest="32"
+                                WidthRequest="32"
+                                BackgroundColor="Transparent"
+                                Clicked="OnSaveNameClicked"/>
+                        <ImageButton Source="close_orange.svg"
+                                BackgroundColor="Transparent"
+                                HeightRequest="32"
+                                WidthRequest="32"
+                                Clicked="OnCancelEditClicked"/>
                     </StackLayout>
+                </Grid>
+
+                <Frame Padding="0"
+                       BackgroundColor="White"
+                       HorizontalOptions="Center"
+                       BorderColor="Transparent">
+                    <Image x:Name="CodeImage" 
+                           HeightRequest="250"
+                           WidthRequest="250"
+                           Aspect="AspectFit"/>
+                </Frame>
+
+                <StackLayout Spacing="5">
+                    <Label x:Name="RealCardValueLabel"
+                           FontSize="18"
+                           TextColor="Gray"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
                 </StackLayout>
             </StackLayout>
+        </StackLayout>
 
         <controls:MTAdView 
             x:Name="AdmobBanner"

@@ -56,7 +56,7 @@ namespace LoyAll
                 deletePopup.SetTitle(LanguageHelper.Instance["DeleteData"]);
                 deletePopup.SetMessage(LanguageHelper.Instance["DeleteConfirmation"]);
 
-                bool confirm = await deletePopup.ShowConfirmationAsync(this, "Tak");
+                bool confirm = await deletePopup.ShowConfirmationAsync(this, LanguageHelper.Instance["ConfirmButton"]);
                 if (confirm)
                 {
                     CardStorageService.DeleteAllCards();

@@ -11,10 +11,21 @@ namespace LoyAll.Model
 {
     public class Card : INotifyPropertyChanged
     {
-        public string StoreName { get; set; }
+        public string _storeName { get; set; }
         public string CardValue { get; set; }
         private bool _isFavorite;
-
+        public string StoreName
+        {
+            get => _storeName;
+            set
+            {
+                if (_storeName != value)
+                {
+                    _storeName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public bool IsFavorite
         {
             get => _isFavorite;
