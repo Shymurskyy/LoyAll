@@ -9,8 +9,6 @@ Turn a phone full of loyalty card apps into **one convenient place**—LoyAll is
 ## 📥 Download  
 [![Download on Google Play](https://img.shields.io/badge/Download_📲_on_Google_Play-4285F4?style=for-the-badge&logo=google-play&logoColor=white&labelColor=4285F4&color=34A853&gradient=linear-gradient(145deg,%234285F4,%2334A853))](https://play.google.com/store/apps/details?id=com.companyname.loyall)
 ---
-**LoyAll is currently in testing phase.**  
-If you’d like to become a tester, feel free to [contact me via email](mailto:murraya.solutions@interia.com)!
 ## 🖼️ Screenshots
 
 
